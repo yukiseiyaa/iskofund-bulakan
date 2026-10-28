@@ -157,6 +157,21 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
   const [submitted, setSubmitted] = useState(false);
   const [submittedCode, setSubmittedCode] = useState("ISKO-BUL-8821");
 
+  const [evaluatorModalOpen, setEvaluatorModalOpen] = useState(false);
+  const [simIncome, setSimIncome] = useState(18000);
+  const [simGpa, setSimGpa] = useState(1.65);
+  const [simSize, setSimSize] = useState(5);
+
+  const simPci = simIncome / (simSize || 1);
+  const simNeedScore = Math.max(10, Math.min(100, Math.round(100 - (simPci / 12000) * 80)));
+  const simMeritScore = Math.max(10, Math.min(100, Math.round(100 - ((simGpa - 1.0) / 2.0) * 70)));
+  const simCompScore = Math.round(0.60 * simNeedScore + 0.25 * simMeritScore + 0.15 * 85);
+  const simTier = simCompScore >= 80
+    ? "Tier 1: High Priority (₱5,000 Aid)"
+    : (simCompScore >= 60
+      ? "Tier 2: Standard Grant (₱3,500 Aid)"
+      : "Tier 3: Conditional (₱2,500 Aid)");
+
   const [savedApplications, setSavedApplications] = useState(() => {
     try {
       const raw = localStorage.getItem('iskofund_portal_apps');
@@ -642,16 +657,14 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
         <div className="wrap utility-inner">
           <span>{isFilipino ? "Republika ng Pilipinas · Bayan ng Bulakan" : "Republic of the Philippines · Municipality of Bulakan"}</span>
           <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-            {onSwitchToAdmin && (
-              <button
-                className="evaluator-badge"
-                onClick={onSwitchToAdmin}
-                title="View Predictive Engine"
-              >
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                <span>Predictive Engine</span>
-              </button>
-            )}
+            <button
+              className="evaluator-badge"
+              onClick={() => setEvaluatorModalOpen(true)}
+              title="View Predictive Engine"
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              <span>Predictive Engine</span>
+            </button>
             <button onClick={() => setLanguage(l => l === "English" ? "Filipino" : "English")}>
               {language === "English" ? "English / Filipino" : "Filipino / English"}
             </button>
@@ -1921,6 +1934,80 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
                 >
                   Submit feedback
                 </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Evaluator Modal: Capstone Predictive Engine & Solver */}
+      {evaluatorModalOpen && (
+        <div
+          className="evaluator-modal-backdrop open"
+          id="evaluator-modal-backdrop"
+          onClick={(e) => { if (e.target === e.currentTarget) setEvaluatorModalOpen(false); }}
+        >
+          <div className="evaluator-modal">
+            <div className="eval-header">
+              <div>
+                <h3>Predictive Aid Allocation &amp; Fairness Engine</h3>
+              </div>
+              <button
+                onClick={() => setEvaluatorModalOpen(false)}
+                style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}
+                aria-label="Close modal"
+              >
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 6 12 12M18 6 6 18"/></svg>
+              </button>
+            </div>
+            <div className="eval-body">
+              <div className="eval-card">
+                <h4 style={{ fontSize: 13, fontWeight: 700, marginBottom: 6, color: 'var(--ink)' }}>Predictive Multi-Attribute Scoring Formula</h4>
+                <p style={{ fontSize: 12, color: 'var(--muted)', marginBottom: 12 }}>Combines verifiable household vulnerability (60%), academic persistence (25%), and regional cost/hardship factors (15%) to eliminate political bias.</p>
+                <div style={{ background: '#fff', border: '1px solid var(--line)', padding: 12, fontFamily: 'monospace', fontSize: 11, color: '#1e293b', borderRadius: 4 }}>
+                  Composite Score = 0.60 × FinancialNeed + 0.25 × AcademicMerit + 0.15 × HardshipWeight
+                </div>
+              </div>
+
+              <div className="eval-card">
+                <h4 style={{ fontSize: 13, fontWeight: 700, marginBottom: 8, color: 'var(--ink)' }}>Real-time Profile Simulation</h4>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12 }}>
+                  <div>
+                    <label style={{ fontSize: 11, fontWeight: 600 }}>Household Income (₱)</label>
+                    <input
+                      type="number"
+                      value={simIncome}
+                      onChange={(e) => setSimIncome(Number(e.target.value) || 0)}
+                      style={{ padding: '6px 10px', fontSize: 12, border: '1px solid var(--line)', width: '100%', boxSizing: 'border-box' }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: 11, fontWeight: 600 }}>GWA (1.00 - 3.00)</label>
+                    <input
+                      type="number"
+                      step="0.05"
+                      value={simGpa}
+                      onChange={(e) => setSimGpa(Number(e.target.value) || 0)}
+                      style={{ padding: '6px 10px', fontSize: 12, border: '1px solid var(--line)', width: '100%', boxSizing: 'border-box' }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: 11, fontWeight: 600 }}>Household Size</label>
+                    <input
+                      type="number"
+                      value={simSize}
+                      onChange={(e) => setSimSize(Number(e.target.value) || 1)}
+                      style={{ padding: '6px 10px', fontSize: 12, border: '1px solid var(--line)', width: '100%', boxSizing: 'border-box' }}
+                    />
+                  </div>
+                </div>
+                <div style={{ marginTop: 14, padding: 12, background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 4, fontSize: 12, color: '#166534', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div>
+                    <strong>Calculated Composite Score: {simCompScore} / 100</strong>
+                    <p style={{ margin: '2px 0 0 0', fontSize: 11, opacity: 0.85 }}>Need: {simNeedScore}/100 | Merit: {simMeritScore}/100 | Hardship: 85/100</p>
+                  </div>
+                  <span style={{ fontWeight: 700, background: '#dcfce7', padding: '4px 8px', borderRadius: 4 }}>{simTier}</span>
+                </div>
               </div>
             </div>
           </div>
