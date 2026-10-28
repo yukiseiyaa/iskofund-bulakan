@@ -1,0 +1,5769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IskoFund: Bulakan — Official Digital Scholarship Portal</title>
+  <meta name="description" content="Official digital scholarship and student financial assistance portal for the Municipality of Bulakan, Bulacan. Apply, track verification, and access municipal educational assistance.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --ink: #111315;
+  --ink-soft: #25282d;
+  --paper: #f4f2ed;
+  --white: #ffffff;
+  --muted: #4b5058;
+  --muted-light: #6a707a;
+  --line: #deddd9;
+  --line-strong: #c8c7c2;
+  --accent: #8a0303;
+  --accent-dark: #620101;
+  --accent-light: #faeaea;
+  --success: #19633e;
+  --success-bg: #eaf4ee;
+
+  color: var(--ink);
+  background: var(--paper);
+  font-synthesis: none;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-width: 320px;
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+label:has(input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.site {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.wrap {
+  width: min(1240px, 100% - 48px);
+  margin: 0 auto;
+}
+
+.skip-link {
+  z-index: 100;
+  background: var(--accent);
+  color: #fff;
+  border: 0;
+  padding: 12px 18px;
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 4px;
+  transform: translateY(-150%);
+  transition: transform .2s ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   Utility Top Bar
+   ========================================================================== */
+.utility {
+  background: var(--ink);
+  color: #c9ccd1;
+  letter-spacing: .02em;
+  font-size: 13px;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.utility-inner {
+  justify-content: space-between;
+  align-items: center;
+  min-height: 38px;
+  padding-block: 4px;
+  display: flex;
+}
+
+.utility button {
+  color: #e2e4e8;
+  background: none;
+  border: 0;
+  padding: 4px 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  border-radius: 4px;
+  transition: all .15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.utility button:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.evaluator-badge {
+  background: #340505 !important;
+  color: #fca5a5 !important;
+  border: 1px solid #7f1d1d !important;
+  padding: 4px 10px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all .15s;
+}
+
+.evaluator-badge:hover {
+  background: #4c0808 !important;
+  color: #fff !important;
+  border-color: #991b1b !important;
+}
+
+/* ==========================================================================
+   Header & Navigation
+   ========================================================================== */
+.header {
+  z-index: 40;
+  border-bottom: 1px solid var(--line);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  background: rgba(244, 242, 237, 0.94);
+  position: sticky;
+  top: 0;
+}
+
+.header-inner {
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  display: flex;
+}
+
+.identity {
+  color: var(--ink);
+  text-align: left;
+  background: none;
+  border: 0;
+  align-items: center;
+  gap: 12px;
+  padding: 0;
+  display: flex;
+  text-decoration: none;
+}
+
+.mark {
+  color: #fff;
+  background: var(--accent);
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 4px;
+  display: grid;
+  flex-shrink: 0;
+}
+
+.identity strong {
+  letter-spacing: -.03em;
+  font-size: 20px;
+  font-weight: 800;
+  display: block;
+  line-height: 1.15;
+}
+
+.identity small {
+  color: var(--muted);
+  letter-spacing: .16em;
+  margin-top: 2px;
+  font-size: 11.5px;
+  font-weight: 800;
+  display: block;
+}
+
+.nav {
+  align-items: center;
+  gap: 28px;
+  display: flex;
+}
+
+.nav button,
+.quiet-link {
+  color: var(--ink-soft);
+  background: none;
+  border: 0;
+  padding: 6px 0;
+  font-size: 15px;
+  font-weight: 600;
+  transition: color .15s;
+}
+
+.nav button:hover,
+.quiet-link:hover {
+  color: var(--accent);
+}
+
+.nav-mobile-cta {
+  display: none !important;
+}
+
+.header-actions {
+  align-items: center;
+  gap: 16px;
+  display: flex;
+}
+
+.primary-button,
+.light-button,
+.secondary-button {
+  border: 1px solid transparent;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 22px;
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: 4px;
+  transition: background .2s, color .2s, border-color .2s, transform .1s;
+  display: inline-flex;
+}
+
+.primary-button:active,
+.light-button:active,
+.secondary-button:active {
+  transform: translateY(1px);
+}
+
+.primary-button {
+  color: #fff;
+  background: var(--accent);
+}
+
+.primary-button:hover {
+  background: var(--accent-dark);
+}
+
+.light-button {
+  color: var(--ink);
+  background: var(--white);
+  border-color: var(--line);
+}
+
+.light-button:hover {
+  background: var(--paper);
+  border-color: var(--line-strong);
+}
+
+.secondary-button {
+  color: var(--ink);
+  border-color: var(--line);
+  background: #fff;
+}
+
+.secondary-button:hover {
+  border-color: #96999e;
+  background: #fbfaf8;
+}
+
+.primary-button.large {
+  min-height: 54px;
+  padding-inline: 26px;
+  font-size: 16px;
+}
+
+.menu-button {
+  border: 1px solid var(--line);
+  width: 44px;
+  height: 44px;
+  color: var(--ink);
+  background: #fff;
+  border-radius: 4px;
+  place-items: center;
+  display: none;
+}
+
+/* ==========================================================================
+   Hero Section
+   ========================================================================== */
+.hero {
+  background: #ece9e2;
+  padding: 32px 0 76px;
+}
+
+.hero-layout {
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 72px;
+  display: grid;
+}
+
+.open-label {
+  color: var(--muted);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+  font-size: 13px;
+  font-weight: 700;
+  display: inline-flex;
+}
+
+.open-label span {
+  background: #256b4b;
+  border-radius: 50%;
+  width: 9px;
+  height: 9px;
+  box-shadow: 0 0 0 4px rgba(37, 107, 75, 0.18);
+}
+
+.hero h1 {
+  max-width: 740px;
+  color: var(--ink);
+  letter-spacing: -.04em;
+  margin: 0;
+  font-size: clamp(38px, 4.8vw, 64px);
+  font-weight: 700;
+  line-height: 1.14;
+}
+
+h1 em,
+h2 em {
+  color: var(--accent);
+  font-family: inherit;
+  font-style: normal;
+  font-weight: inherit;
+}
+
+.hero-copy>p {
+  max-width: 680px;
+  color: var(--muted);
+  margin: 24px 0 32px;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.hero-actions {
+  align-items: center;
+  gap: 20px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.text-button {
+  color: var(--ink);
+  background: none;
+  border: 0;
+  border-bottom: 2px solid #aaa8a2;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 0;
+  font-size: 14px;
+  font-weight: 600;
+  display: inline-flex;
+  transition: border-color .15s, color .15s;
+}
+
+.text-button:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.hero-note {
+  color: var(--muted);
+  align-items: center;
+  gap: 9px;
+  margin-top: 24px;
+  font-size: 13.5px;
+  font-weight: 500;
+  display: flex;
+}
+
+.resume-draft {
+  color: var(--accent);
+  background: none;
+  border: 0;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 4px 0;
+  font-size: 13.5px;
+  font-weight: 700;
+  display: flex;
+  transition: opacity .15s;
+}
+
+.resume-draft:hover {
+  opacity: .8;
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   Hero Stage & Floating Badges
+   ========================================================================== */
+.hero-stage {
+  background-color: #fbfbfa;
+  background-image: radial-gradient(#d6d6d1 .9px, transparent .9px);
+  background-size: 7px 7px;
+  border: 1px solid #d4d4cf;
+  border-radius: 24px;
+  place-items: center;
+  min-height: 670px;
+  display: grid;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 24px 55px rgba(28, 30, 32, 0.08);
+}
+
+.hero-stage:after {
+  content: "";
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(251, 251, 250, 0.98) 0 28%, rgba(251, 251, 250, 0.65) 54%, transparent 75%);
+  position: absolute;
+  inset: 0;
+}
+
+.hero-center {
+  z-index: 3;
+  text-align: center;
+  max-width: 780px;
+  padding: 64px 32px;
+  position: relative;
+}
+
+.hero-center .open-label {
+  margin-bottom: 22px;
+}
+
+.hero-symbol {
+  color: #fff;
+  background: var(--accent);
+  border-radius: 14px;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 24px;
+  display: grid;
+  transform: rotate(-2deg);
+  box-shadow: 0 12px 24px rgba(138, 3, 3, 0.22);
+}
+
+.hero-center h1 {
+  color: var(--ink);
+  letter-spacing: -.04em;
+  margin: 0;
+  font-size: clamp(38px, 5vw, 66px);
+  font-weight: 700;
+  line-height: 1.14;
+}
+
+.hero-center>p {
+  max-width: 620px;
+  color: var(--muted);
+  margin: 22px auto 30px;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.hero-center .hero-actions {
+  justify-content: center;
+}
+
+.hero-center .resume-draft {
+  margin: 16px auto 0;
+}
+
+.hero-float {
+  z-index: 2;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #dcdcd8;
+  border-radius: 8px;
+  position: absolute;
+  box-shadow: 0 16px 36px rgba(30, 32, 34, 0.1);
+}
+
+.hero-float>span {
+  color: var(--accent);
+  letter-spacing: .1em;
+  font-size: 11px;
+  font-weight: 800;
+  display: block;
+  text-transform: uppercase;
+}
+
+.deadline-float {
+  background: #f6eeee;
+  width: 215px;
+  padding: 22px;
+  top: 45px;
+  left: 36px;
+  transform: rotate(-3deg);
+}
+
+.deadline-float strong {
+  letter-spacing: -.02em;
+  margin: 12px 0 14px;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.3;
+  display: block;
+}
+
+.deadline-float small {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-float {
+  width: 230px;
+  padding: 20px;
+  top: 45px;
+  right: 36px;
+  transform: rotate(2.5deg);
+}
+
+.status-float>div {
+  color: var(--accent);
+  align-items: center;
+  gap: 8px;
+  display: flex;
+}
+
+.status-float>div span {
+  letter-spacing: .08em;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.status-float>strong {
+  letter-spacing: -.03em;
+  margin: 16px 0 10px;
+  font-size: 24px;
+  font-weight: 700;
+  display: block;
+}
+
+.status-float p {
+  border-top: 1px solid var(--line);
+  color: var(--ink-soft);
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding-top: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+}
+
+.status-float p i {
+  background: var(--success);
+  border-radius: 50%;
+  width: 7px;
+  height: 7px;
+}
+
+.checklist-float {
+  width: 245px;
+  padding: 22px;
+  bottom: 32px;
+  left: 36px;
+  transform: rotate(1.5deg);
+}
+
+.checklist-float>span {
+  margin-bottom: 14px;
+}
+
+.checklist-float p {
+  color: var(--ink-soft);
+  align-items: center;
+  gap: 10px;
+  margin: 9px 0 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  display: flex;
+}
+
+.checklist-float p i {
+  color: #fff;
+  background: var(--success);
+  border-radius: 4px;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  display: grid;
+  flex-shrink: 0;
+}
+
+.impact-float {
+  width: 255px;
+  padding: 22px;
+  bottom: 32px;
+  right: 36px;
+  transform: rotate(-2deg);
+}
+
+.impact-float strong {
+  letter-spacing: -.04em;
+  margin: 12px 0 12px;
+  font-size: 30px;
+  font-weight: 700;
+  display: block;
+}
+
+.impact-float div {
+  border-top: 1px solid var(--line);
+  justify-content: space-between;
+  padding-top: 11px;
+  display: flex;
+}
+
+.impact-float b {
+  color: var(--muted);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   Hero Visual & Fund Card
+   ========================================================================== */
+.hero-visual {
+  background: #d8d4cc;
+  min-height: 520px;
+  margin: 0;
+  position: relative;
+  overflow: visible;
+  border-radius: 6px;
+}
+
+.hero-visual:before {
+  content: "BULAKAN · 14.7928° N";
+  z-index: 2;
+  color: #fff;
+  background: var(--ink);
+  letter-spacing: .15em;
+  writing-mode: vertical-rl;
+  padding: 10px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  position: absolute;
+  top: 24px;
+  left: -36px;
+  transform: rotate(180deg);
+  border-radius: 3px;
+}
+
+.hero-visual img {
+  object-fit: cover;
+  object-position: center 48%;
+  filter: saturate(.76) contrast(1.04);
+  width: 100%;
+  height: 520px;
+  display: block;
+  border-radius: 6px;
+}
+
+.hero-visual:after {
+  content: "";
+  pointer-events: none;
+  background: linear-gradient(rgba(0, 0, 0, 0) 60%, rgba(18, 19, 20, 0.65));
+  position: absolute;
+  inset: 0;
+  border-radius: 6px;
+}
+
+.hero-visual figcaption {
+  z-index: 2;
+  color: #fff;
+  text-align: right;
+  position: absolute;
+  bottom: 20px;
+  right: 22px;
+}
+
+.hero-visual figcaption span,
+.hero-visual figcaption small {
+  display: block;
+}
+
+.hero-visual figcaption span {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.hero-visual figcaption small {
+  color: rgba(255, 255, 255, 0.82);
+  margin-top: 3px;
+  font-size: 11px;
+}
+
+.visual-note {
+  z-index: 3;
+  color: #fff;
+  background: var(--accent);
+  width: 210px;
+  padding: 22px;
+  position: absolute;
+  bottom: 28px;
+  left: -42px;
+  border-radius: 4px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.18);
+}
+
+.visual-note span {
+  letter-spacing: .12em;
+  font-size: 11px;
+  font-weight: 800;
+  display: block;
+  text-transform: uppercase;
+}
+
+.visual-note strong {
+  letter-spacing: -.04em;
+  margin-top: 8px;
+  font-size: 34px;
+  font-weight: 700;
+  display: block;
+}
+
+.visual-note sup {
+  font-size: 14px;
+}
+
+.visual-note p {
+  color: rgba(255, 255, 255, 0.88);
+  margin: 6px 0 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.fund-card {
+  color: #fff;
+  background: var(--ink);
+  flex-direction: column;
+  min-height: 420px;
+  padding: 34px;
+  display: flex;
+  border-radius: 6px;
+}
+
+.fund-card-top {
+  color: #c0c3c8;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+}
+
+.fund-value {
+  margin-top: 56px;
+}
+
+.fund-value small {
+  color: #9fa3a9;
+  font-size: 13px;
+  font-weight: 500;
+  display: block;
+}
+
+.fund-value strong {
+  letter-spacing: -.05em;
+  margin-top: 8px;
+  font-size: clamp(42px, 4.6vw, 64px);
+  font-weight: 700;
+  display: block;
+}
+
+.fund-divider {
+  border-top: 1px solid #3c3f43;
+  margin: 28px 0 24px;
+}
+
+.fund-stats {
+  grid-template-columns: 1fr 1fr;
+  display: grid;
+  gap: 20px;
+}
+
+.fund-stats div+div {
+  border-left: 1px solid #3c3f43;
+  padding-left: 24px;
+}
+
+.fund-stats strong {
+  font-size: 22px;
+  font-weight: 700;
+  display: block;
+}
+
+.fund-stats span {
+  color: #9fa3a9;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  font-size: 12px;
+  font-weight: 600;
+  display: block;
+  margin-top: 4px;
+}
+
+.fund-status {
+  border-top: 1px solid #3c3f43;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 22px;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+}
+
+.fund-status span {
+  color: #d1d4d8;
+  align-items: center;
+  gap: 9px;
+  display: flex;
+}
+
+.fund-status i {
+  background: #54a77d;
+  border-radius: 50%;
+  width: 7px;
+  height: 7px;
+}
+
+.fund-status b {
+  color: #9fa3a9;
+  font-weight: 500;
+}
+
+.trust-strip {
+  border-top: 1px solid var(--line);
+  grid-template-columns: 1fr auto .7fr;
+  align-items: center;
+  gap: 40px;
+  min-height: 110px;
+  margin-top: 56px;
+  display: grid;
+}
+
+.trust-strip>span {
+  color: var(--muted);
+  font-size: 13.5px;
+  font-weight: 500;
+}
+
+.hero-metrics {
+  align-items: center;
+  gap: 0;
+  display: flex;
+}
+
+.hero-metrics p {
+  border-left: 1px solid var(--line);
+  min-width: 155px;
+  margin: 0;
+  padding: 0 28px;
+}
+
+.hero-metrics strong,
+.hero-metrics small {
+  display: block;
+}
+
+.hero-metrics strong {
+  letter-spacing: -.02em;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.hero-metrics small {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.verified {
+  color: var(--success);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  justify-self: end;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+}
+
+/* ==========================================================================
+   Section Globals
+   ========================================================================== */
+.section {
+  padding: 104px 0;
+}
+
+.section-intro {
+  grid-template-columns: 1.4fr .6fr;
+  align-items: end;
+  gap: 50px;
+  margin-bottom: 56px;
+  display: grid;
+}
+
+.section-index {
+  color: var(--accent);
+  letter-spacing: .14em;
+  margin-bottom: 20px;
+  font-size: 13px;
+  font-weight: 800;
+  display: block;
+  text-transform: uppercase;
+}
+
+.section-index.light {
+  color: var(--accent);
+}
+
+.section-intro h2,
+.process-copy h2,
+.tracker-copy h2,
+.updates-copy h2,
+.faq-layout h2 {
+  letter-spacing: -.035em;
+  max-width: 720px;
+  margin: 0;
+  font-size: clamp(32px, 4vw, 50px);
+  font-weight: 700;
+  line-height: 1.18;
+}
+
+.section-intro>p {
+  color: var(--muted);
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+/* ==========================================================================
+   Programs Section
+   ========================================================================== */
+.programs {
+  background: #fff;
+}
+
+.program-list {
+  border-top: 1px solid var(--line);
+}
+
+.program {
+  border-bottom: 1px solid var(--line);
+  grid-template-columns: 60px 1.2fr 1.4fr .8fr 48px;
+  align-items: center;
+  gap: 28px;
+  min-height: 154px;
+  padding: 20px 0;
+  display: grid;
+}
+
+.program-number {
+  color: #70757d;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.program-title small,
+.program-value small {
+  color: var(--accent);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 700;
+  display: block;
+}
+
+.program-title h3 {
+  letter-spacing: -.03em;
+  margin: 6px 0 0;
+  font-size: 23px;
+  font-weight: 700;
+}
+
+.program>p {
+  color: var(--muted);
+  font-size: 15.5px;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.program-value strong {
+  margin-top: 6px;
+  font-size: 21px;
+  font-weight: 700;
+  display: block;
+}
+
+.program>button {
+  border: 1px solid var(--line);
+  width: 46px;
+  height: 46px;
+  color: var(--ink);
+  background: #fff;
+  border-radius: 4px;
+  place-items: center;
+  transition: all .2s;
+  display: grid;
+}
+
+.program>button:hover {
+  color: #fff;
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+/* Program Estimator */
+.estimator {
+  border: 1px solid var(--line);
+  background: var(--paper);
+  grid-template-columns: .8fr 1.2fr;
+  margin-top: 64px;
+  border-radius: 6px;
+  display: grid;
+}
+
+.estimator-intro {
+  border-right: 1px solid var(--line);
+  padding: 44px;
+}
+
+.estimator-intro>span {
+  color: var(--accent);
+  letter-spacing: .12em;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.estimator-intro h3 {
+  letter-spacing: -.035em;
+  margin: 16px 0 12px;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.estimator-intro p {
+  color: var(--muted);
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.estimator-fields {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding: 36px 36px 20px;
+  display: grid;
+}
+
+.estimator-fields label {
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.estimator-fields select {
+  width: 100%;
+  height: 50px;
+  color: var(--ink);
+  background: #fff;
+  border: 1px solid #c9cac7;
+  border-radius: 4px;
+  outline: 0;
+  margin-top: 8px;
+  padding: 0 14px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.estimate-result {
+  border-top: 1px solid var(--line);
+  grid-column: 2;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin: 0 36px 32px;
+  padding-top: 22px;
+  display: flex;
+}
+
+.estimate-result small,
+.estimate-result strong,
+.estimate-result span {
+  display: block;
+}
+
+.estimate-result small {
+  color: var(--success);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.estimate-result strong {
+  margin-top: 6px;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.estimate-result span {
+  color: var(--muted);
+  margin-top: 5px;
+  font-size: 13.5px;
+}
+
+.estimate-result button {
+  border: 0;
+  border-bottom: 2px solid var(--accent);
+  color: var(--accent);
+  background: none;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  font-size: 14.5px;
+  font-weight: 700;
+  display: flex;
+}
+
+/* ==========================================================================
+   Process Section
+   ========================================================================== */
+.process {
+  color: #fff;
+  background: var(--ink);
+}
+
+.process-layout {
+  grid-template-columns: .85fr 1.15fr;
+  gap: 100px;
+  display: grid;
+}
+
+.process-copy {
+  align-self: start;
+  position: sticky;
+  top: 140px;
+}
+
+.process-copy h2 {
+  max-width: 530px;
+}
+
+.process-copy h2 em {
+  color: var(--accent);
+}
+
+.process-copy>p {
+  color: #b8bbbf;
+  max-width: 500px;
+  margin: 24px 0 32px;
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.process-steps {
+  border-top: 1px solid #3a3d40;
+}
+
+.process-steps article {
+  border-bottom: 1px solid #3a3d40;
+  grid-template-columns: 56px 1fr;
+  align-items: start;
+  min-height: 154px;
+  padding: 32px 0;
+  display: grid;
+}
+
+.process-steps article>span {
+  color: #9da1a7;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.process-steps h3 {
+  letter-spacing: -.03em;
+  margin: 0 0 10px;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.process-steps p {
+  color: #c4c7cc;
+  max-width: 520px;
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* ==========================================================================
+   Impact Section
+   ========================================================================== */
+.impact {
+  background: var(--paper);
+}
+
+.impact-grid {
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 6px;
+  grid-template-columns: 1fr 1fr;
+  display: grid;
+}
+
+.impact-statement {
+  border-right: 1px solid var(--line);
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 480px;
+  padding: 52px;
+  display: flex;
+}
+
+.impact-statement blockquote {
+  letter-spacing: -.035em;
+  max-width: 500px;
+  margin: 0;
+  font-size: clamp(24px, 2.7vw, 36px);
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.impact-statement>div {
+  align-items: center;
+  gap: 14px;
+  display: flex;
+}
+
+.mini-mark {
+  color: #fff;
+  background: var(--accent);
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 4px;
+  display: grid;
+}
+
+.impact-statement p {
+  margin: 0;
+}
+
+.impact-statement strong,
+.impact-statement small {
+  display: block;
+}
+
+.impact-statement strong {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.impact-statement small {
+  color: var(--muted);
+  margin-top: 3px;
+  font-size: 13px;
+}
+
+.impact-metrics {
+  grid-template-columns: 1fr 1fr;
+  display: grid;
+}
+
+.impact-metrics>div {
+  padding: 44px;
+}
+
+.impact-metrics>div:nth-child(odd) {
+  border-right: 1px solid var(--line);
+}
+
+.impact-metrics>div:nth-child(-n+2) {
+  border-bottom: 1px solid var(--line);
+}
+
+.impact-metrics strong {
+  letter-spacing: -.05em;
+  font-size: 48px;
+  font-weight: 700;
+  display: inline-block;
+}
+
+.impact-metrics span {
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-left: 6px;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.impact-metrics p {
+  max-width: 200px;
+  color: var(--muted);
+  margin: 14px 0 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   Resources / Requirements Section
+   ========================================================================== */
+.resources {
+  background: #fff;
+}
+
+.resource-shell {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.resource-tabs {
+  border-bottom: 1px solid var(--line);
+  background: var(--paper);
+  align-items: stretch;
+  min-height: 60px;
+  display: flex;
+}
+
+.resource-tabs button {
+  border: 0;
+  border-right: 1px solid var(--line);
+  min-width: 150px;
+  color: var(--muted);
+  background: none;
+  padding: 0 24px;
+  font-size: 14.5px;
+  font-weight: 600;
+  transition: all .15s;
+}
+
+.resource-tabs button.active {
+  color: #fff;
+  background: var(--ink);
+  font-weight: 700;
+}
+
+.requirement-content {
+  grid-template-columns: 1.4fr .6fr;
+  display: grid;
+}
+
+.requirement-list {
+  padding: 16px 36px;
+}
+
+.requirement-list article {
+  border-bottom: 1px solid var(--line);
+  grid-template-columns: 40px 1fr 100px;
+  align-items: center;
+  gap: 18px;
+  min-height: 96px;
+  padding: 16px 0;
+  display: grid;
+}
+
+.requirement-list article:last-child {
+  border-bottom: 0;
+}
+
+.requirement-list article>span {
+  color: #70757d;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.requirement-list h3 {
+  margin: 0 0 6px;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.requirement-list p {
+  color: var(--muted);
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.requirement-list article>svg {
+  color: var(--success);
+  justify-self: end;
+}
+
+.requirement-list article>button {
+  border: 0;
+  border-bottom: 2px solid var(--accent);
+  color: var(--accent);
+  background: none;
+  justify-self: end;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 0;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+}
+
+.resource-aside {
+  border-left: 1px solid var(--line);
+  background: var(--paper);
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px;
+  display: flex;
+}
+
+.resource-aside>svg {
+  color: var(--accent);
+}
+
+.resource-aside h3 {
+  letter-spacing: -.03em;
+  margin: 20px 0 10px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.resource-aside p {
+  color: var(--muted);
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.65;
+}
+
+.resource-aside button {
+  border: 0;
+  border-bottom: 2px solid var(--ink);
+  color: var(--ink);
+  background: none;
+  align-self: flex-start;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+  padding: 8px 0;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+}
+
+/* ==========================================================================
+   Directory / Colleges Section
+   ========================================================================== */
+.directory {
+  background: var(--paper);
+}
+
+.directory-controls {
+  border-bottom: 1px solid var(--line);
+  justify-content: space-between;
+  align-items: center;
+  gap: 25px;
+  min-height: 68px;
+  display: flex;
+}
+
+.directory-controls>label {
+  color: var(--muted);
+  align-items: center;
+  gap: 12px;
+  width: min(440px, 100%);
+  display: flex;
+}
+
+.directory-controls input {
+  width: 100%;
+  color: var(--ink);
+  background: none;
+  border: 0;
+  outline: 0;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.directory-controls>div {
+  gap: 6px;
+  display: flex;
+}
+
+.directory-controls button,
+.announcement-filters button {
+  color: var(--muted);
+  background: none;
+  border: 1px solid transparent;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 4px;
+  transition: all .15s;
+}
+
+.directory-controls button.active,
+.announcement-filters button.active {
+  color: var(--ink);
+  border-color: var(--line);
+  background: #fff;
+}
+
+.college-grid {
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 24px;
+  display: grid;
+}
+
+.college-grid article {
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: #fff;
+  grid-template-columns: 38px 1fr 30px;
+  align-items: start;
+  gap: 14px;
+  min-height: 154px;
+  padding: 24px;
+  display: grid;
+}
+
+.college-grid article>span {
+  width: 36px;
+  height: 36px;
+  color: var(--accent);
+  background: #f8eef1;
+  border-radius: 4px;
+  place-items: center;
+  display: grid;
+}
+
+.college-grid small {
+  color: var(--accent);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.college-grid h3 {
+  margin: 8px 0 6px;
+  font-size: 16.5px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.college-grid p {
+  color: var(--muted);
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.college-grid article>button {
+  width: 32px;
+  height: 32px;
+  color: var(--muted);
+  background: none;
+  border: 0;
+  align-self: end;
+  place-items: center;
+  display: grid;
+}
+
+.college-grid article>button:hover {
+  color: var(--accent);
+}
+
+.empty-result {
+  text-align: center;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  border-top: 0;
+  padding: 54px;
+  font-size: 15px;
+}
+
+/* ==========================================================================
+   Updates Section
+   ========================================================================== */
+.updates {
+  color: #fff;
+  background: var(--ink);
+}
+
+.updates-layout {
+  grid-template-columns: .72fr 1.28fr;
+  gap: 90px;
+  display: grid;
+}
+
+.updates-copy {
+  align-self: start;
+  position: sticky;
+  top: 140px;
+}
+
+.updates-copy>p {
+  color: #b8bbbf;
+  max-width: 440px;
+  margin: 24px 0;
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.announcement-filters {
+  flex-wrap: wrap;
+  gap: 6px;
+  display: flex;
+}
+
+.announcement-filters button {
+  color: #a8aaae;
+  border: 1px solid #3b3e42;
+}
+
+.announcement-filters button.active {
+  color: #111315;
+  border-color: #fff;
+  background: #fff;
+}
+
+.announcement-list {
+  border-top: 1px solid #3b3e42;
+}
+
+.announcement-list article {
+  border-bottom: 1px solid #3b3e42;
+}
+
+.announcement-list article>button {
+  color: #fff;
+  text-align: left;
+  background: none;
+  border: 0;
+  grid-template-columns: 120px 1fr 38px;
+  align-items: center;
+  gap: 25px;
+  width: 100%;
+  min-height: 114px;
+  padding: 22px 0;
+  display: grid;
+}
+
+.announcement-list article>button>span small,
+.announcement-list article>button>span b {
+  display: block;
+}
+
+.announcement-list article>button>span small {
+  color: var(--accent);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.announcement-list article>button>span b {
+  color: #c0c3c8;
+  margin-top: 8px;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.announcement-list h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.announcement-list i {
+  border: 1px solid #44474b;
+  border-radius: 4px;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  font-style: normal;
+  display: grid;
+}
+
+.announcement-list article>p {
+  color: #b8bbbf;
+  max-width: 620px;
+  margin: -6px 0 28px 145px;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* ==========================================================================
+   FAQ Section
+   ========================================================================== */
+.faq {
+  background: #fff;
+}
+
+.faq-layout {
+  grid-template-columns: .75fr 1.25fr;
+  gap: 90px;
+  display: grid;
+}
+
+.faq-list {
+  border-top: 1px solid var(--line);
+}
+
+.faq-list article {
+  border-bottom: 1px solid var(--line);
+}
+
+.faq-list article>button {
+  width: 100%;
+  min-height: 84px;
+  color: var(--ink);
+  text-align: left;
+  background: none;
+  border: 0;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 17px;
+  font-weight: 700;
+  padding: 16px 0;
+  display: flex;
+}
+
+.faq-list article>button i {
+  color: var(--accent);
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.faq-list article>p {
+  max-width: 680px;
+  color: var(--muted);
+  margin: 0 45px 28px 0;
+  font-size: 15.5px;
+  line-height: 1.75;
+}
+
+/* ==========================================================================
+   Tracker Section
+   ========================================================================== */
+.tracker {
+  background: #fff;
+}
+
+.tracker-layout {
+  grid-template-columns: .8fr 1.2fr;
+  align-items: center;
+  gap: 90px;
+  display: grid;
+}
+
+.tracker-copy>p {
+  max-width: 480px;
+  color: var(--muted);
+  margin: 24px 0;
+  font-size: 15.5px;
+  line-height: 1.7;
+}
+
+.track-form {
+  color: #8c8f94;
+  background: #fff;
+  border: 1px solid #c9cac7;
+  border-radius: 4px;
+  align-items: center;
+  gap: 12px;
+  max-width: 500px;
+  height: 54px;
+  padding-left: 16px;
+  display: flex;
+}
+
+.track-form input {
+  min-width: 0;
+  color: var(--ink);
+  border: 0;
+  outline: 0;
+  flex: 1;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.track-form button {
+  color: #fff;
+  background: var(--ink);
+  border: 0;
+  border-radius: 0 3px 3px 0;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
+  padding: 0 20px;
+  font-size: 14.5px;
+  font-weight: 700;
+  display: flex;
+}
+
+.tracker-copy>small {
+  color: var(--muted);
+  margin-top: 12px;
+  font-size: 13px;
+  display: block;
+}
+
+.tracker-copy>small button {
+  color: var(--accent);
+  background: none;
+  border: 0;
+  padding: 0;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.track-card {
+  border: 1px solid var(--line);
+  background: var(--paper);
+  border-radius: 6px;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 340px;
+  padding: 38px;
+  display: flex;
+}
+
+.track-empty {
+  padding: 32px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: var(--muted);
+}
+
+.track-empty>span {
+  border: 1px solid var(--line);
+  color: #70757d;
+  background: #fff;
+  border-radius: 8px;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  display: grid;
+}
+
+.track-empty strong {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.track-empty small {
+  color: var(--muted);
+  margin-top: 4px;
+  font-size: 13px;
+}
+
+.track-head {
+  border-bottom: 1px solid var(--line);
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 24px;
+  display: flex;
+}
+
+.track-head small {
+  color: var(--muted);
+  letter-spacing: .08em;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  display: block;
+}
+
+.track-head strong {
+  margin-top: 4px;
+  font-size: 18px;
+  font-weight: 700;
+  display: block;
+}
+
+.track-head>span {
+  color: #765b1e;
+  letter-spacing: .06em;
+  background: #eee7d3;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 3px;
+}
+
+.track-progress {
+  padding: 30px 0 10px;
+}
+
+.track-progress>div {
+  grid-template-columns: 26px 1fr;
+  gap: 14px;
+  min-height: 54px;
+  display: grid;
+  position: relative;
+}
+
+.track-progress>div:not(:last-child):before {
+  content: "";
+  border-left: 2px solid #c7c7c3;
+  position: absolute;
+  top: 16px;
+  bottom: -2px;
+  left: 7px;
+}
+
+.track-progress i {
+  z-index: 1;
+  background: var(--paper);
+  border: 2px solid #b2b3b0;
+  border-radius: 50%;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  display: grid;
+}
+
+.track-progress .done i {
+  color: #fff;
+  border-color: var(--success);
+  background: var(--success);
+}
+
+.track-progress .current i {
+  border: 3px solid var(--paper);
+  background: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.track-progress b,
+.track-progress small {
+  display: block;
+}
+
+.track-progress b {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.track-progress small {
+  color: var(--muted);
+  margin-top: 2px;
+  font-size: 12px;
+}
+
+.track-message {
+  color: #725612;
+  background: #f4edd9;
+  border: 1px solid #dcd2b3;
+  border-radius: 4px;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  display: flex;
+}
+
+.track-message strong {
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.track-message span {
+  margin-top: 3px;
+  font-size: 12.5px;
+}
+
+/* ==========================================================================
+   Closing CTA & Footer
+   ========================================================================== */
+.closing {
+  color: #fff;
+  background: var(--ink);
+  padding: 96px 0;
+}
+
+.closing-inner {
+  grid-template-columns: 1.25fr .75fr;
+  align-items: end;
+  gap: 90px;
+  display: grid;
+}
+
+.closing-inner>div:first-child span {
+  color: #c0c3c8;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.closing h2 {
+  letter-spacing: -.04em;
+  margin: 20px 0 0;
+  font-size: clamp(34px, 4.8vw, 64px);
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.closing-inner>div:last-child p {
+  color: #c0c3c8;
+  max-width: 440px;
+  margin: 0 0 28px;
+  font-size: 15.5px;
+  line-height: 1.7;
+}
+
+footer {
+  color: #a8aaae;
+  background: var(--ink);
+  padding: 72px 0 28px;
+  border-top: 1px solid #282a2d;
+}
+
+.footer-main {
+  grid-template-columns: 1.6fr 1fr 1fr .7fr;
+  gap: 55px;
+  display: grid;
+}
+
+.footer-identity {
+  color: #fff;
+  align-items: flex-start;
+  gap: 14px;
+  display: flex;
+}
+
+.footer-identity strong {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.footer-identity p {
+  color: #9da1a7;
+  margin: 6px 0 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+footer small {
+  color: #9da1a7;
+  letter-spacing: .12em;
+  margin-bottom: 14px;
+  font-size: 12px;
+  font-weight: 800;
+  display: block;
+  text-transform: uppercase;
+}
+
+footer p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.75;
+  color: #b4b7bd;
+}
+
+footer button {
+  color: #b4b7bd;
+  background: none;
+  border: 0;
+  margin: 0 0 8px;
+  padding: 0;
+  font-size: 14px;
+  font-weight: 500;
+  display: block;
+  transition: color .15s;
+}
+
+footer button:hover {
+  color: #fff;
+}
+
+.footer-bottom {
+  color: #8e9298;
+  border-top: 1px solid #34373b;
+  justify-content: space-between;
+  margin-top: 56px;
+  padding-top: 22px;
+  font-size: 13px;
+  display: flex;
+}
+
+.footer-bottom button {
+  color: #b4b7bd;
+  margin: 0;
+  font-size: 13px;
+}
+
+/* ==========================================================================
+   Modals (Application, Feedback, Language, Evaluator, Auth)
+   ========================================================================== */
+.modal-backdrop {
+  z-index: 80;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  background: rgba(16, 18, 21, 0.76);
+  place-items: center;
+  padding: 24px;
+  animation: .18s fade;
+  display: none !important;
+  position: fixed;
+  inset: 0;
+}
+
+.modal-backdrop.open {
+  display: grid !important;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.application-modal {
+  background: #fff;
+  width: min(720px, 100%);
+  max-height: 92vh;
+  animation: .22s rise;
+  overflow-y: auto;
+  border-radius: 6px;
+  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--line);
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--line);
+  justify-content: space-between;
+  align-items: center;
+  min-height: 92px;
+  padding: 22px 30px;
+  display: flex;
+  background: #fff;
+}
+
+.modal-header small {
+  color: var(--accent);
+  letter-spacing: .1em;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  display: block;
+}
+
+.modal-header h2 {
+  letter-spacing: -.03em;
+  margin: 6px 0 0;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.modal-header>button {
+  border: 1px solid var(--line);
+  width: 40px;
+  height: 40px;
+  color: var(--ink);
+  background: #fff;
+  border-radius: 4px;
+  place-items: center;
+  display: grid;
+  transition: background .15s;
+}
+
+.modal-header>button:hover {
+  background: var(--paper);
+}
+
+.modal-steps {
+  border-bottom: 1px solid var(--line);
+  background: var(--paper);
+  grid-template-columns: repeat(4, 1fr);
+  padding: 18px 30px;
+  display: grid;
+  gap: 8px;
+}
+
+.modal-steps>span {
+  color: #6a6e74;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+}
+
+.modal-steps i {
+  border: 2px solid #b4b6b2;
+  border-radius: 50%;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  font-size: 13px;
+  font-weight: 700;
+  font-style: normal;
+  display: grid;
+  flex-shrink: 0;
+}
+
+.modal-steps .active {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.modal-steps .active i {
+  color: #fff;
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.modal-body {
+  min-height: 350px;
+  padding: 30px;
+  background: #fff;
+}
+
+.form-heading h3 {
+  letter-spacing: -.03em;
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.form-heading p {
+  color: var(--muted);
+  margin: 8px 0 26px;
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+.form-grid {
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  display: grid;
+}
+
+.form-grid .full {
+  grid-column: 1 / -1;
+}
+
+.form-grid label {
+  color: var(--ink-soft);
+  font-size: 13.5px;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.form-grid input,
+.form-grid select {
+  width: 100%;
+  height: 48px;
+  border: 1px solid #c9cac7;
+  border-radius: 4px;
+  padding: 0 14px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+  background: #fff;
+  transition: border-color .15s, box-shadow .15s;
+}
+
+.form-grid input:focus,
+.form-grid select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(138, 3, 3, 0.12);
+}
+
+.review {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 22px auto 0;
+  padding: 16px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  display: flex;
+}
+
+.review input {
+  accent-color: var(--accent);
+  margin-top: 4px;
+  width: 18px;
+  height: 18px;
+}
+
+.modal-actions {
+  border-top: 1px solid var(--line);
+  background: #faf8f5;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 80px;
+  padding: 18px 30px;
+  display: flex;
+}
+
+.modal-actions>div {
+  align-items: center;
+  gap: 16px;
+  display: flex;
+}
+
+.save-draft {
+  color: var(--muted);
+  background: none;
+  border: 0;
+  border-bottom: 2px solid #888b8f;
+  padding: 6px 0;
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.modal-actions button:disabled {
+  opacity: .38;
+  cursor: default;
+}
+
+.success {
+  text-align: center;
+  padding: 56px 32px;
+}
+
+.success>span {
+  color: #fff;
+  background: var(--success);
+  border-radius: 50%;
+  place-items: center;
+  width: 70px;
+  height: 70px;
+  margin: auto;
+  display: grid;
+}
+
+.success h3 {
+  margin: 24px 0 10px;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.success p {
+  max-width: 460px;
+  color: var(--muted);
+  margin: auto;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.reference-copy {
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 19px;
+  background: #faf8f5;
+  border: 1px dashed var(--accent);
+  color: var(--accent);
+  padding: 14px 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all .15s;
+  margin: 18px 0;
+}
+
+.reference-copy:hover {
+  background: #f5ecec;
+}
+
+.reference-copy small {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  background: var(--accent);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 3px;
+}
+
+/* Upload Row Helpers */
+.upload-input-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.upload-row {
+  cursor: pointer;
+  transition: background-color .15s, border-color .15s;
+}
+
+.upload-row:hover {
+  background: #fbfaf8;
+}
+
+.upload-row.complete {
+  background: #f2f8f4;
+  border-color: #c3e2d1;
+}
+
+/* Small Modals (Language & Feedback) */
+.lang-modal-backdrop,
+.feedback-modal-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(16, 18, 21, 0.72);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 110;
+  place-items: center;
+  padding: 20px;
+}
+
+.lang-modal-backdrop.open,
+.feedback-modal-backdrop.open {
+  display: grid;
+  animation: fade .18s ease;
+}
+
+.lang-box,
+.feedback-box {
+  background: #fff;
+  width: min(500px, 100%);
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  animation: .22s rise;
+}
+
+.lang-box {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.lang-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border: 1px solid var(--line);
+  background: #faf9f6;
+  font-weight: 600;
+  font-size: 14.5px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all .15s;
+}
+
+.lang-option:hover,
+.lang-option.active {
+  border-color: var(--accent);
+  background: #fbf3f3;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.feedback-form {
+  gap: 18px;
+  padding: 26px;
+  display: grid;
+}
+
+.feedback-form>label {
+  color: var(--ink-soft);
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.feedback-form select,
+.feedback-form textarea {
+  border: 1px solid var(--line);
+  width: 100%;
+  color: var(--ink);
+  background: #fff;
+  border-radius: 4px;
+  outline: 0;
+  margin-top: 8px;
+  padding: 12px 14px;
+  font-size: 15px;
+}
+
+.feedback-form textarea {
+  resize: vertical;
+  min-height: 110px;
+  line-height: 1.6;
+}
+
+.rating {
+  gap: 6px;
+  margin-top: -6px;
+  display: flex;
+}
+
+.rating button {
+  color: #d5d5d1;
+  background: none;
+  border: 0;
+  padding: 0;
+  font-size: 32px;
+  line-height: 1;
+}
+
+.rating button.active {
+  color: #b7882e;
+}
+
+.toast {
+  z-index: 100;
+  color: #fff;
+  background: var(--success);
+  align-items: center;
+  gap: 10px;
+  max-width: 380px;
+  min-height: 50px;
+  padding: 0 20px;
+  font-size: 13.5px;
+  font-weight: 600;
+  border-radius: 4px;
+  animation: .22s rise;
+  display: flex;
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.22);
+}
+
+/* Evaluator Capstone Modal */
+.evaluator-modal-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 120;
+  place-items: center;
+  padding: 20px;
+}
+
+.evaluator-modal-backdrop.open {
+  display: grid;
+  animation: fade .2s ease;
+}
+
+.evaluator-modal {
+  background: #fff;
+  width: min(840px, 100%);
+  max-height: 90vh;
+  border-radius: 8px;
+  overflow-y: auto;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.28);
+  border: 1px solid var(--line);
+}
+
+.eval-header {
+  background: var(--ink);
+  color: #fff;
+  padding: 20px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.eval-header h3 {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.eval-body {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.eval-card {
+  background: #faf9f6;
+  border: 1px solid var(--line);
+  padding: 18px;
+  border-radius: 6px;
+}
+
+/* ==========================================================================
+   Student Auth Modal & Header Controls
+   ========================================================================== */
+.auth-header-btn {
+  color: var(--ink-soft);
+  background: none;
+  border: 0;
+  padding: 6px 0;
+  font-size: 14.5px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: color .2s;
+}
+
+.auth-header-btn:hover {
+  color: var(--accent);
+}
+
+.auth-logged-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.auth-logged-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #fbf2f2;
+  border: 1px solid #f3d1d1;
+  color: var(--accent);
+  padding: 8px 14px;
+  border-radius: 4px;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.auth-logged-btn:hover {
+  background: #f8e5e5;
+  border-color: var(--accent);
+}
+
+.auth-user-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 240px;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+  padding: 8px 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  animation: .15s rise;
+}
+
+.auth-user-dropdown-info {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.auth-user-dropdown-info strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.auth-user-dropdown-info small {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 3px;
+  word-break: break-all;
+}
+
+.auth-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 16px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  background: none;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+
+.auth-dropdown-item:hover {
+  background: #f4f2ed;
+  color: var(--accent);
+}
+
+.auth-dropdown-item.logout {
+  color: #dc2626;
+  border-top: 1px solid var(--line);
+}
+
+.auth-dropdown-item.logout:hover {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.auth-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  display: none;
+  place-items: center;
+  padding: 16px;
+  z-index: 9999;
+  overflow-y: auto;
+}
+
+.auth-modal-backdrop.open {
+  display: grid;
+}
+
+.auth-modal {
+  background: #ffffff;
+  width: min(420px, 100%);
+  max-height: min(92vh, 660px);
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.22);
+  border: 1px solid #deddd9;
+  overflow: hidden;
+  animation: .22s rise;
+  margin: auto;
+}
+
+.auth-modal-header {
+  padding: 14px 20px 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: #ffffff;
+  flex-shrink: 0;
+}
+
+.auth-pretitle {
+  color: #8a0303;
+  letter-spacing: .1em;
+  font-size: 10.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  display: block;
+}
+
+.auth-title {
+  letter-spacing: -.025em;
+  margin: 3px 0 0;
+  font-size: 19px;
+  font-weight: 700;
+  color: #17191c;
+  line-height: 1.2;
+}
+
+.auth-close-btn {
+  border: 1px solid var(--line);
+  width: 30px;
+  height: 30px;
+  color: var(--ink);
+  background: #ffffff;
+  place-items: center;
+  display: grid;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all .15s;
+  flex-shrink: 0;
+}
+
+.auth-close-btn:hover {
+  background: #f4f2ed;
+  border-color: #c5c4c0;
+}
+
+.auth-mode-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+.auth-mode-tab {
+  height: 36px;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  color: #555a60;
+  background: #f4f2ed;
+  cursor: pointer;
+  transition: all .2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-mode-tab.active {
+  background: #17191c;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.auth-modal-body {
+  padding: 14px 20px 16px 20px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+.auth-modal-body::-webkit-scrollbar {
+  width: 4px;
+}
+
+.auth-modal-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.auth-modal-body::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.auth-subtitle {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+  margin: 0 0 10px 0;
+}
+
+.auth-social-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.auth-social-btn {
+  height: 35px;
+  border: 1px solid var(--line);
+  background: #ffffff;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #17191c;
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+}
+
+.auth-social-btn:hover {
+  background: #faf8f5;
+  border-color: #bebcb6;
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 10px 0;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid var(--line);
+}
+
+.auth-divider span {
+  padding: 0 10px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.auth-channel-control {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 10px;
+  height: 32px;
+}
+
+.auth-channel-btn {
+  border: none;
+  background: #ffffff;
+  color: #555a60;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-channel-btn.active {
+  background: #faecec;
+  color: #8a0303;
+  font-weight: 700;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.auth-field label {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #17191c;
+}
+
+.auth-field input {
+  height: 36px;
+  border: 1px solid #cdcecb;
+  border-radius: 4px;
+  padding: 0 10px;
+  font-size: 13px;
+  color: #17191c;
+  background: #ffffff;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+  width: 100%;
+}
+
+.auth-field input::placeholder {
+  color: #8a8e94;
+}
+
+.auth-field input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(138, 3, 3, 0.12);
+}
+
+.auth-field input.input-error {
+  border-color: #dc2626;
+  background: #fffafa;
+}
+
+.auth-error-msg {
+  color: #b91c1c;
+  font-size: 10.5px;
+  font-weight: 600;
+  min-height: 0;
+  margin-top: 1px;
+}
+
+.auth-submit-btn {
+  height: 38px;
+  background: #8a0303;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  font-size: 13.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: background .2s;
+  width: 100%;
+}
+
+.auth-submit-btn:hover {
+  background: #650000;
+}
+
+.auth-privacy-notice {
+  font-size: 11px;
+  color: var(--muted);
+  text-align: center;
+  margin: 8px 0 0 0;
+  line-height: 1.4;
+}
+
+/* ==========================================================================
+   Responsive Breakpoints & Mobile Optimization
+   ========================================================================== */
+@media (max-width: 960px) {
+  .wrap {
+    width: min(100% - 36px, 1240px);
+  }
+
+  .nav {
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+    padding: 20px 24px 28px;
+    display: none;
+    position: absolute;
+    top: 80px;
+    left: 0;
+    right: 0;
+    box-shadow: 0 16px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .nav.open {
+    gap: 0;
+    display: grid;
+  }
+
+  .nav button {
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+    padding: 15px 0;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .nav .nav-mobile-cta {
+    color: #fff;
+    background: var(--accent);
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+    padding: 14px 18px;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 4px;
+    display: flex !important;
+  }
+
+  .menu-button {
+    display: grid;
+  }
+
+  .header-cta,
+  .quiet-link {
+    display: none;
+  }
+
+  .hero-layout {
+    grid-template-columns: 1fr;
+    gap: 55px;
+  }
+
+  .hero-stage {
+    min-height: 640px;
+  }
+
+  .hero-center {
+    max-width: 620px;
+    padding: 48px 24px;
+  }
+
+  .deadline-float {
+    top: 24px;
+    left: 20px;
+  }
+
+  .status-float {
+    top: 24px;
+    right: 20px;
+  }
+
+  .checklist-float {
+    bottom: 24px;
+    left: 20px;
+  }
+
+  .impact-float {
+    bottom: 24px;
+    right: 20px;
+  }
+
+  .hero-visual {
+    width: calc(100% - 36px);
+    max-width: 720px;
+    margin-left: 36px;
+  }
+
+  .fund-card {
+    width: 100%;
+    max-width: 620px;
+  }
+
+  .trust-strip {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding-block: 28px;
+  }
+
+  .hero-metrics {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 16px 0;
+  }
+
+  .hero-metrics p {
+    flex: 1;
+    min-width: 140px;
+  }
+
+  .verified {
+    justify-self: start;
+  }
+
+  .section-intro {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .section-intro>p {
+    max-width: 560px;
+  }
+
+  .program {
+    grid-template-columns: 45px 1fr 1fr 48px;
+    padding-block: 24px;
+  }
+
+  .program>p {
+    grid-area: 2 / 2 / auto / 4;
+    margin: 8px 0 0 0;
+  }
+
+  .program-value {
+    grid-area: 1 / 3;
+  }
+
+  .program>button {
+    grid-area: 1 / 4 / 3;
+  }
+
+  .process-layout {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+
+  .process-copy {
+    position: static;
+  }
+
+  .impact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .impact-statement {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+    min-height: 380px;
+  }
+
+  .tracker-layout {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+
+  .estimator {
+    grid-template-columns: 1fr;
+  }
+
+  .estimator-intro {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+    padding: 34px;
+  }
+
+  .estimate-result {
+    grid-column: 1;
+  }
+
+  .college-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .updates-layout,
+  .faq-layout {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+
+  .updates-copy {
+    position: static;
+  }
+
+  .closing-inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .footer-main {
+    grid-template-columns: 1.4fr 1fr 1fr;
+  }
+
+  .footer-main>div:last-child {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .wrap {
+    width: min(100% - 28px, 1240px);
+  }
+
+  .utility-inner {
+    text-align: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .utility-inner span:last-child {
+    display: none;
+  }
+
+  .header-inner {
+    height: 70px;
+  }
+
+  .nav {
+    padding-inline: 18px;
+    top: 70px;
+  }
+
+  .hero {
+    padding: 16px 0 45px;
+  }
+
+  .hero-stage {
+    border-radius: 18px;
+    min-height: auto;
+    padding: 44px 16px 20px;
+  }
+
+  .hero-center {
+    padding: 0 0 28px;
+  }
+
+  .hero-center h1 {
+    font-size: clamp(30px, 8.5vw, 42px);
+    line-height: 1.2;
+  }
+
+  .hero-center .open-label {
+    font-size: 12.5px;
+    margin-bottom: 16px;
+  }
+
+  .hero-symbol {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 18px;
+  }
+
+  .hero-float {
+    width: 100%;
+    margin-top: 12px;
+    position: relative;
+    inset: auto;
+    transform: none;
+  }
+
+  .deadline-float,
+  .status-float {
+    display: none;
+  }
+
+  .checklist-float,
+  .impact-float {
+    bottom: auto;
+    left: auto;
+    right: auto;
+  }
+
+  .hero-copy>p,
+  .hero-center>p {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .text-button {
+    align-self: flex-start;
+  }
+
+  .fund-card {
+    min-height: 340px;
+    padding: 24px;
+  }
+
+  .fund-value {
+    margin-top: 36px;
+  }
+
+  .hero-visual {
+    width: 100%;
+    min-height: 380px;
+    margin-left: 0;
+  }
+
+  .hero-visual img {
+    height: 380px;
+  }
+
+  .hero-visual:before {
+    writing-mode: initial;
+    top: 12px;
+    left: 12px;
+    transform: none;
+    font-size: 11.5px;
+    padding: 6px 10px;
+  }
+
+  .visual-note {
+    bottom: 14px;
+    left: 14px;
+    padding: 18px;
+    width: calc(100% - 28px);
+  }
+
+  .hero-visual figcaption {
+    display: none;
+  }
+
+  .trust-strip {
+    gap: 20px;
+    min-height: auto;
+    margin-top: 36px;
+  }
+
+  .hero-metrics {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 0;
+    display: grid;
+  }
+
+  .hero-metrics p {
+    min-width: 0;
+    padding: 0 14px;
+  }
+
+  .hero-metrics p:first-child {
+    grid-column: 1 / -1;
+    border-left: 0;
+    padding-left: 0;
+  }
+
+  .section {
+    padding: 72px 0;
+  }
+
+  .section-intro {
+    margin-bottom: 36px;
+  }
+
+  .section-intro h2,
+  .process-copy h2,
+  .tracker-copy h2,
+  .updates-copy h2,
+  .faq-layout h2 {
+    font-size: clamp(28px, 7.5vw, 36px);
+    line-height: 1.25;
+  }
+
+  .program {
+    grid-template-columns: 32px 1fr 44px;
+    gap: 14px;
+    padding-block: 20px;
+  }
+
+  .program-title {
+    grid-column: 2;
+  }
+
+  .program-value {
+    grid-area: 2 / 2;
+  }
+
+  .program>p {
+    grid-area: 3 / 2 / auto / 4;
+  }
+
+  .program>button {
+    grid-area: 1 / 3 / 3;
+  }
+
+  .process-layout {
+    gap: 40px;
+  }
+
+  .process-steps article {
+    grid-template-columns: 36px 1fr;
+    padding: 24px 0;
+  }
+
+  .impact-statement {
+    min-height: 320px;
+    padding: 28px;
+  }
+
+  .impact-metrics>div {
+    padding: 26px 20px;
+  }
+
+  .impact-metrics strong {
+    font-size: 38px;
+  }
+
+  .estimator-fields {
+    grid-template-columns: 1fr;
+    padding: 24px;
+  }
+
+  .estimate-result {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    margin: 0 24px 24px;
+  }
+
+  .resource-tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .resource-tabs button {
+    min-width: 130px;
+    padding: 12px 16px;
+  }
+
+  .requirement-content {
+    grid-template-columns: 1fr;
+  }
+
+  .resource-aside {
+    border-top: 1px solid var(--line);
+    border-left: 0;
+    padding: 28px;
+  }
+
+  .requirement-list {
+    padding: 12px 18px;
+  }
+
+  .requirement-list article {
+    grid-template-columns: 30px 1fr 80px;
+  }
+
+  .directory-controls {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 14px 0;
+    gap: 14px;
+  }
+
+  .directory-controls>div {
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+  }
+
+  .college-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .announcement-list article>button {
+    grid-template-columns: 85px 1fr 34px;
+    gap: 14px;
+  }
+
+  .announcement-list article>p {
+    margin-left: 0;
+    margin-top: 10px;
+    font-size: 14.5px;
+  }
+
+  .track-card {
+    min-height: auto;
+    padding: 24px;
+  }
+
+  .track-form {
+    padding-left: 12px;
+  }
+
+  .track-form button {
+    padding-inline: 14px;
+  }
+
+  .closing {
+    padding: 72px 0;
+  }
+
+  .closing h2 {
+    font-size: clamp(30px, 8vw, 42px);
+    line-height: 1.2;
+  }
+
+  .footer-main {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .modal-backdrop {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .application-modal {
+    max-height: 94vh;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .modal-header,
+  .modal-body,
+  .modal-actions {
+    padding-inline: 20px;
+  }
+
+  .modal-steps {
+    padding-inline: 16px;
+    gap: 4px;
+  }
+
+  .modal-steps>span {
+    font-size: 11px;
+    flex-direction: column;
+    gap: 4px;
+    text-align: center;
+  }
+
+  .modal-steps i {
+    width: 24px;
+    height: 24px;
+    font-size: 11px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-grid .full {
+    grid-column: auto;
+  }
+
+  .review {
+    padding: 12px;
+    font-size: 13px;
+  }
+
+  .modal-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .modal-actions>div {
+    justify-content: space-between;
+  }
+
+  .modal-actions>.primary-button {
+    width: 100%;
+  }
+
+  .small-modal,
+  .auth-modal {
+    max-height: 95vh;
+    overflow-y: auto;
+  }
+
+  .toast {
+    max-width: none;
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  :before,
+  :after {
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+  </style>
+</head>
+<body>
+  <div id="root">
+    <div class="site">
+      <!-- Skip link -->
+      <button class="skip-link" onclick="window.scrollToSection('main')">Skip to content</button>
+
+      <!-- Utility bar -->
+      <div class="utility" style="display:block;">
+        <div class="wrap utility-inner">
+          <span id="txt-lgu-heading">Republic of the Philippines · Municipality of Bulakan</span>
+          <div style="display:flex; align-items:center; gap:16px;">
+            <button class="evaluator-badge" onclick="window.openEvaluatorModal()" title="View Predictive Engine">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              <span>Predictive Engine</span>
+            </button>
+            <button onclick="window.toggleLanguage()" id="btn-lang-top">English / Filipino</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Header -->
+      <header class="header">
+        <div class="wrap header-inner">
+          <button class="identity" onclick="window.scrollToSection('home')" aria-label="IskoFund home">
+            <span class="mark">
+              <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-5 9 5-9 5z"></path><path d="M7 12v5c3 2 7 2 10 0v-5M21 10v6"></path></svg>
+            </span>
+            <span>
+              <strong>IskoFund</strong>
+              <small>BULAKAN</small>
+            </span>
+          </button>
+          
+          <nav class="nav" id="main-nav" aria-label="Main navigation">
+            <button onclick="window.scrollToSection('programs')">Programs</button>
+            <button onclick="window.scrollToSection('requirements')">Requirements</button>
+            <button onclick="window.scrollToSection('colleges')">Colleges</button>
+            <button onclick="window.scrollToSection('updates')">Updates</button>
+            <button onclick="window.scrollToSection('tracker')">Track application</button>
+            <button class="nav-mobile-cta" onclick="window.openApplication()">
+              Apply now 
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+            </button>
+            <button class="nav-mobile-cta" style="background:#17191c; margin-top:8px;" onclick="window.openAuthModal('login')" id="nav-mobile-login-btn">
+              <span id="nav-mobile-login-text">Student Log in</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </button>
+          </nav>
+
+          <div class="header-actions">
+            <button class="quiet-link" onclick="window.toggleLanguage()" id="btn-lang-badge">EN</button>
+            <div id="header-auth-container" style="display:inline-flex; align-items:center;">
+              <button class="auth-header-btn" onclick="window.openAuthModal('login')" id="btn-header-login">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span>Log in</span>
+              </button>
+            </div>
+            <button class="primary-button header-cta" onclick="window.openApplication()">
+              Apply for aid 
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+            </button>
+            <button class="menu-button" onclick="window.toggleMenu()" aria-label="Toggle navigation">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main id="main">
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+          <div class="wrap hero-stage">
+            <div class="hero-center">
+              <div class="open-label"><span></span> Applications open for AY 2026–2027</div>
+              <span class="hero-symbol">
+                <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-5 9 5-9 5z"></path><path d="M7 12v5c3 2 7 2 10 0v-5M21 10v6"></path></svg>
+              </span>
+              <h1 id="hero-title">Scholarships made<br><em>simple and transparent.</em></h1>
+              <p id="hero-subtitle">Apply, submit your documents, and follow every update in one trusted place.</p>
+              <div class="hero-actions">
+                <button class="primary-button large" onclick="window.openApplication()">
+                  Start your application 
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+                </button>
+              </div>
+              <button class="resume-draft" onclick="window.loadDraft()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"></path><path d="M14 3v5h5M9 13h6M9 17h6"></path></svg>
+                Resume a saved draft
+              </button>
+            </div>
+
+            <!-- Floating Hero Badges -->
+            <div class="hero-float deadline-float">
+              <span>APPLICATION WINDOW</span>
+              <strong>Open until<br>September 30</strong>
+              <small>AY 2026–2027</small>
+            </div>
+
+            <div class="hero-float status-float">
+              <div>
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v5c0 5 3 8 7 10 4-2 7-5 7-10V6z"></path><path d="m9 12 2 2 4-4"></path></svg>
+                <span>APPLICATION STATUS</span>
+              </div>
+              <strong>Verified</strong>
+              <p><i></i><span>Ready for assessment</span></p>
+            </div>
+
+            <div class="hero-float checklist-float">
+              <span>WHAT YOU’LL NEED</span>
+              <p><i><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="m5 12 4 4L19 6"></path></svg></i>Registration form</p>
+              <p><i><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="m5 12 4 4L19 6"></path></svg></i>Copy of grades</p>
+              <p><i><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="m5 12 4 4L19 6"></path></svg></i>Proof of residency</p>
+            </div>
+
+            <div class="hero-float impact-float">
+              <span>MUNICIPAL EDUCATION FUND</span>
+              <strong>₱******</strong>
+              <div><b>****+ scholars</b><b>14 barangays</b></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Programs Section (01) -->
+        <section class="programs section" id="programs">
+          <div class="wrap">
+            <div class="section-intro">
+              <div>
+                <span class="section-index">01 / PROGRAMS</span>
+                <h2>Support designed around <em>real lives.</em></h2>
+              </div>
+              <p>Three focused grants. Clear eligibility. No hidden criteria or unnecessary paperwork.</p>
+            </div>
+
+            <div class="program-list">
+              <article class="program">
+                <span class="program-number">01</span>
+                <div class="program-title">
+                  <small>Academic merit</small>
+                  <h3>Excellence Grant</h3>
+                </div>
+                <p>For students with a GWA of 1.00–2.00 and a consistent record of academic excellence.</p>
+                <div class="program-value">
+                  <small>Per semester</small>
+                  <strong>₱4,000–₱8,000</strong>
+                </div>
+                <button onclick="window.openApplicationWithProgram('Excellence Grant')" aria-label="Apply for Excellence Grant">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+                </button>
+              </article>
+
+              <article class="program">
+                <span class="program-number">02</span>
+                <div class="program-title">
+                  <small>Need-based</small>
+                  <h3>Tulong-Dunong</h3>
+                </div>
+                <p>Priority support for low-income, 4Ps, solo-parent, farming, and fishing households.</p>
+                <div class="program-value">
+                  <small>Per semester</small>
+                  <strong>₱3,000–₱5,000</strong>
+                </div>
+                <button onclick="window.openApplicationWithProgram('Tulong-Dunong')" aria-label="Apply for Tulong-Dunong">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+                </button>
+              </article>
+
+              <article class="program">
+                <span class="program-number">03</span>
+                <div class="program-title">
+                  <small>Urgent support</small>
+                  <h3>Emergency Subsidy</h3>
+                </div>
+                <p>Rapid financial relief for students affected by medical emergencies or natural disasters.</p>
+                <div class="program-value">
+                  <small>Per semester</small>
+                  <strong>Up to ₱5,000</strong>
+                </div>
+                <button onclick="window.openApplicationWithProgram('Emergency Subsidy')" aria-label="Apply for Emergency Subsidy">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+                </button>
+              </article>
+            </div>
+
+            <!-- Quick Eligibility Estimator -->
+            <div class="estimator">
+              <div class="estimator-intro">
+                <span>QUICK ELIGIBILITY ESTIMATOR</span>
+                <h3>Find the support that fits.</h3>
+                <p>Answer three questions for an instant, non-binding estimate of your likely grant.</p>
+              </div>
+
+              <div class="estimator-fields">
+                <label>
+                  Monthly household income
+                  <select id="est-income" onchange="window.updateEstimator()">
+                    <option value="under12">Below ₱12,000</option>
+                    <option value="under25">₱12,000–₱25,000</option>
+                    <option value="under40">₱25,000–₱40,000</option>
+                    <option value="over40">Above ₱40,000</option>
+                  </select>
+                </label>
+                <label>
+                  Household circumstance
+                  <select id="est-circumstance" onchange="window.updateEstimator()">
+                    <option value="4ps">4Ps / solo-parent household</option>
+                    <option value="farmer">Farming or fishing household</option>
+                    <option value="medical">PWD or medical expenses</option>
+                    <option value="regular">None of these</option>
+                  </select>
+                </label>
+                <label>
+                  Current GWA
+                  <select id="est-grade" onchange="window.updateEstimator()">
+                    <option value="honor">1.00–1.75</option>
+                    <option value="regular">1.76–2.25</option>
+                    <option value="passing">2.26–3.00</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="estimate-result">
+                <div>
+                  <small id="est-priority">High priority</small>
+                  <strong id="est-prog">Tulong-Dunong</strong>
+                  <span id="est-amt">₱5,000 / semester</span>
+                </div>
+                <button onclick="window.applyEstimatedGrant()">
+                  Apply for this grant 
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Process Section (02) -->
+        <section class="process section" id="process">
+          <div class="wrap process-layout">
+            <div class="process-copy">
+              <span class="section-index light">02 / THE PROCESS</span>
+              <h2>Less waiting.<br><em>More certainty.</em></h2>
+              <p>A complete online application takes less than eight minutes. Every submission receives a reference code and clear status updates.</p>
+              <button class="light-button" onclick="window.openApplication()">
+                Begin application 
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+              </button>
+            </div>
+
+            <div class="process-steps">
+              <article>
+                <span>01</span>
+                <div>
+                  <h3>Tell us about yourself</h3>
+                  <p>Basic student, residency, and enrollment information.</p>
+                </div>
+              </article>
+              <article>
+                <span>02</span>
+                <div>
+                  <h3>Choose your grant</h3>
+                  <p>We help match your circumstances to the right support.</p>
+                </div>
+              </article>
+              <article>
+                <span>03</span>
+                <div>
+                  <h3>Upload your documents</h3>
+                  <p>Clear digital copies of your COR, grades, and proof of residency.</p>
+                </div>
+              </article>
+              <article>
+                <span>04</span>
+                <div>
+                  <h3>Follow every update</h3>
+                  <p>Track verification, assessment, approval, and payout in one place.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <!-- Impact Section (03) -->
+        <section class="impact section" id="impact">
+          <div class="wrap">
+            <div class="section-intro">
+              <div>
+                <span class="section-index">03 / OUR IMPACT</span>
+                <h2>A public service that respects <em>your time.</em></h2>
+              </div>
+              <p>Designed with students, social workers, and communities across Bulakan.</p>
+            </div>
+
+            <div class="impact-grid">
+              <div class="impact-statement">
+                <blockquote>“No secret list. No special connections. Every decision follows the same published standards.”</blockquote>
+                <div>
+                  <span class="mini-mark">
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13M9 12h.01M9 16h.01M15 12h.01M15 16h.01"></path></svg>
+                  </span>
+                  <p>
+                    <strong>MSWDO Scholarship Affairs</strong>
+                    <small>Municipality of Bulakan</small>
+                  </p>
+                </div>
+              </div>
+
+              <div class="impact-metrics">
+                <div>
+                  <strong>48</strong><span>hours</span>
+                  <p>Average document verification, down from 60 days.</p>
+                </div>
+                <div>
+                  <strong>100</strong><span>%</span>
+                  <p>Digital tracking from submission through payout.</p>
+                </div>
+                <div>
+                  <strong>0</strong><span>fees</span>
+                  <p>Applications and physical assistance are always free.</p>
+                </div>
+                <div>
+                  <strong>14</strong><span>barangays</span>
+                  <p>Fair representation across the municipality.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Requirements Section (04) -->
+        <section class="resources section" id="requirements">
+          <div class="wrap">
+            <div class="section-intro">
+              <div>
+                <span class="section-index">04 / REQUIREMENTS</span>
+                <h2>Everything you need,<br><em>clearly organized.</em></h2>
+              </div>
+              <p>Review eligibility, prepare your documents, or download a form before starting.</p>
+            </div>
+
+            <div class="resource-shell">
+              <div class="resource-tabs" role="tablist">
+                <button class="active" id="tab-btn-Eligibility" onclick="window.setRequirementTab('Eligibility')" role="tab">Eligibility</button>
+                <button class="" id="tab-btn-Documents" onclick="window.setRequirementTab('Documents')" role="tab">Documents</button>
+                <button class="" id="tab-btn-Forms" onclick="window.setRequirementTab('Forms')" role="tab">Forms</button>
+                <button class="" id="tab-btn-Dropoff" onclick="window.setRequirementTab('Drop-off')" role="tab">Drop-off</button>
+              </div>
+
+              <div class="requirement-content">
+                <div class="requirement-list" id="requirement-list">
+                  <!-- Populated dynamically via JS -->
+                </div>
+
+                <aside class="resource-aside">
+                  <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"></path><path d="M14 3v5h5M9 13h6M9 17h6"></path></svg>
+                  <h3>Check before you submit</h3>
+                  <p>Documents must be readable, current, and issued in the applicant’s name.</p>
+                  <button onclick="window.openApplication()">
+                    Start application 
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+                  </button>
+                </aside>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- School Directory Section (05) -->
+        <section class="directory section" id="colleges">
+          <div class="wrap">
+            <div class="section-intro">
+              <div>
+                <span class="section-index">05 / SCHOOL DIRECTORY</span>
+                <h2>Recognized colleges<br>and <em>universities.</em></h2>
+              </div>
+              <p>Search participating public and private institutions located in and near Bulakan, Bulacan.</p>
+            </div>
+
+            <div class="directory-controls">
+              <label>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+                <input id="college-search" oninput="window.filterColleges()" placeholder="Search by school or location" value="">
+              </label>
+              <div>
+                <button class="active" id="btn-col-All" onclick="window.setCollegeType('All')">All</button>
+                <button class="" id="btn-col-Public" onclick="window.setCollegeType('Public')">Public</button>
+                <button class="" id="btn-col-Private" onclick="window.setCollegeType('Private')">Private</button>
+                
+              </div>
+            </div>
+
+            <div class="college-grid" id="college-grid">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </section>
+
+        <!-- Updates Section (06) -->
+        <section class="updates section" id="updates">
+          <div class="wrap updates-layout">
+            <div class="updates-copy">
+              <span class="section-index">06 / UPDATES</span>
+              <h2>Official notices,<br><em>without the noise.</em></h2>
+              <p>Deadlines, payout schedules, and municipal memoranda in one reliable source.</p>
+              <div class="announcement-filters">
+                <button class="active" id="btn-ann-All" onclick="window.setAnnouncementType('All')">All</button>
+                <button class="" id="btn-ann-Deadline" onclick="window.setAnnouncementType('Deadline')">Deadline</button>
+                <button class="" id="btn-ann-Payout" onclick="window.setAnnouncementType('Payout')">Payout</button>
+                <button class="" id="btn-ann-Memorandum" onclick="window.setAnnouncementType('Memorandum')">Memorandum</button>
+              </div>
+            </div>
+
+            <div class="announcement-list" id="announcement-list">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </section>
+
+        <!-- FAQ Section (07) -->
+        <section class="faq section">
+          <div class="wrap faq-layout">
+            <div>
+              <span class="section-index">07 / COMMON QUESTIONS</span>
+              <h2>Helpful answers.<br><em>Plain language.</em></h2>
+            </div>
+            <div class="faq-list" id="faq-list">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </section>
+
+        <!-- Tracker Section (08) -->
+        <section class="tracker section" id="tracker">
+          <div class="wrap tracker-layout">
+            <div class="tracker-copy">
+              <span class="section-index">08 / APPLICATION TRACKER</span>
+              <h2>One code.<br><em>Complete clarity.</em></h2>
+              <p>Enter the reference code from your confirmation receipt to see exactly where your application stands.</p>
+              <div class="track-form">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+                <input id="track-input" placeholder="ISKO-BUL-8821" aria-label="Reference code" value="">
+                <button onclick="window.trackApplication()">
+                  Track 
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+                </button>
+              </div>
+              <small>Try the demo: <button type="button" onclick="window.loadDemoTracker()" style="background:none;border:none;color:var(--accent);font-weight:700;text-decoration:underline;cursor:pointer;">ISKO-BUL-8821</button></small>
+            </div>
+
+            <div class="track-card" id="track-result-container" aria-live="polite">
+              <div class="track-empty">
+                <span>
+                  <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"></path><path d="M14 3v5h5M9 13h6M9 17h6"></path></svg>
+                </span>
+                <p>
+                  <strong>Your status will appear here.</strong>
+                  <small>Secure, current, and easy to understand.</small>
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Closing CTA Banner -->
+        <section class="closing">
+          <div class="wrap closing-inner">
+            <div>
+              <span>Applications close September 30, 2026</span>
+              <h2>Your next semester<br>can start <em>here.</em></h2>
+            </div>
+            <div>
+              <p>Five to eight minutes. No application fee. Support is available at the Municipal Hall if you need it.</p>
+              <button class="light-button" onclick="window.openApplication()">
+                Apply for financial aid 
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+              </button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Footer -->
+      <footer>
+        <div class="wrap footer-main">
+          <div class="footer-identity">
+            <span class="mark">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-5 9 5-9 5z"></path><path d="M7 12v5c3 2 7 2 10 0v-5M21 10v6"></path></svg>
+            </span>
+            <div>
+              <strong>IskoFund: Bulakan</strong>
+              <p>Opportunity, made accessible.</p>
+            </div>
+          </div>
+
+          <div>
+            <small>VISIT</small>
+            <p>MSWDO Scholarship Desk<br>Bulakan Municipal Hall<br>Bulakan, Bulacan 3017</p>
+          </div>
+
+          <div>
+            <small>CONTACT</small>
+            <p>(044) 762-XXXX loc. 140<br>scholarship@bulakan.gov.ph<br>Mon–Fri, 8AM–5PM</p>
+          </div>
+
+          <div>
+            <small>PUBLIC SERVICE</small>
+            <button onclick="window.scrollToSection('programs')">Programs</button>
+            <button onclick="window.scrollToSection('tracker')">Track application</button>
+            <button onclick="window.openApplication()">Apply now</button>
+          </div>
+        </div>
+
+        <div class="wrap footer-bottom">
+          <span>© 2026 Municipality of Bulakan</span>
+          <span>Transparency · Freedom of Information · Data Privacy</span>
+          <button onclick="window.openFeedbackModal()">Share feedback</button>
+        </div>
+      </footer>
+
+      <!-- Student Account Authentication Modal -->
+      <div class="auth-modal-backdrop" id="auth-modal-backdrop" onclick="window.handleAuthBackdropClick(event)">
+        <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+          <div class="auth-modal-header">
+            <div>
+              <small class="auth-pretitle">ISKO FUND · STUDENT ACCOUNT</small>
+              <h2 class="auth-title" id="auth-modal-title">Welcome back</h2>
+            </div>
+            <button class="auth-close-btn" onclick="window.closeAuthModal()" aria-label="Close dialog">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+
+          <div class="auth-mode-tabs" role="tablist">
+            <button type="button" class="auth-mode-tab active" id="auth-tab-login" onclick="window.setAuthMode('login')">Log in</button>
+            <button type="button" class="auth-mode-tab" id="auth-tab-signup" onclick="window.setAuthMode('signup')">Sign up</button>
+          </div>
+
+          <div class="auth-modal-body">
+            <p class="auth-subtitle" id="auth-modal-subtitle">Access your saved application and scholarship updates.</p>
+
+            <div class="auth-social-row">
+              <button type="button" class="auth-social-btn" onclick="window.authWithSocial('Google')">
+                <svg width="18" height="18" viewBox="0 0 24 24">
+                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                </svg>
+                <span>Continue with Google</span>
+              </button>
+              <button type="button" class="auth-social-btn" onclick="window.authWithSocial('Facebook')">
+                <svg width="18" height="18" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="12" fill="#1877F2"/>
+                  <path d="M14.5 12h-2v7h-3v-7h-1.5v-2.5h1.5v-1.6c0-1.7 1-2.9 3-2.9h2v2.5h-1.3c-.8 0-1 .4-1 1v1h2.3l-.5 2.5z" fill="#fff"/>
+                </svg>
+                <span>Continue with Facebook</span>
+              </button>
+            </div>
+
+            <div class="auth-divider">
+              <span>OR CONTINUE WITH</span>
+            </div>
+
+            <div class="auth-channel-control" role="tablist">
+              <button type="button" class="auth-channel-btn active" id="auth-chan-email" onclick="window.setAuthChannel('email')">Email address</button>
+              <button type="button" class="auth-channel-btn" id="auth-chan-mobile" onclick="window.setAuthChannel('mobile')">Mobile number</button>
+            </div>
+
+            <form class="auth-form" id="auth-form" onsubmit="window.handleAuthSubmit(event)">
+              <!-- Full name (only in Sign up mode) -->
+              <div class="auth-field" id="auth-field-name" style="display:none;">
+                <label for="auth-input-name">Full name</label>
+                <input type="text" id="auth-input-name" placeholder="Juan Dela Cruz" oninput="window.clearAuthError('name')">
+                <span class="auth-error-msg" id="auth-err-name"></span>
+              </div>
+
+              <!-- Email Field (when channel === 'email') -->
+              <div class="auth-field" id="auth-field-email">
+                <label for="auth-input-email">Email address</label>
+                <input type="email" id="auth-input-email" placeholder="juan@email.com" oninput="window.clearAuthError('email')">
+                <span class="auth-error-msg" id="auth-err-email"></span>
+              </div>
+
+              <!-- Mobile Field (when channel === 'mobile') -->
+              <div class="auth-field" id="auth-field-mobile" style="display:none;">
+                <label for="auth-input-mobile">Mobile number</label>
+                <input type="tel" id="auth-input-mobile" placeholder="09XX XXX XXXX" oninput="window.clearAuthError('mobile')">
+                <span class="auth-error-msg" id="auth-err-mobile"></span>
+              </div>
+
+              <!-- Password Field -->
+              <div class="auth-field" id="auth-field-password">
+                <label for="auth-input-password">Password</label>
+                <input type="password" id="auth-input-password" placeholder="Enter your password" oninput="window.clearAuthError('password')">
+                <span class="auth-error-msg" id="auth-err-password"></span>
+              </div>
+
+              <!-- Confirm Password Field (only in Sign up mode) -->
+              <div class="auth-field" id="auth-field-confirm" style="display:none;">
+                <label for="auth-input-confirm">Confirm password</label>
+                <input type="password" id="auth-input-confirm" placeholder="Enter your password again" oninput="window.clearAuthError('confirm')">
+                <span class="auth-error-msg" id="auth-err-confirm"></span>
+              </div>
+
+              <!-- Submit button -->
+              <button type="submit" class="auth-submit-btn" id="auth-submit-btn">
+                <span id="auth-submit-btn-text">Log in</span>
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+              </button>
+            </form>
+
+            <p class="auth-privacy-notice">
+              By continuing, you agree to the Municipality of Bulakan's Data Privacy Notice.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4-Step Application Modal -->
+      <div class="modal-backdrop" id="application-modal-backdrop">
+        <div class="application-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+          <div class="modal-header">
+            <div>
+              <small>ISKO FUND · ONLINE APPLICATION</small>
+              <h2 id="modal-title">Apply for financial aid</h2>
+            </div>
+            <button onclick="window.closeApplication()" aria-label="Close application">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m6 6 12 12M18 6 6 18"></path></svg>
+            </button>
+          </div>
+
+          <div class="modal-steps" id="modal-step-indicators">
+            <span class="active" id="step-ind-1" onclick="window.goToStep(1)" style="cursor:pointer;"><i>1</i>Student</span>
+            <span class="" id="step-ind-2" onclick="window.goToStep(2)" style="cursor:pointer;"><i>2</i>Program</span>
+            <span class="" id="step-ind-3" onclick="window.goToStep(3)" style="cursor:pointer;"><i>3</i>Documents</span>
+            <span class="" id="step-ind-4" onclick="window.goToStep(4)" style="cursor:pointer;"><i>4</i>Review</span>
+          </div>
+
+          <div class="modal-body" id="modal-body-container">
+            <!-- Populated dynamically: Step 1, Step 2, Step 3, Step 4, or Success -->
+          </div>
+
+          <div class="modal-actions" id="modal-footer-actions">
+            <div>
+              <button class="secondary-button" id="btn-modal-back" onclick="window.prevStep()">Back</button>
+              <button class="save-draft" onclick="window.saveDraft()">Save draft</button>
+            </div>
+            <button class="primary-button" id="btn-modal-next" onclick="window.nextStep()">
+              Continue 
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feedback Modal -->
+      <div class="feedback-modal-backdrop" id="feedback-modal-backdrop">
+        <div class="feedback-box">
+          <div class="modal-header">
+            <div>
+              <small>COMMUNITY FEEDBACK</small>
+              <h2>Share your thoughts</h2>
+            </div>
+            <button onclick="window.closeFeedbackModal()" aria-label="Close feedback">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m6 6 12 12M18 6 6 18"></path></svg>
+            </button>
+          </div>
+          <div class="feedback-form">
+            <label>
+              Rate your experience
+              <div class="rating" id="star-rating" style="margin-top:10px;">
+                <button type="button" onclick="window.setRating(1)">★</button>
+                <button type="button" onclick="window.setRating(2)">★</button>
+                <button type="button" onclick="window.setRating(3)">★</button>
+                <button type="button" onclick="window.setRating(4)">★</button>
+                <button type="button" onclick="window.setRating(5)">★</button>
+              </div>
+            </label>
+            <label>
+              Topic
+              <select id="feedback-topic">
+                <option>Ease of application</option>
+                <option>Clarity of guidelines</option>
+                <option>System speed & responsiveness</option>
+                <option>Suggestion for improvement</option>
+              </select>
+            </label>
+            <label>
+              Your comments
+              <textarea id="feedback-text" placeholder="Tell us how we can improve this digital public service..."></textarea>
+            </label>
+            <div style="display:flex; justify-content:flex-end; gap:8px;">
+              <button class="primary-button" onclick="window.submitFeedback()">Submit feedback</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Evaluator Modal: Capstone Predictive Engine & Solver -->
+      <div class="evaluator-modal-backdrop" id="evaluator-modal-backdrop">
+        <div class="evaluator-modal">
+          <div class="eval-header">
+            <div>
+              <h3>Predictive Aid Allocation & Fairness Engine</h3>
+            </div>
+            <button onclick="window.closeEvaluatorModal()" style="background:none; border:none; color:#fff; cursor:pointer;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 6 12 12M18 6 6 18"/></svg>
+            </button>
+          </div>
+          <div class="eval-body">
+            <div class="eval-card">
+              <h4 style="font-size:13px; font-weight:700; margin-bottom:6px; color:var(--ink);">Predictive Multi-Attribute Scoring Formula</h4>
+              <p style="font-size:12px; color:var(--muted); margin-bottom:12px;">Combines verifiable household vulnerability (60%), academic persistence (25%), and regional cost/hardship factors (15%) to eliminate political bias.</p>
+              <div style="background:#fff; border:1px solid var(--line); padding:12px; font-family:monospace; font-size:11px; color:#1e293b; border-radius:4px;">
+                Composite Score = 0.60 × FinancialNeed + 0.25 × AcademicMerit + 0.15 × HardshipWeight
+              </div>
+            </div>
+
+            <div class="eval-card">
+              <h4 style="font-size:13px; font-weight:700; margin-bottom:8px; color:var(--ink);">Real-time Profile Simulation</h4>
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px;">
+                <div>
+                  <label style="font-size:11px; font-weight:600;">Household Income (₱)</label>
+                  <input type="number" id="sim-income" value="18000" style="padding:6px 10px; font-size:12px; border:1px solid var(--line);" oninput="window.runSim()">
+                </div>
+                <div>
+                  <label style="font-size:11px; font-weight:600;">GWA (1.00 - 3.00)</label>
+                  <input type="number" step="0.05" id="sim-gpa" value="1.65" style="padding:6px 10px; font-size:12px; border:1px solid var(--line);" oninput="window.runSim()">
+                </div>
+                <div>
+                  <label style="font-size:11px; font-weight:600;">Household Size</label>
+                  <input type="number" id="sim-size" value="5" style="padding:6px 10px; font-size:12px; border:1px solid var(--line);" oninput="window.runSim()">
+                </div>
+              </div>
+              <div id="sim-result" style="margin-top:14px; padding:12px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:4px; font-size:12px; color:#166534; display:flex; justify-content:space-between; align-items:center;">
+                <!-- dynamic -->
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Toast Notification Container -->
+      <div id="toast-container" style="display:none;" class="toast">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg>
+        <span id="toast-message">Notification</span>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+  function escapeHtml(str) {
+    if (str == null) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  // ── Portal State & Data ──
+  const programsData = [
+    { number: "01", label: "Academic merit", title: "Excellence Grant", amount: "₱4,000–₱8,000", body: "For students with a GWA of 1.00–2.00 and a consistent record of academic excellence." },
+    { number: "02", label: "Need-based", title: "Tulong-Dunong", amount: "₱3,000–₱5,000", body: "Priority support for low-income, 4Ps, solo-parent, farming, and fishing households." },
+    { number: "03", label: "Urgent support", title: "Emergency Subsidy", amount: "Up to ₱5,000", body: "Rapid financial relief for students affected by medical emergencies or natural disasters." }
+  ];
+
+  const barangays = [
+    "Bagumbayan", "Balubad", "Bambang", "Matungao", "Maysantol", "Perez", "Pitpitan",
+    "San Francisco", "San Jose", "San Nicolas", "Santa Ana", "Santa Ines", "Taliptip", "Tibaguin"
+  ];
+
+  const collegesData = [
+    { name: "Bulacan State University – Meneses Campus", location: "Matungao, Bulakan", type: "Public" },
+    { name: "Bulacan Polytechnic College – Bulakan", location: "Poblacion, Bulakan", type: "Public" },
+    { name: "Bulacan State University – Main Campus", location: "City of Malolos", type: "Public" },
+    { name: "Bulacan Agricultural State University", location: "San Ildefonso, Bulacan", type: "Public" },
+    { name: "Centro Escolar University – Malolos", location: "City of Malolos", type: "Private" },
+    { name: "La Consolacion University Philippines", location: "City of Malolos", type: "Private" },
+    { name: "STI College – Malolos", location: "City of Malolos", type: "Private" },
+    { name: "Dr. Yanga’s Colleges, Inc.", location: "Bocaue, Bulacan", type: "Private" },
+    { name: "Bulacan Polytechnic College – Malolos Main", location: "City of Malolos", type: "Public" },
+    { name: "Bulacan State University – Bustos Campus", location: "Bustos, Bulacan", type: "Public" },
+    { name: "Colegio de San Pascual Baylon", location: "Obando, Bulacan", type: "Private" },
+    { name: "Immaculate Conception Major Seminary & College", location: "Guiguinto, Bulacan", type: "Private" }
+  ];
+
+  const announcementsData = [
+    { id: 1, type: "Deadline", date: "05 SEP 2026", title: "AY 2026–2027 application window is now open", text: "Online and physical submissions will be accepted until September 30, 2026. Applicants are encouraged to submit early." },
+    { id: 2, type: "Payout", date: "28 AUG 2026", title: "Second-semester payout schedule released", text: "Approved scholars may view barangay-specific Landbank release dates through the application tracker." },
+    { id: 3, type: "Memorandum", date: "18 AUG 2026", title: "Updated proof-of-income guidelines", text: "Applicants from informal-income households may now use the municipal Household Income Declaration form." },
+    { id: 4, type: "Deadline", date: "02 AUG 2026", title: "Document verification assistance days", text: "Walk-in scanning and document review are available every Tuesday and Thursday at the MSWDO Annex." }
+  ];
+
+  const requirementsData = {
+    Eligibility: [
+      ["Residency", "Resident of Bulakan for at least one year."],
+      ["Enrollment", "Currently enrolled in an accredited college or university."],
+      ["Academic standing", "Passing GWA of 3.00 or better; merit grants require 2.00 or better."],
+      ["Financial need", "Priority is given to low-income, 4Ps, solo-parent, farming, and fishing households."]
+    ],
+    Documents: [
+      ["Certificate of Registration", "Current semester COR issued by your registrar."],
+      ["Copy of Grades", "Certified grades from the immediately preceding semester."],
+      ["Barangay Indigency", "Original or digitally verified certificate issued within six months."],
+      ["Identity and income", "Student ID plus proof of household income or 4Ps certification."]
+    ],
+    Forms: [
+      ["Household Income Declaration", "For households with informal or seasonal income.", "Download Template"],
+      ["Barangay Indigency Request", "Template request for your barangay office.", "Download Template"],
+      ["LGU Scholarship Form", "Printable application for physical submission.", "Download PDF"]
+    ],
+    "Drop-off": [
+      ["Location", "MSWDO Scholarship Affairs, Ground Floor Annex, Bulakan Municipal Hall."],
+      ["Hours", "Monday to Friday, 8:00 AM–5:00 PM, excluding holidays."],
+      ["Free assistance", "Document scanning, printing, and application encoding are provided at no cost."]
+    ]
+  };
+
+  const faqsData = [
+    { q: "How are scholars selected?", a: "Applications are ranked using verified financial need, academic standing, household circumstances, and published program criteria. Political endorsement is never required." },
+    { q: "Is there an application fee?", a: "No. Online application, physical assistance, document scanning, and all IskoFund services are completely free." },
+    { q: "What if I do not have internet access?", a: "Visit the MSWDO Scholarship Desk at the Municipal Hall Annex. Staff can encode your application and scan documents free of charge." },
+    { q: "Which schools and universities are covered?", a: "The scholarship covers accredited public and private higher education institutions located in Bulakan and neighboring municipalities within Bulacan province." }
+  ];
+
+  // App reactive state
+  let currentStep = 1;
+  let activeRequirementTab = "Eligibility";
+  let activeCollegeType = "All";
+  let activeAnnouncementType = "All";
+  let expandedAnnouncement = null;
+  let expandedFaq = 0;
+  let currentLanguage = "English";
+  let userRating = 0;
+
+  let formErrors = {};
+
+  let formData = {
+    name: "",
+    studentId: "",
+    phone: "",
+    email: "",
+    barangay: "",
+    year: "",
+    school: "",
+    course: "",
+    program: "Tulong-Dunong",
+    income: "under12",
+    gwa: ""
+  };
+
+  let uploadedFiles = {
+    "Certificate of Registration": null,
+    "Certified Copy of Grades": null,
+    "Barangay Indigency": null,
+    "Valid Student ID": null
+  };
+
+  // Student Auth reactive state
+  let authMode = "login"; // "login" | "signup"
+  let authChannel = "email"; // "email" | "mobile"
+  let currentUser = null;
+  try {
+    const savedUser = localStorage.getItem('iskofund_user');
+    if (savedUser) {
+      currentUser = JSON.parse(savedUser);
+    }
+  } catch (e) {
+    currentUser = null;
+  }
+
+  // Student Auth Functions
+  window.openAuthModal = function(mode = 'login') {
+    window.setAuthMode(mode);
+    window.setAuthChannel('email');
+    document.getElementById('auth-modal-backdrop').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.closeAuthModal = function() {
+    document.getElementById('auth-modal-backdrop').classList.remove('open');
+    document.body.style.overflow = '';
+  };
+
+  window.handleAuthBackdropClick = function(e) {
+    if (e.target === document.getElementById('auth-modal-backdrop')) {
+      window.closeAuthModal();
+    }
+  };
+
+  window.setAuthMode = function(mode) {
+    authMode = mode;
+    const isLogin = mode === 'login';
+
+    document.getElementById('auth-tab-login').classList.toggle('active', isLogin);
+    document.getElementById('auth-tab-signup').classList.toggle('active', !isLogin);
+
+    document.getElementById('auth-modal-title').textContent = isLogin ? "Welcome back" : "Create your account";
+    document.getElementById('auth-modal-subtitle').textContent = isLogin 
+      ? "Access your saved application and scholarship updates." 
+      : "Save applications, upload documents, and receive status updates in one secure place.";
+
+    document.getElementById('auth-field-name').style.display = isLogin ? 'none' : 'flex';
+    document.getElementById('auth-field-confirm').style.display = isLogin ? 'none' : 'flex';
+
+    const pwdInput = document.getElementById('auth-input-password');
+    pwdInput.placeholder = isLogin ? "Enter your password" : "At least 8 characters";
+
+    document.getElementById('auth-submit-btn-text').textContent = isLogin ? "Log in" : "Create account";
+
+    // Clear all errors
+    ['name', 'email', 'mobile', 'password', 'confirm'].forEach(f => window.clearAuthError(f));
+  };
+
+  window.setAuthChannel = function(chan) {
+    authChannel = chan;
+    const isEmail = chan === 'email';
+
+    document.getElementById('auth-chan-email').classList.toggle('active', isEmail);
+    document.getElementById('auth-chan-mobile').classList.toggle('active', !isEmail);
+
+    document.getElementById('auth-field-email').style.display = isEmail ? 'flex' : 'none';
+    document.getElementById('auth-field-mobile').style.display = isEmail ? 'none' : 'flex';
+
+    ['email', 'mobile'].forEach(f => window.clearAuthError(f));
+  };
+
+  window.clearAuthError = function(field) {
+    const errEl = document.getElementById('auth-err-' + field);
+    const inputEl = document.getElementById('auth-input-' + field);
+    if (errEl) errEl.textContent = '';
+    if (inputEl) inputEl.classList.remove('input-error');
+  };
+
+  window.setAuthFieldError = function(field, msg) {
+    const errEl = document.getElementById('auth-err-' + field);
+    const inputEl = document.getElementById('auth-input-' + field);
+    if (errEl) errEl.textContent = msg;
+    if (inputEl) {
+      inputEl.classList.add('input-error');
+      inputEl.focus();
+    }
+  };
+
+  window.handleAuthSubmit = function(e) {
+    if (e) e.preventDefault();
+    let hasError = false;
+
+    const nameVal = (document.getElementById('auth-input-name')?.value || '').trim();
+    const emailVal = (document.getElementById('auth-input-email')?.value || '').trim();
+    const mobileVal = (document.getElementById('auth-input-mobile')?.value || '').trim();
+    const pwdVal = (document.getElementById('auth-input-password')?.value || '').trim();
+    const confirmVal = (document.getElementById('auth-input-confirm')?.value || '').trim();
+
+    if (authMode === 'signup') {
+      if (!nameVal) {
+        window.setAuthFieldError('name', 'Please enter your full name.');
+        hasError = true;
+      } else if (nameVal.length < 2) {
+        window.setAuthFieldError('name', 'Name must be at least 2 characters.');
+        hasError = true;
+      }
+    }
+
+    if (authChannel === 'email') {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailVal) {
+        window.setAuthFieldError('email', 'Please enter your email address.');
+        hasError = true;
+      } else if (!emailRegex.test(emailVal)) {
+        window.setAuthFieldError('email', 'Please enter a valid email address.');
+        hasError = true;
+      }
+    } else {
+      const cleanPhone = mobileVal.replace(/[\s-]/g, '');
+      if (!cleanPhone) {
+        window.setAuthFieldError('mobile', 'Please enter your mobile number.');
+        hasError = true;
+      } else if (!/^(\+?63|0)?[0-9]{10,11}$/.test(cleanPhone)) {
+        window.setAuthFieldError('mobile', 'Please enter a valid mobile number (e.g. 09XX XXX XXXX).');
+        hasError = true;
+      }
+    }
+
+    if (!pwdVal) {
+      window.setAuthFieldError('password', 'Please enter your password.');
+      hasError = true;
+    } else if (authMode === 'signup' && pwdVal.length < 8) {
+      window.setAuthFieldError('password', 'Password must be at least 8 characters.');
+      hasError = true;
+    }
+
+    if (authMode === 'signup') {
+      if (!confirmVal) {
+        window.setAuthFieldError('confirm', 'Please confirm your password.');
+        hasError = true;
+      } else if (confirmVal !== pwdVal) {
+        window.setAuthFieldError('confirm', 'Passwords do not match.');
+        hasError = true;
+      }
+    }
+
+    if (hasError) return;
+
+    const resolvedName = authMode === 'signup' ? nameVal : (nameVal || (emailVal ? emailVal.split('@')[0].replace('.', ' ') : "Juan Dela Cruz"));
+    const user = {
+      name: resolvedName.charAt(0).toUpperCase() + resolvedName.slice(1),
+      email: authChannel === 'email' ? emailVal : "juan@email.com",
+      phone: authChannel === 'mobile' ? mobileVal : "0917 123 4567",
+      isLoggedIn: true
+    };
+
+    localStorage.setItem('iskofund_user', JSON.stringify(user));
+    currentUser = user;
+    window.updateHeaderAuthState();
+    window.closeAuthModal();
+
+    if (authMode === 'login') {
+      window.notify(`Welcome back, ${user.name}!`);
+    } else {
+      window.notify(`Account created successfully for ${user.name}!`);
+    }
+  };
+
+  window.authWithSocial = function(provider) {
+    const user = {
+      name: "Juan Dela Cruz",
+      email: "juan.delacruz@gmail.com",
+      phone: "0917 123 4567",
+      provider: provider,
+      isLoggedIn: true
+    };
+    localStorage.setItem('iskofund_user', JSON.stringify(user));
+    currentUser = user;
+    window.updateHeaderAuthState();
+    window.closeAuthModal();
+    window.notify(`Logged in with ${provider} as Juan Dela Cruz.`);
+  };
+
+  window.toggleUserMenu = function(e) {
+    if (e) e.stopPropagation();
+    const dropdown = document.getElementById('auth-user-dropdown');
+    if (dropdown) {
+      dropdown.style.display = dropdown.style.display === 'none' || !dropdown.style.display ? 'flex' : 'none';
+    }
+  };
+
+  window.openStudentPortalApp = function() {
+    const dropdown = document.getElementById('auth-user-dropdown');
+    if (dropdown) dropdown.style.display = 'none';
+    window.openApplication();
+  };
+
+  window.logoutUser = function() {
+    localStorage.removeItem('iskofund_user');
+    currentUser = null;
+    window.updateHeaderAuthState();
+    window.notify("Logged out successfully.");
+  };
+
+  window.updateHeaderAuthState = function() {
+    const container = document.getElementById('header-auth-container');
+    const mobileText = document.getElementById('nav-mobile-login-text');
+    if (!container) return;
+
+    if (currentUser) {
+      const firstName = currentUser.name ? currentUser.name.split(' ')[0] : 'Student';
+      const safeName = escapeHtml(currentUser.name || '');
+      const safeFirstName = escapeHtml(firstName);
+      const safeContact = escapeHtml(currentUser.email || currentUser.phone || '');
+      container.innerHTML = `
+        <div class="auth-logged-wrap" id="auth-logged-wrap">
+          <button class="auth-logged-btn" onclick="window.toggleUserMenu(event)" title="Student Account: ${safeName}">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>${safeFirstName}</span>
+          </button>
+          <div class="auth-user-dropdown" id="auth-user-dropdown" style="display:none;">
+            <div class="auth-user-dropdown-info">
+              <strong>${safeName}</strong>
+              <small>${safeContact}</small>
+            </div>
+            <button class="auth-dropdown-item" onclick="window.openStudentPortalApp()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v5h5"/></svg>
+              <span>Saved Application</span>
+            </button>
+            <button class="auth-dropdown-item logout" onclick="window.logoutUser()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              <span>Log out</span>
+            </button>
+          </div>
+        </div>
+      `;
+      if (mobileText) mobileText.textContent = `Account: ${firstName}`;
+
+      // Prepopulate form data if empty
+      if (!formData.name && currentUser.name) formData.name = currentUser.name;
+      if (!formData.email && currentUser.email) formData.email = currentUser.email;
+      if (!formData.phone && currentUser.phone) formData.phone = currentUser.phone;
+    } else {
+      container.innerHTML = `
+        <button class="auth-header-btn" onclick="window.openAuthModal('login')" id="btn-header-login">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>Log in</span>
+        </button>
+      `;
+      if (mobileText) mobileText.textContent = "Student Log in";
+    }
+  };
+
+  // Close dropdown on outside click
+  document.addEventListener('click', function(e) {
+    const wrap = document.getElementById('auth-logged-wrap');
+    const dropdown = document.getElementById('auth-user-dropdown');
+    if (dropdown && dropdown.style.display !== 'none' && wrap && !wrap.contains(e.target)) {
+      dropdown.style.display = 'none';
+    }
+  });
+
+  // Helper Toast
+  window.notify = function(msg) {
+    const el = document.getElementById('toast-container');
+    const txt = document.getElementById('toast-message');
+    txt.textContent = msg;
+    el.style.display = 'flex';
+    clearTimeout(window._toastTimeout);
+    window._toastTimeout = setTimeout(() => {
+      el.style.display = 'none';
+    }, 3200);
+  };
+
+  // Navigation scrolling
+  window.scrollToSection = function(id) {
+    const nav = document.getElementById('main-nav');
+    if (nav) nav.classList.remove('open');
+    const target = document.getElementById(id);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  window.toggleMenu = function() {
+    const nav = document.getElementById('main-nav');
+    nav.classList.toggle('open');
+  };
+
+  // Requirements rendering
+  window.setRequirementTab = function(tab) {
+    activeRequirementTab = tab;
+    document.querySelectorAll('.resource-tabs button').forEach(b => b.classList.remove('active'));
+    const btn = document.getElementById('tab-btn-' + tab.replace('-', ''));
+    if (btn) btn.classList.add('active');
+
+    const container = document.getElementById('requirement-list');
+    const items = requirementsData[tab] || [];
+    let html = '';
+    items.forEach((item, idx) => {
+      const num = String(idx + 1).padStart(2, '0');
+      const actionBtn = tab === 'Forms' 
+        ? `<button onclick="window.downloadForm('${item[0]}')" style="background:var(--paper);border:1px solid var(--line);padding:4px 10px;font-size:11px;font-weight:600;color:var(--accent);cursor:pointer;border-radius:3px;margin-left:auto;">${item[2]}</button>`
+        : `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="m5 12 4 4L19 6"/></svg>`;
+      html += `
+        <article>
+          <span>${num}</span>
+          <div>
+            <h3>${item[0]}</h3>
+            <p>${item[1]}</p>
+          </div>
+          ${actionBtn}
+        </article>
+      `;
+    });
+    container.innerHTML = html;
+  };
+
+  // College Directory
+  window.setCollegeType = function(type) {
+    activeCollegeType = type;
+    document.querySelectorAll('.directory-controls button').forEach(b => b.classList.remove('active'));
+    const idMap = { 'All': 'btn-col-All', 'Public': 'btn-col-Public', 'Private': 'btn-col-Private' };
+    const btn = document.getElementById(idMap[type]);
+    if (btn) btn.classList.add('active');
+    window.filterColleges();
+  };
+
+  window.filterColleges = function() {
+    const q = (document.getElementById('college-search')?.value || '').toLowerCase();
+    const filtered = collegesData.filter(c => {
+      const matchesType = activeCollegeType === 'All' || c.type === activeCollegeType;
+      const matchesQ = (c.name + ' ' + c.location).toLowerCase().includes(q);
+      return matchesType && matchesQ;
+    });
+
+    const grid = document.getElementById('college-grid');
+    if (filtered.length === 0) {
+      grid.innerHTML = `<div style="grid-column:1/-1; padding:32px; text-align:center; color:var(--muted);">No matching institutions found in directory.</div>`;
+      return;
+    }
+
+    grid.innerHTML = filtered.map(c => `
+      <article>
+        <span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 21h18M5 21V8l7-4 7 4v13M9 12h.01M9 16h.01M15 12h.01M15 16h.01"/></svg>
+        </span>
+        <div>
+          <small>${c.type}</small>
+          <h3>${c.name}</h3>
+          <p>${c.location}</p>
+        </div>
+        <button onclick="window.applyWithSchool('${c.name.replace(/'/g, "\\'")}')" aria-label="Apply with ${c.name}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+        </button>
+      </article>
+    `).join('');
+  };
+
+  // Announcements
+  window.setAnnouncementType = function(type) {
+    activeAnnouncementType = type;
+    document.querySelectorAll('.announcement-filters button').forEach(b => b.classList.remove('active'));
+    const btn = document.getElementById('btn-ann-' + type);
+    if (btn) btn.classList.add('active');
+    window.renderAnnouncements();
+  };
+
+  window.toggleAnnouncement = function(id) {
+    expandedAnnouncement = expandedAnnouncement === id ? null : id;
+    window.renderAnnouncements();
+  };
+
+  window.renderAnnouncements = function() {
+    const list = document.getElementById('announcement-list');
+    const filtered = announcementsData.filter(a => activeAnnouncementType === 'All' || a.type === activeAnnouncementType);
+    list.innerHTML = filtered.map(a => {
+      const isOpen = expandedAnnouncement === a.id;
+      return `
+        <article class="${isOpen ? 'expanded' : ''}">
+          <button onclick="window.toggleAnnouncement(${a.id})">
+            <span>
+              <small>${a.type}</small>
+              <b>${a.date}</b>
+            </span>
+            <h3>${a.title}</h3>
+            <i>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="${isOpen ? 'm18 15-6-6-6 6' : 'm9 18 6-6-6-6'}"/></svg>
+            </i>
+          </button>
+          ${isOpen ? `<div style="padding:0 24px 20px 24px; color:var(--ink-soft); font-size:13px; border-bottom:1px solid var(--line); animation:fade .15s ease;"><p>${a.text}</p></div>` : ''}
+        </article>
+      `;
+    }).join('');
+  };
+
+  // FAQ Accordion
+  window.toggleFaq = function(idx) {
+    expandedFaq = expandedFaq === idx ? -1 : idx;
+    window.renderFaqs();
+  };
+
+  window.renderFaqs = function() {
+    const list = document.getElementById('faq-list');
+    list.innerHTML = faqsData.map((f, i) => {
+      const isOpen = expandedFaq === i;
+      return `
+        <article class="${isOpen ? 'open' : ''}">
+          <button onclick="window.toggleFaq(${i})">
+            <span>${f.q}</span>
+            <i>${isOpen ? '−' : '+'}</i>
+          </button>
+          ${isOpen ? `<p>${f.a}</p>` : ''}
+        </article>
+      `;
+    }).join('');
+  };
+
+  // Quick Eligibility Estimator
+  window.updateEstimator = function() {
+    const inc = document.getElementById('est-income').value;
+    const circ = document.getElementById('est-circumstance').value;
+    const grd = document.getElementById('est-grade').value;
+
+    let priority = "High priority";
+    let prog = "Tulong-Dunong";
+    let amt = "₱5,000 / semester";
+
+    if (inc === "under12" || circ !== "regular") {
+      prog = "Tulong-Dunong";
+      amt = "₱5,000 / semester";
+      priority = "High priority";
+    } else if (grd === "honor") {
+      prog = "Excellence Grant";
+      amt = "Up to ₱8,000 / semester";
+      priority = "Merit priority";
+    } else {
+      prog = "Tulong-Dunong";
+      amt = "₱3,000–₱4,000 / semester";
+      priority = "Standard eligibility";
+    }
+
+    document.getElementById('est-priority').textContent = priority;
+    document.getElementById('est-prog').textContent = prog;
+    document.getElementById('est-amt').textContent = amt;
+  };
+
+  window.applyEstimatedGrant = function() {
+    const prog = document.getElementById('est-prog').textContent;
+    window.openApplicationWithProgram(prog);
+  };
+
+  // Tracker Logic
+  window.loadDemoTracker = function() {
+    document.getElementById('track-input').value = 'ISKO-BUL-8821';
+    window.trackApplication();
+  };
+
+  window.trackApplication = function() {
+    const code = (document.getElementById('track-input').value || '').trim();
+    if (!code) {
+      window.notify("Please enter a reference code.");
+      return;
+    }
+
+    const container = document.getElementById('track-result-container');
+    const formatted = escapeHtml(code.toUpperCase());
+
+    container.innerHTML = `
+      <div class="track-head">
+        <div>
+          <small>APPLICATION</small>
+          <strong>${formatted}</strong>
+        </div>
+        <span>IN REVIEW</span>
+      </div>
+
+      <div class="track-progress">
+        <div class="done">
+          <i><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg></i>
+          <span><b>Submitted</b><small>Sep 04</small></span>
+        </div>
+        <div class="done">
+          <i><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg></i>
+          <span><b>Verified</b><small>Sep 05</small></span>
+        </div>
+        <div class="current">
+          <i></i>
+          <span><b>Assessment</b><small>In progress</small></span>
+        </div>
+        <div class="">
+          <i></i>
+          <span><b>Approval</b><small>Next</small></span>
+        </div>
+      </div>
+
+      <div class="track-message">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <p>
+          <strong>Social worker assessment</strong>
+          <span>Verification complete. Expected municipal board endorsement within 24 hours.</span>
+        </p>
+      </div>
+
+      <div style="margin-top:16px; padding:12px 16px; background:#faf8f5; border:1px solid var(--line); border-radius:4px; font-size:11px; display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <span style="color:var(--muted); text-transform:uppercase; font-size:9px; font-weight:700;">Grant Type</span>
+          <p style="font-weight:700; color:var(--ink); margin:0;">Tulong-Dunong (AY 2026–2027)</p>
+        </div>
+        <div style="text-align:right;">
+          <span style="color:var(--muted); text-transform:uppercase; font-size:9px; font-weight:700;">Disbursement Window</span>
+          <p style="font-weight:700; color:var(--accent); margin:0;">October 15–20, 2026 via Landbank</p>
+        </div>
+      </div>
+    `;
+    window.notify(`Tracking status updated for ${formatted}`);
+  };
+
+  // Download form templates
+  window.downloadForm = function(title) {
+    const content = `REPUBLIC OF THE PHILIPPINES\nMUNICIPALITY OF BULAKAN, BULACAN\nMSWDO SCHOLARSHIP AFFAIRS DESK\n\nOFFICIAL TEMPLATE: ${title}\nDocument Identifier: ISKO-DOC-2026-BUL\n\nInstructions:\n1. Print this form and fill out all required fields with black or blue ink.\n2. Affix signature and appropriate barangay / institutional seals.\n3. Upload clear scanned copy or drop off physically at Bulakan Municipal Hall Annex.\n\nDate Generated: ${new Date().toLocaleDateString()}\nOfficial Portal: https://bulakan.gov.ph/iskofund`;
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `IskoFund-${title.replace(/\s+/g, '-')}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    window.notify(`${title} downloaded.`);
+  };
+
+  // Application Modal Workflow
+  window.clearFieldError = function(field) {
+    if (formErrors[field]) {
+      delete formErrors[field];
+      const errEl = document.getElementById('error-' + field);
+      if (errEl) errEl.textContent = '';
+      const inputEl = document.getElementById('input-' + field);
+      if (inputEl) inputEl.classList.remove('input-error');
+    }
+  };
+
+  window.validateStep = function(stepToValidate) {
+    let isValid = true;
+    let firstErrorField = null;
+
+    if (stepToValidate === 1) {
+      // Sync from DOM inputs if available
+      const nameEl = document.getElementById('input-name');
+      const studentIdEl = document.getElementById('input-studentId');
+      const phoneEl = document.getElementById('input-phone');
+      const emailEl = document.getElementById('input-email');
+      const barangayEl = document.getElementById('input-barangay');
+      const yearEl = document.getElementById('input-year');
+
+      if (nameEl) formData.name = nameEl.value.trim();
+      if (studentIdEl) formData.studentId = studentIdEl.value.trim();
+      if (phoneEl) formData.phone = phoneEl.value.trim();
+      if (emailEl) formData.email = emailEl.value.trim();
+      if (barangayEl) formData.barangay = barangayEl.value.trim();
+      if (yearEl) formData.year = yearEl.value.trim();
+
+      // 1. Full name
+      if (!formData.name) {
+        formErrors.name = "Please enter your full official name.";
+        isValid = false;
+        if (!firstErrorField) firstErrorField = 'name';
+      } else if (formData.name.length < 2) {
+        formErrors.name = "Full name must be at least 2 characters.";
+        isValid = false;
+        if (!firstErrorField) firstErrorField = 'name';
+      } else {
+        delete formErrors.name;
+      }
+
+      // 2. Student ID
+      if (!formData.studentId) {
+        formErrors.studentId = "Please enter your official student ID number.";
+        isValid = false;
+        if (!firstErrorField) firstErrorField = 'studentId';
+      } else {
+        delete formErrors.studentId;
+      }
+
+      // 3. Contact Number
+      const cleanPhone = (formData.phone || '').replace(/[\s-]/g, '');
+      if (!cleanPhone) {
+        formErrors.phone = "Please enter your mobile contact number.";
+        isValid = false;
+        if (!firstErrorField) firstErrorField = 'phone';
+      } else if (!/^(\+?63|0)?[0-9]{10,11}$/.test(cleanPhone)) {
+        formErrors.phone = "Please enter a valid mobile number (e.g. 09XX XXX XXXX).";
+        isValid = false;
+        if (!firstErrorField) firstErrorField = 'phone';
+      } else {
+        delete formErrors.phone;
+      }
+
+      // 4. Email address
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!formData.email) {
+        formErrors.email = "Please enter your email address.";
+        isValid = false;
+        if (!firstErrorField) firstErrorField = 'email';
+      } else if (!emailRegex.test(formData.email)) {
+        formErrors.email = "Please enter a valid email address (e.g. name@email.com).";
+        isValid = false;
+        if (!firstErrorField) firstErrorField = 'email';
+      } else {
+        delete formErrors.email;
+      }
+
+      // 5. Barangay
+      if (!formData.barangay) {
+        formErrors.barangay = "Please select your barangay in Bulakan.";
+        isValid = false;
+        if (!firstErrorField) firstErrorField = 'barangay';
+      } else {
+        delete formErrors.barangay;
+      }
+
+      // 6. Year level
+      if (!formData.year) {
+        formErrors.year = "Please select your current year level.";
+        isValid = false;
+        if (!firstErrorField) firstErrorField = 'year';
+      } else {
+        delete formErrors.year;
+      }
+
+      // Update DOM error state
+      ['name', 'studentId', 'phone', 'email', 'barangay', 'year'].forEach(field => {
+        const errEl = document.getElementById('error-' + field);
+        const inputEl = document.getElementById('input-' + field);
+        if (formErrors[field]) {
+          if (errEl) errEl.textContent = formErrors[field];
+          if (inputEl) inputEl.classList.add('input-error');
+        } else {
+          if (errEl) errEl.textContent = '';
+          if (inputEl) inputEl.classList.remove('input-error');
+        }
+      });
+
+      if (!isValid) {
+        if (firstErrorField) {
+          const target = document.getElementById('input-' + firstErrorField);
+          if (target) target.focus();
+        }
+        window.notify("Please fill up all required student details before proceeding.");
+        return false;
+      }
+      return true;
+    }
+
+    if (stepToValidate === 2) {
+      // Step 2: Program & Academic Information
+      const progEl = document.getElementById('input-program');
+      const schoolEl = document.getElementById('input-school');
+      const courseEl = document.getElementById('input-course');
+      const gwaEl = document.getElementById('input-gwa');
+
+      if (progEl) formData.program = progEl.value.trim();
+      if (schoolEl) formData.school = schoolEl.value.trim();
+      if (courseEl) formData.course = courseEl.value.trim();
+      if (gwaEl) formData.gwa = gwaEl.value.trim();
+
+      if (!formData.program) {
+        formErrors.program = "Please select a scholarship program.";
+        isValid = false;
+        if (!firstErrorField) firstErrorField = 'program';
+      } else {
+        delete formErrors.program;
+      }
+
+      if (!formData.school) {
+        formErrors.school = "Please enter your enrolled college or university.";
+        isValid = false;
+        if (!firstErrorField) firstErrorField = 'school';
+      } else {
+        delete formErrors.school;
+      }
+
+      if (!formData.course) {
+        formErrors.course = "Please enter your course or degree program.";
+        isValid = false;
+        if (!firstErrorField) firstErrorField = 'course';
+      } else {
+        delete formErrors.course;
+      }
+
+      const gwaNum = parseFloat(formData.gwa);
+      if (!formData.gwa) {
+        formErrors.gwa = "Please enter your latest General Weighted Average (GWA).";
+        isValid = false;
+        if (!firstErrorField) firstErrorField = 'gwa';
+      } else if (isNaN(gwaNum) || gwaNum < 1.0 || gwaNum > 5.0) {
+        formErrors.gwa = "Please enter a valid GWA between 1.00 and 5.00 (e.g. 1.75).";
+        isValid = false;
+        if (!firstErrorField) firstErrorField = 'gwa';
+      } else {
+        delete formErrors.gwa;
+      }
+
+      ['program', 'school', 'course', 'gwa'].forEach(field => {
+        const errEl = document.getElementById('error-' + field);
+        const inputEl = document.getElementById('input-' + field);
+        if (formErrors[field]) {
+          if (errEl) errEl.textContent = formErrors[field];
+          if (inputEl) inputEl.classList.add('input-error');
+        } else {
+          if (errEl) errEl.textContent = '';
+          if (inputEl) inputEl.classList.remove('input-error');
+        }
+      });
+
+      if (!isValid) {
+        if (firstErrorField) {
+          const target = document.getElementById('input-' + firstErrorField);
+          if (target) target.focus();
+        }
+        window.notify("Please fill up all academic and program details before proceeding.");
+        return false;
+      }
+      return true;
+    }
+
+    if (stepToValidate === 3) {
+      // Step 3: Required documents
+      const requiredDocs = [
+        "Certificate of Registration",
+        "Certified Copy of Grades",
+        "Barangay Indigency",
+        "Valid Student ID"
+      ];
+      const missing = requiredDocs.filter(d => !uploadedFiles[d]);
+
+      if (!formErrors.docs) formErrors.docs = {};
+      requiredDocs.forEach(d => {
+        const idSafe = d.replace(/\s+/g, '');
+        const row = document.getElementById('upload-row-' + idSafe);
+        const errTag = document.getElementById('upload-err-' + idSafe);
+        if (!uploadedFiles[d]) {
+          formErrors.docs[d] = true;
+          if (row) row.classList.add('upload-error');
+          if (errTag) errTag.style.display = 'block';
+        } else {
+          delete formErrors.docs[d];
+          if (row) row.classList.remove('upload-error');
+          if (errTag) errTag.style.display = 'none';
+        }
+      });
+
+      if (missing.length > 0) {
+        window.notify(`Please upload all 4 required documents before proceeding (${missing.length} missing).`);
+        return false;
+      }
+      delete formErrors.docs;
+      return true;
+    }
+
+    if (stepToValidate === 4) {
+      const chk = document.getElementById('terms-chk');
+      const box = document.getElementById('terms-box');
+      const errEl = document.getElementById('error-terms');
+      if (!chk || !chk.checked) {
+        if (box) box.classList.add('terms-error');
+        if (errEl) errEl.textContent = "Please agree to the scholarship terms and confirm that all details are true.";
+        window.notify("Please confirm and accept the terms before submitting.");
+        return false;
+      } else {
+        if (box) box.classList.remove('terms-error');
+        if (errEl) errEl.textContent = "";
+      }
+      return true;
+    }
+
+    return true;
+  };
+
+  window.goToStep = function(target) {
+    if (target === currentStep) return;
+    if (target < currentStep) {
+      // Moving back to an earlier step is always allowed
+      currentStep = target;
+      window.renderStep();
+      return;
+    }
+    // Moving forward requires validating all intermediate steps
+    for (let s = currentStep; s < target; s++) {
+      if (!window.validateStep(s)) {
+        return;
+      }
+    }
+    currentStep = target;
+    window.renderStep();
+  };
+
+  window.openApplication = function() {
+    currentStep = 1;
+    formErrors = {};
+    document.getElementById('application-modal-backdrop').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    window.renderStep();
+  };
+
+  window.openApplicationWithProgram = function(prog) {
+    formData.program = prog;
+    window.openApplication();
+    window.notify(`Selected ${prog} program`);
+  };
+
+  window.applyWithSchool = function(school) {
+    formData.school = school;
+    window.openApplication();
+    window.notify(`Selected ${school} for your application`);
+  };
+
+  window.closeApplication = function() {
+    document.getElementById('application-modal-backdrop').classList.remove('open');
+    document.body.style.overflow = '';
+  };
+
+  window.nextStep = function() {
+    if (!window.validateStep(currentStep)) {
+      return; // Stop here! Form must not proceed if not filled up step by step
+    }
+    if (currentStep < 4) {
+      currentStep++;
+      window.renderStep();
+    } else {
+      window.submitApplication();
+    }
+  };
+
+  window.prevStep = function() {
+    if (currentStep > 1) {
+      currentStep--;
+      window.renderStep();
+    }
+  };
+
+  window.renderStep = function() {
+    // Update step indicators
+    for (let i = 1; i <= 4; i++) {
+      const ind = document.getElementById('step-ind-' + i);
+      if (ind) {
+        ind.className = i === currentStep ? 'active' : (i < currentStep ? 'done' : '');
+      }
+    }
+
+    const backBtn = document.getElementById('btn-modal-back');
+    const nextBtn = document.getElementById('btn-modal-next');
+    backBtn.disabled = currentStep === 1;
+
+    const body = document.getElementById('modal-body-container');
+    const actions = document.getElementById('modal-footer-actions');
+    actions.style.display = 'flex';
+
+    if (currentStep === 1) {
+      nextBtn.innerHTML = 'Continue <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>';
+      body.innerHTML = `
+        <div class="form-section">
+          <div class="form-heading">
+            <h3>Student information</h3>
+            <p>Use the details shown in your official school records.</p>
+          </div>
+          <div class="form-grid">
+            <label class="full">
+              Full name
+              <input id="input-name" class="${formErrors.name ? 'input-error' : ''}" placeholder="Juan Dela Cruz" value="${escapeHtml(formData.name || '')}" oninput="formData.name = this.value; window.clearFieldError('name');">
+              <span class="field-error" id="error-name">${escapeHtml(formErrors.name || '')}</span>
+            </label>
+            <label>
+              Student ID
+              <input id="input-studentId" class="${formErrors.studentId ? 'input-error' : ''}" placeholder="2026-00124" value="${escapeHtml(formData.studentId || '')}" oninput="formData.studentId = this.value; window.clearFieldError('studentId');">
+              <span class="field-error" id="error-studentId">${escapeHtml(formErrors.studentId || '')}</span>
+            </label>
+            <label>
+              Contact number
+              <input id="input-phone" class="${formErrors.phone ? 'input-error' : ''}" placeholder="09XX XXX XXXX" value="${escapeHtml(formData.phone || '')}" oninput="formData.phone = this.value; window.clearFieldError('phone');">
+              <span class="field-error" id="error-phone">${escapeHtml(formErrors.phone || '')}</span>
+            </label>
+            <label class="full">
+              Email address
+              <input type="email" id="input-email" class="${formErrors.email ? 'input-error' : ''}" placeholder="juan@email.com" value="${escapeHtml(formData.email || '')}" oninput="formData.email = this.value; window.clearFieldError('email');">
+              <span class="field-error" id="error-email">${escapeHtml(formErrors.email || '')}</span>
+            </label>
+            <label>
+              Barangay
+              <select id="input-barangay" class="${formErrors.barangay ? 'input-error' : ''}" onchange="formData.barangay = this.value; window.clearFieldError('barangay');">
+                <option value="">-- Select Barangay --</option>
+                ${barangays.map(b => `<option value="${escapeHtml(b)}" ${b === formData.barangay ? 'selected' : ''}>${escapeHtml(b)}</option>`).join('')}
+              </select>
+              <span class="field-error" id="error-barangay">${escapeHtml(formErrors.barangay || '')}</span>
+            </label>
+            <label>
+              Year level
+              <select id="input-year" class="${formErrors.year ? 'input-error' : ''}" onchange="formData.year = this.value; window.clearFieldError('year');">
+                <option value="">-- Select Year Level --</option>
+                <option value="1st Year" ${formData.year === '1st Year' ? 'selected' : ''}>1st Year</option>
+                <option value="2nd Year" ${formData.year === '2nd Year' ? 'selected' : ''}>2nd Year</option>
+                <option value="3rd Year" ${formData.year === '3rd Year' ? 'selected' : ''}>3rd Year</option>
+                <option value="4th Year" ${formData.year === '4th Year' ? 'selected' : ''}>4th Year</option>
+                <option value="5th Year" ${formData.year === '5th Year' ? 'selected' : ''}>5th Year</option>
+              </select>
+              <span class="field-error" id="error-year">${escapeHtml(formErrors.year || '')}</span>
+            </label>
+          </div>
+        </div>
+      `;
+    } else if (currentStep === 2) {
+      nextBtn.innerHTML = 'Continue <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>';
+      body.innerHTML = `
+        <div class="form-section">
+          <div class="form-heading">
+            <h3>Program & Academic Information</h3>
+            <p>Select your intended grant and enrolled institution.</p>
+          </div>
+          <div class="form-grid">
+            <label class="full">
+              Scholarship Program
+              <select id="input-program" class="${formErrors.program ? 'input-error' : ''}" onchange="formData.program = this.value; window.clearFieldError('program');">
+                <option value="">-- Select Scholarship Program --</option>
+                <option value="Excellence Grant" ${formData.program === 'Excellence Grant' ? 'selected' : ''}>Excellence Grant (Merit: ₱4,000–₱8,000)</option>
+                <option value="Tulong-Dunong" ${formData.program === 'Tulong-Dunong' ? 'selected' : ''}>Tulong-Dunong (Need-based: ₱3,000–₱5,000)</option>
+                <option value="Emergency Subsidy" ${formData.program === 'Emergency Subsidy' ? 'selected' : ''}>Emergency Subsidy (Urgent: Up to ₱5,000)</option>
+              </select>
+              <span class="field-error" id="error-program">${formErrors.program || ''}</span>
+            </label>
+            <label class="full">
+              College / University
+              <input id="input-school" class="${formErrors.school ? 'input-error' : ''}" value="${escapeHtml(formData.school || '')}" oninput="formData.school = this.value; window.clearFieldError('school');" placeholder="e.g. Bulacan State University">
+              <span class="field-error" id="error-school">${escapeHtml(formErrors.school || '')}</span>
+            </label>
+            <label>
+              Course / Degree
+              <input id="input-course" class="${formErrors.course ? 'input-error' : ''}" value="${escapeHtml(formData.course || '')}" oninput="formData.course = this.value; window.clearFieldError('course');" placeholder="e.g. BS Information Technology">
+              <span class="field-error" id="error-course">${escapeHtml(formErrors.course || '')}</span>
+            </label>
+            <label>
+              Latest GWA
+              <input id="input-gwa" class="${formErrors.gwa ? 'input-error' : ''}" value="${escapeHtml(formData.gwa || '')}" oninput="formData.gwa = this.value; window.clearFieldError('gwa');" placeholder="e.g. 1.75">
+              <span class="field-error" id="error-gwa">${escapeHtml(formErrors.gwa || '')}</span>
+            </label>
+          </div>
+        </div>
+      `;
+    } else if (currentStep === 3) {
+      nextBtn.innerHTML = 'Continue to Review <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>';
+      const docs = [
+        "Certificate of Registration",
+        "Certified Copy of Grades",
+        "Barangay Indigency",
+        "Valid Student ID"
+      ];
+      body.innerHTML = `
+        <div class="form-section">
+          <div class="form-heading">
+            <h3>Required documents</h3>
+            <p>Upload a clear PDF, PNG, or JPG. Maximum 5MB each. All 4 documents must be uploaded to proceed.</p>
+          </div>
+          <div class="upload-list">
+            ${docs.map(doc => {
+              const file = uploadedFiles[doc];
+              const idSafe = doc.replace(/\s+/g, '');
+              const isMissing = formErrors.docs && formErrors.docs[doc];
+              return `
+                <label id="upload-row-${idSafe}" class="upload-row ${file ? 'complete' : ''} ${isMissing ? 'upload-error' : ''}" onclick="window.triggerFileUpload('${doc}')">
+                  <span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                      ${file ? '<path d="m5 12 4 4L19 6"/>' : '<path d="M12 16V4m0 0L7 9m5-5 5 5"/><path d="M4 15v5h16v-5"/>'}
+                    </svg>
+                    <strong>${doc}</strong>
+                  </span>
+                  <div style="text-align: right;">
+                    <small style="${file ? 'color: var(--success);' : (isMissing ? 'color: #dc2626; font-weight: 700;' : '')}">
+                      ${file ? file.name : (isMissing ? 'Upload required' : 'Select file')}
+                    </small>
+                  </div>
+                  <input type="file" id="file-input-${idSafe}" class="upload-input-hidden" onchange="window.handleFileSelect(event, '${doc}')">
+                </label>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    } else if (currentStep === 4) {
+      nextBtn.innerHTML = 'Submit Application <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>';
+      body.innerHTML = `
+        <div class="review">
+          <span>
+            <svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3 5 6v5c0 5 3 8 7 10 4-2 7-5 7-10V6z"/><path d="m9 12 2 2 4-4"/></svg>
+          </span>
+          <h3>Ready for municipal review</h3>
+          <p>By submitting, you confirm that the information and documents provided are accurate, truthful, and complete under the penalties of perjury.</p>
+          
+          <div style="background:#faf8f5; border:1px solid var(--line); padding:14px; text-align:left; font-size:12px; border-radius:4px; display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+            <div><strong>Applicant:</strong> ${escapeHtml(formData.name || 'Juan Dela Cruz')}</div>
+            <div><strong>Program:</strong> ${escapeHtml(formData.program || 'Tulong-Dunong')}</div>
+            <div><strong>Barangay:</strong> ${escapeHtml(formData.barangay || 'Bulakan')}</div>
+            <div><strong>School:</strong> ${escapeHtml(formData.school || 'Enrolled College')}</div>
+            <div><strong>Student ID:</strong> ${escapeHtml(formData.studentId || 'N/A')}</div>
+            <div><strong>Contact:</strong> ${escapeHtml(formData.phone || 'N/A')}</div>
+          </div>
+
+          <label id="terms-box" class="terms-label" style="display:flex; align-items:center; justify-content:center; gap:8px; font-size:12px; font-weight:600; cursor:pointer; padding: 12px; border: 1px solid var(--line); border-radius: 4px; margin-top: 14px;">
+            <input type="checkbox" id="terms-chk" checked onchange="document.getElementById('terms-box').classList.toggle('terms-error', !this.checked);">
+            <span>I agree to the Municipal Scholarship Guidelines & Data Privacy terms.</span>
+          </label>
+          <span class="field-error" id="error-terms" style="text-align:center;"></span>
+        </div>
+      `;
+    }
+  };
+
+  window.triggerFileUpload = function(doc) {
+    const el = document.getElementById('file-input-' + doc.replace(/\s+/g, ''));
+    if (el) el.click();
+  };
+
+  window.handleFileSelect = function(e, doc) {
+    if (e.target.files && e.target.files[0]) {
+      const f = e.target.files[0];
+      uploadedFiles[doc] = { name: f.name, size: f.size };
+      if (formErrors.docs && formErrors.docs[doc]) {
+        delete formErrors.docs[doc];
+      }
+      window.notify(`Uploaded ${doc}`);
+      window.renderStep();
+    }
+  };
+
+  window.submitApplication = function() {
+    if (!window.validateStep(4)) return;
+
+    const genCode = "ISKO-BUL-" + Math.floor(1000 + Math.random() * 9000);
+    const body = document.getElementById('modal-body-container');
+    const actions = document.getElementById('modal-footer-actions');
+    actions.style.display = 'none';
+
+    body.innerHTML = `
+      <div class="success">
+        <span>
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg>
+        </span>
+        <h3>You’re all set.</h3>
+        <p>Save this reference code. You’ll use it to follow verification, assessment, and payout.</p>
+        
+        <button class="reference-copy" onclick="window.copyReference('${genCode}')">
+          ${genCode} 
+          <small>Copy code</small>
+        </button>
+
+        <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:12px;">
+          <button class="primary-button" onclick="window.trackFromSuccess('${genCode}')">
+            Track application 
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </button>
+          <button class="light-button" onclick="window.downloadReceipt('${genCode}')">
+            Download Receipt (PDF)
+          </button>
+        </div>
+      </div>
+    `;
+  };
+
+  window.copyReference = function(code) {
+    navigator.clipboard?.writeText(code);
+    window.notify("Reference code copied to clipboard: " + code);
+  };
+
+  window.trackFromSuccess = function(code) {
+    window.closeApplication();
+    document.getElementById('track-input').value = code;
+    window.trackApplication();
+    setTimeout(() => window.scrollToSection('tracker'), 100);
+  };
+
+  window.downloadReceipt = function(code) {
+    const text = `REPUBLIC OF THE PHILIPPINES\nMUNICIPALITY OF BULAKAN, BULACAN\nMSWDO SCHOLARSHIP AFFAIRS DESK\n\nOFFICIAL APPLICATION CONFIRMATION RECEIPT\n\nReference Code: ${code}\nApplicant Name: ${formData.name || 'Juan Dela Cruz'}\nBarangay: ${formData.barangay}\nGrant Program: ${formData.program}\nCollege / University: ${formData.school}\nDate Filed: ${new Date().toLocaleString()}\nVerification Status: SUBMITTED (Stage 1 of 4)\n\nPlease keep this receipt for verification and payout claim.\nBulakan Municipal Hall, Bulacan 3017`;
+    const blob = new Blob([text], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `IskoFund-Receipt-${code}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    window.notify("Confirmation receipt downloaded.");
+  };
+
+  // Draft Management
+  window.saveDraft = function() {
+    const payload = { formData, currentStep, uploadedFiles };
+    localStorage.setItem('iskofund-bulakan-draft', JSON.stringify(payload));
+    window.notify("Application draft saved on this device.");
+  };
+
+  window.loadDraft = function() {
+    const raw = localStorage.getItem('iskofund-bulakan-draft');
+    if (!raw) {
+      window.notify("No saved draft was found on this device.");
+      return;
+    }
+    try {
+      const data = JSON.parse(raw);
+      if (data.formData) formData = { ...formData, ...data.formData };
+      if (data.currentStep) currentStep = data.currentStep;
+      if (data.uploadedFiles) uploadedFiles = { ...uploadedFiles, ...data.uploadedFiles };
+      window.openApplication();
+      window.notify("Saved draft restored successfully.");
+    } catch(e) {
+      window.notify("Unable to restore draft.");
+    }
+  };
+
+  // Language Switcher
+  window.toggleLanguage = function() {
+    currentLanguage = currentLanguage === "English" ? "Filipino" : "English";
+    document.getElementById('btn-lang-top').textContent = currentLanguage === "English" ? "English / Filipino" : "Filipino / English";
+    document.getElementById('btn-lang-badge').textContent = currentLanguage === "English" ? "EN" : "FIL";
+
+    if (currentLanguage === "Filipino") {
+      document.getElementById('txt-lgu-heading').textContent = "Republika ng Pilipinas · Bayan ng Bulakan";
+      document.getElementById('hero-title').innerHTML = "Iskolarship na<br><em>simple at transparent.</em>";
+      document.getElementById('hero-subtitle').textContent = "Mag-apply, magpasa ng mga dokumento, at subaybayan ang bawat update sa isang opisyal na plataporma.";
+      window.notify("Wika: Filipino");
+    } else {
+      document.getElementById('txt-lgu-heading').textContent = "Republic of the Philippines · Municipality of Bulakan";
+      document.getElementById('hero-title').innerHTML = "Scholarships made<br><em>simple and transparent.</em>";
+      document.getElementById('hero-subtitle').textContent = "Apply, submit your documents, and follow every update in one trusted place.";
+      window.notify("Language: English");
+    }
+  };
+
+  // Feedback Modal
+  window.openFeedbackModal = function() {
+    document.getElementById('feedback-modal-backdrop').classList.add('open');
+  };
+  window.closeFeedbackModal = function() {
+    document.getElementById('feedback-modal-backdrop').classList.remove('open');
+  };
+  window.setRating = function(r) {
+    userRating = r;
+    const btns = document.querySelectorAll('#star-rating button');
+    btns.forEach((b, i) => {
+      b.classList.toggle('active', i < r);
+    });
+  };
+  window.submitFeedback = function() {
+    window.closeFeedbackModal();
+    window.notify("Maraming salamat! Your feedback has been recorded.");
+  };
+
+  // Evaluator Simulation
+  window.openEvaluatorModal = function() {
+    document.getElementById('evaluator-modal-backdrop').classList.add('open');
+    window.runSim();
+  };
+  window.closeEvaluatorModal = function() {
+    document.getElementById('evaluator-modal-backdrop').classList.remove('open');
+  };
+  window.runSim = function() {
+    const inc = Number(document.getElementById('sim-income').value) || 18000;
+    const gpa = Number(document.getElementById('sim-gpa').value) || 1.75;
+    const size = Number(document.getElementById('sim-size').value) || 4;
+
+    const pci = inc / size;
+    const needScore = Math.max(10, Math.min(100, Math.round(100 - (pci / 12000) * 80)));
+    const meritScore = Math.max(10, Math.min(100, Math.round(100 - ((gpa - 1.0) / 2.0) * 70)));
+    const compScore = Math.round(0.60 * needScore + 0.25 * meritScore + 0.15 * 85);
+
+    let tier = compScore >= 80 ? "Tier 1: High Priority (₱5,000 Aid)" : (compScore >= 60 ? "Tier 2: Standard Grant (₱3,500 Aid)" : "Tier 3: Conditional (₱2,500 Aid)");
+
+    document.getElementById('sim-result').innerHTML = `
+      <div>
+        <strong>Calculated Composite Score: ${compScore} / 100</strong>
+        <p style="margin:2px 0 0 0; font-size:11px; opacity:0.85;">Need: ${needScore}/100 | Merit: ${meritScore}/100 | Hardship: 85/100</p>
+      </div>
+      <span style="font-weight:700; background:#dcfce7; padding:4px 8px; border-radius:4px;">${tier}</span>
+    `;
+  };
+
+  // Initialization
+  document.addEventListener('DOMContentLoaded', () => {
+    window.updateHeaderAuthState();
+    window.setRequirementTab('Eligibility');
+    window.filterColleges();
+    window.renderAnnouncements();
+    window.renderFaqs();
+    window.updateEstimator();
+  });
+  </script>
+</body>
+</html>
