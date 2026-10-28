@@ -644,16 +644,12 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
           <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
             {onSwitchToAdmin && (
               <button
+                className="evaluator-badge"
                 onClick={onSwitchToAdmin}
-                style={{
-                  background: '#2b0404', color: '#fca5a5', border: '1px solid #7f1d1d',
-                  padding: '3px 8px', fontSize: 10, fontWeight: 700, borderRadius: 4,
-                  display: 'inline-flex', alignItems: 'center', gap: 5, cursor: 'pointer'
-                }}
-                title="Switch to Capstone Optimization & Analytics"
+                title="View Predictive Engine"
               >
-                <Icon name="shield" size={12} />
-                <span>Officer Dashboard &amp; Solver</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                <span>Predictive Engine</span>
               </button>
             )}
             <button onClick={() => setLanguage(l => l === "English" ? "Filipino" : "English")}>
