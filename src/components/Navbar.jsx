@@ -39,7 +39,7 @@ export default function Navbar({ activeTab, setActiveTab, onExportReport }) {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
               <span style={{ fontSize: 16, fontWeight: 800, color: colors.slate900, letterSpacing: '-0.02em' }}>
-                AegisAid
+                IskoFund
               </span>
               <span style={{
                 fontSize: 10, fontWeight: 600, padding: '2px 8px', borderRadius: 99,

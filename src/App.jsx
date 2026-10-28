@@ -70,7 +70,7 @@ function AppInner() {
 
   const handleExport = () => {
     const lines = [
-      `# AegisAid Executive Summary`,
+      `# IskoFund Executive Summary`,
       `Generated: ${new Date().toLocaleString()}`,
       ``,
       `## Cohort`,
@@ -84,7 +84,7 @@ function AppInner() {
     const blob = new Blob([lines.join('\n')], { type: 'text/markdown' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url; a.download = `aegisaid_summary_${Date.now()}.md`; a.click();
+    a.href = url; a.download = `iskofund_summary_${Date.now()}.md`; a.click();
     URL.revokeObjectURL(url);
     toast.success('Summary exported as Markdown.');
   };
@@ -180,7 +180,7 @@ function AppInner() {
         background: '#fff', padding: '20px 24px', textAlign: 'center',
         fontSize: 12, color: '#94a3b8',
       }}>
-        <strong style={{ color: '#475569' }}>AegisAid Decision Intelligence Platform</strong>
+        <strong style={{ color: '#475569' }}>IskoFund Decision Intelligence Platform</strong>
         &nbsp;·&nbsp;Capstone: System Design &amp; Predictive Analytics for Need-Based Aid
         &nbsp;·&nbsp;FERPA Compliant &nbsp;·&nbsp; EEOC Audited
       </footer>

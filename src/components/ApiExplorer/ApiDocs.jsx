@@ -104,9 +104,9 @@ export default function ApiDocs() {
             <Terminal size={18} color="#fff" />
           </div>
           <div>
-            <h2 style={{ fontSize: 17, fontWeight: 700, color: colors.slate900, margin: 0 }}>AegisAid REST API</h2>
+            <h2 style={{ fontSize: 17, fontWeight: 700, color: colors.slate900, margin: 0 }}>IskoFund REST API</h2>
             <p style={{ fontSize: 12, color: colors.slate400, margin: 0 }}>
-              Base URL: <code style={{ fontFamily: 'monospace', color: colors.accent }}>https://api.aegisaid.edu/v1</code>
+              Base URL: <code style={{ fontFamily: 'monospace', color: colors.accent }}>https://api.iskofund.bulakan.gov.ph/v1</code>
               &nbsp;·&nbsp;Auth: <code style={{ fontFamily: 'monospace' }}>Bearer &lt;JWT&gt;</code>
             </p>
           </div>
@@ -123,8 +123,8 @@ export default function ApiDocs() {
           const mc = METHOD_COLORS[ep.method];
           const isOpen = expanded === i;
           const curlSnippet = ep.params
-            ? `curl -X ${ep.method} https://api.aegisaid.edu/v1${ep.path} \\\n  -H "Authorization: Bearer YOUR_TOKEN" \\\n  -H "Content-Type: application/json" \\\n  -d '${JSON.stringify(ep.params, null, 2)}'`
-            : `curl -X ${ep.method} https://api.aegisaid.edu/v1${ep.path} \\\n  -H "Authorization: Bearer YOUR_TOKEN"`;
+            ? `curl -X ${ep.method} https://api.iskofund.bulakan.gov.ph/v1${ep.path} \\\n  -H "Authorization: Bearer YOUR_TOKEN" \\\n  -H "Content-Type: application/json" \\\n  -d '${JSON.stringify(ep.params, null, 2)}'`
+            : `curl -X ${ep.method} https://api.iskofund.bulakan.gov.ph/v1${ep.path} \\\n  -H "Authorization: Bearer YOUR_TOKEN"`;
 
           return (
             <div key={i} style={{ ...card(), overflow: 'hidden' }}>
