@@ -1745,14 +1745,21 @@ h2 em {
   color: #e2e8f0;
 }
 
-.announcement-list article>p,
 .announcement-list .announcement-body {
+  display: grid;
+  grid-template-columns: 120px 1fr 38px;
+  gap: 25px;
+  padding: 0 0 26px 0;
+  animation: fade .15s ease;
+}
+
+.announcement-list .announcement-body p,
+.announcement-list article>p {
+  grid-column: 2;
   color: #cbd5e1;
   max-width: 680px;
-  margin: -6px 0 28px 145px;
+  margin: 0;
   font-size: 15px;
-  line-height: 1.7;
-}
   line-height: 1.7;
 }
 
@@ -3586,9 +3593,16 @@ footer button:hover {
     gap: 14px;
   }
 
+  .announcement-list .announcement-body {
+    grid-template-columns: 85px 1fr 34px;
+    gap: 14px;
+    padding: 0 0 20px 0;
+  }
+
+  .announcement-list .announcement-body p,
   .announcement-list article>p {
-    margin-left: 0;
-    margin-top: 10px;
+    grid-column: 2;
+    margin: 0;
     font-size: 14.5px;
   }
 
@@ -5015,7 +5029,7 @@ footer button:hover {
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="${isOpen ? 'm18 15-6-6-6 6' : 'm9 18 6-6-6-6'}"/></svg>
             </i>
           </button>
-          ${isOpen ? `<div class="announcement-body" style="padding:0 24px 24px 145px; color:#cbd5e1; font-size:15px; line-height:1.7; border-bottom:1px solid #3b3e42; animation:fade .15s ease;"><p style="margin:0; color:#e2e8f0; max-width:680px;">${a.text}</p></div>` : ''}
+          ${isOpen ? `<div class="announcement-body"><p>${a.text}</p></div>` : ''}
         </article>
       `;
     }).join('');

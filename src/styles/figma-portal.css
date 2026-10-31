@@ -1734,11 +1734,20 @@ h2 em {
   color: #e2e8f0;
 }
 
-.announcement-list article>p,
 .announcement-list .announcement-body {
+  display: grid;
+  grid-template-columns: 120px 1fr 38px;
+  gap: 25px;
+  padding: 0 0 26px 0;
+  animation: fade .15s ease;
+}
+
+.announcement-list .announcement-body p,
+.announcement-list article>p {
+  grid-column: 2;
   color: #cbd5e1;
   max-width: 680px;
-  margin: -6px 0 28px 145px;
+  margin: 0;
   font-size: 15px;
   line-height: 1.7;
 }
@@ -3573,9 +3582,16 @@ footer button:hover {
     gap: 14px;
   }
 
+  .announcement-list .announcement-body {
+    grid-template-columns: 85px 1fr 34px;
+    gap: 14px;
+    padding: 0 0 20px 0;
+  }
+
+  .announcement-list .announcement-body p,
   .announcement-list article>p {
-    margin-left: 0;
-    margin-top: 10px;
+    grid-column: 2;
+    margin: 0;
     font-size: 14.5px;
   }
 
