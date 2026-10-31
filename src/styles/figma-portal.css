@@ -1702,7 +1702,7 @@ h2 em {
 }
 
 .announcement-list article>button>span small {
-  color: var(--accent);
+  color: #ff6b6b;
   letter-spacing: .08em;
   text-transform: uppercase;
   font-size: 12px;
@@ -1710,7 +1710,7 @@ h2 em {
 }
 
 .announcement-list article>button>span b {
-  color: #c0c3c8;
+  color: #e2e8f0;
   margin-top: 8px;
   font-size: 13.5px;
   font-weight: 600;
@@ -1720,6 +1720,7 @@ h2 em {
   margin: 0;
   font-size: 18px;
   font-weight: 600;
+  color: #ffffff;
 }
 
 .announcement-list i {
@@ -1730,11 +1731,13 @@ h2 em {
   height: 34px;
   font-style: normal;
   display: grid;
+  color: #e2e8f0;
 }
 
-.announcement-list article>p {
-  color: #b8bbbf;
-  max-width: 620px;
+.announcement-list article>p,
+.announcement-list .announcement-body {
+  color: #cbd5e1;
+  max-width: 680px;
   margin: -6px 0 28px 145px;
   font-size: 15px;
   line-height: 1.7;

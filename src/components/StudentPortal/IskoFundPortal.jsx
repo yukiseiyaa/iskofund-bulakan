@@ -1349,8 +1349,8 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
                       </i>
                     </button>
                     {isOpen && (
-                      <div style={{ padding: '0 24px 20px 24px', color: 'var(--ink-soft)', fontSize: 13, borderBottom: '1px solid var(--line)' }}>
-                        <p>{a.text}</p>
+                      <div className="announcement-body" style={{ padding: '0 24px 24px 145px', color: '#cbd5e1', fontSize: 15, lineHeight: 1.7, borderBottom: '1px solid #3b3e42' }}>
+                        <p style={{ margin: 0, color: '#e2e8f0', maxWidth: 680 }}>{a.text}</p>
                       </div>
                     )}
                   </article>
