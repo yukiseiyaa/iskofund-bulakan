@@ -91,10 +91,8 @@ const colleges = [
   { name: "Colegio de San Pascual Baylon", location: "Obando, Bulacan", type: "Private" },
   { name: "Immaculate Conception Major Seminary & College", location: "Guiguinto, Bulacan", type: "Private" },
   { name: "Bulacan State University – Hagonoy Campus", location: "Hagonoy, Bulacan", type: "Public" },
-  { name: "Bulacan State University – Sarmiento Campus", location: "City of San Jose del Monte", type: "Public" },
-  { name: "Polytechnic University of the Philippines", location: "Sta. Mesa, Manila / Pulilan", type: "Public" },
-  { name: "Pamantasan ng Lungsod ng Maynila", location: "Intramuros, Manila", type: "Public" },
-  { name: "University of the Philippines Diliman", location: "Quezon City", type: "Public" }
+  { name: "Bulacan State University – Sarmiento Campus", location: "City of San Jose del Monte, Bulacan", type: "Public" },
+  { name: "Baliuag University", location: "Baliwag, Bulacan", type: "Private" }
 ];
 
 const announcements = [
