@@ -1,6 +1,7 @@
 import React from 'react';
-import { GraduationCap, LayoutDashboard, Cpu, SlidersHorizontal, Terminal, Download } from 'lucide-react';
+import { GraduationCap, LayoutDashboard, Cpu, SlidersHorizontal, Terminal, Download, Database } from 'lucide-react';
 import { colors } from '../styles/tokens';
+import { isFirebaseConfigured, firebaseConfig } from '../services/firebase';
 
 const navItems = [
   { id: 'student',      label: 'IskoFund Portal',      icon: GraduationCap },
@@ -70,13 +71,18 @@ export default function Navbar({ activeTab, setActiveTab, onExportReport }) {
 
         {/* Right */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-          <span style={{
-            display: 'flex', alignItems: 'center', gap: 5, fontSize: 11, fontWeight: 600,
-            color: colors.success, background: colors.successLight,
-            padding: '4px 10px', borderRadius: 99,
-          }}>
-            <span style={{ width: 6, height: 6, borderRadius: '50%', background: colors.success, display: 'inline-block' }} />
-            Sistema Online
+          <span
+            title={isFirebaseConfigured ? `Connected to Firebase Cloud Firestore (${firebaseConfig.projectId})` : 'Using Local/Offline Database Fallback. Configure .env with Firebase credentials to sync to cloud.'}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 5, fontSize: 11, fontWeight: 600,
+              color: isFirebaseConfigured ? '#15803d' : '#854d0e',
+              background: isFirebaseConfigured ? '#dcfce7' : '#fef9c3',
+              border: isFirebaseConfigured ? '1px solid #bbf7d0' : '1px solid #fde68a',
+              padding: '4px 10px', borderRadius: 99,
+            }}
+          >
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: isFirebaseConfigured ? '#22c55e' : '#eab308', display: 'inline-block' }} />
+            {isFirebaseConfigured ? '🔥 Firebase Online' : '💾 Local DB'}
           </span>
           <a
             href="/iskofund-bulakan.html"

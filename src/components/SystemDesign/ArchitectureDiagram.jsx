@@ -24,9 +24,9 @@ const NODES = [
     x: 3, description: 'Knapsack-based constrained optimization with equity constraints (Gini, first-gen minimum share).',
   },
   {
-    id: 'db', label: 'PostgreSQL\nDatabase', icon: Database,
+    id: 'db', label: 'Firebase Firestore\nDatabase', icon: Database,
     color: colors.error, bg: colors.errorLight, border: colors.errorBorder,
-    x: 4, description: 'FERPA-encrypted relational store for student profiles, EFC records, and audit logs. Read replica for reporting.',
+    x: 4, description: 'Google Cloud Firestore real-time NoSQL store for student applications, status tracking, EFC profiles, and live officer sync.',
   },
   {
     id: 'audit', label: 'Compliance &\nAudit Layer', icon: ShieldCheck,
@@ -122,7 +122,7 @@ export default function ArchitectureDiagram() {
             { layer: 'Frontend',    items: ['React 18', 'Vite 6', 'Design Tokens', 'Lucide Icons'] },
             { layer: 'Backend API', items: ['Node.js / Express', 'JWT Auth', 'Rate Limiter', 'OpenAPI 3.0'] },
             { layer: 'ML Pipeline', items: ['XGBoost', 'SHAP', 'scikit-learn', 'ONNX Runtime'] },
-            { layer: 'Data & Infra', items: ['PostgreSQL', 'Redis Cache', 'Docker', 'AWS Lambda'] },
+            { layer: 'Data & Infra', items: ['Firebase Firestore', 'Firebase Auth', 'Local Fallback', 'Vite CDN'] },
           ].map((col, i) => (
             <div key={i} style={{ padding: 16, background: colors.slate50, border: `1px solid ${colors.slate100}`, borderRadius: 10 }}>
               <p style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: colors.slate400, margin: '0 0 10px' }}>{col.layer}</p>

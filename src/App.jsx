@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ToastProvider, useToast } from './components/Toast';
 import Navbar from './components/Navbar';
 import IskoFundPortal from './components/StudentPortal/IskoFundPortal';
@@ -14,6 +14,7 @@ import WhatIfSimulator from './components/PolicySandbox/WhatIfSimulator';
 import ApiDocs from './components/ApiExplorer/ApiDocs';
 import { ENRICHED_STUDENTS } from './data/mockData';
 import { runPredictiveModel, solveOptimalAllocation } from './utils/predictiveEngine';
+import { seedInitialCohortIfEmpty, subscribeToApplications, updateApplicationStatus } from './services/databaseService';
 
 const DEFAULT_PROFILE = {
   annualHouseholdIncome: 34000, householdSize: 4, siblingsInCollege: 1,
@@ -36,6 +37,72 @@ function AppInner() {
   const [cohort, setCohort]           = useState(ENRICHED_STUDENTS);
   const [solver, setSolver]           = useState(() => solveOptimalAllocation(ENRICHED_STUDENTS, 5000000));
   const [isSolving, setIsSolving]     = useState(false);
+
+  useEffect(() => {
+    // Seed initial cohort in Firestore if empty
+    seedInitialCohortIfEmpty(ENRICHED_STUDENTS);
+
+    // Subscribe to live Firestore application updates
+    const unsubscribe = subscribeToApplications((liveAppsMap) => {
+      if (!liveAppsMap || Object.keys(liveAppsMap).length === 0) return;
+
+      setCohort((currentCohort) => {
+        const cohortMap = new Map(currentCohort.map(s => [s.id, s]));
+
+        Object.values(liveAppsMap).forEach((app) => {
+          const appId = app.id || app.code;
+          if (!appId) return;
+
+          if (cohortMap.has(appId)) {
+            cohortMap.set(appId, { ...cohortMap.get(appId), ...app });
+          } else {
+            // New student application from portal
+            const simProfile = {
+              annualHouseholdIncome: app.annualHouseholdIncome || 48000,
+              householdSize: app.householdSize || 5,
+              siblingsInCollege: app.siblingsInCollege || 1,
+              parentAssets: app.parentAssets || 10000,
+              studentIncome: app.studentIncome || 5000,
+              studentAssets: app.studentAssets || 1000,
+              gpa: parseFloat(app.gpa) || 3.75,
+              livingArrangement: app.livingArrangement || 'commuter',
+              isFirstGen: app.isFirstGen !== false,
+              is4PsBeneficiary: app.is4PsBeneficiary || (app.program && app.program.includes('Tulong')) || false,
+              hardshipType: app.hardshipType || 'none',
+              hardshipSeverity: app.hardshipSeverity || 2,
+              regionalCostIndex: app.regionalCostIndex || 1.0,
+            };
+            const analysis = runPredictiveModel(simProfile);
+            cohortMap.set(appId, {
+              id: appId,
+              name: app.name || 'Student Applicant',
+              major: app.course || app.major || 'Undergraduate',
+              school: app.school || 'Bulacan State University',
+              barangay: app.barangay ? `Brgy. ${app.barangay}` : 'Brgy. Poblacion',
+              ...simProfile,
+              submissionDate: app.date || new Date().toISOString().split('T')[0],
+              verificationStatus: app.status === 'SUBMITTED' ? 'pending' : 'verified',
+              anomalyScore: 0.02,
+              analysis,
+              compositeScore: analysis.compositeScore,
+              efc: analysis.efc,
+              adjustedCOA: analysis.adjustedCOA,
+              needTier: analysis.tier?.id || 'tier_2',
+              awardAmount: analysis.breakdown.totalGiftAid,
+              allocatedGrant: analysis.breakdown.institutionalGrant,
+              allocatedWorkStudy: analysis.breakdown.workStudy,
+              awarded: app.status === 'Approved' || analysis.compositeScore >= 50,
+              adminStatus: app.status || 'Pending Review',
+            });
+          }
+        });
+
+        return Array.from(cohortMap.values());
+      });
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const handleCalculate = (p) => {
     setIsCalc(true);
@@ -66,6 +133,7 @@ function AppInner() {
 
   const handleUpdateStatus = (id, updates) => {
     setCohort(prev => prev.map(s => s.id === id ? { ...s, ...updates } : s));
+    updateApplicationStatus(id, updates);
   };
 
   const handleExport = () => {

@@ -6,7 +6,7 @@ const FLOWS = [
   { actor: 'Student', icon: User,        color: colors.accent,  label: 'Submits FAFSA + profile to portal' },
   { actor: 'API',     icon: Server,      color: colors.purple,  label: 'Validates input, strips PII, queues request' },
   { actor: 'ML',      icon: Cpu,         color: colors.success, label: 'Computes EFC, runs XGBoost scorer, returns score + SHAP' },
-  { actor: 'DB',      icon: Database,    color: colors.error,   label: 'Persists encrypted application record and score' },
+  { actor: 'Firestore DB', icon: Database, color: colors.error, label: 'Persists application record in Cloud Firestore & syncs real-time to dashboard' },
   { actor: 'MILP',    icon: Cpu,         color: colors.warning, label: 'Runs nightly batch allocation with equity constraints' },
   { actor: 'Audit',   icon: ShieldCheck, color: colors.slate600,label: 'EEOC disparate impact check, Gini check, signs log' },
   { actor: 'API',     icon: Server,      color: colors.purple,  label: 'Returns award letter payload with SHAP explanation' },
