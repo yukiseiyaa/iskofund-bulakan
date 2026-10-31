@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import {
   ArrowRight,
   Award,
@@ -89,7 +89,12 @@ const colleges = [
   { name: "STI College – Malolos", location: "City of Malolos", type: "Private" },
   { name: "Dr. Yanga’s Colleges, Inc.", location: "Bocaue, Bulacan", type: "Private" },
   { name: "Colegio de San Pascual Baylon", location: "Obando, Bulacan", type: "Private" },
-  { name: "Immaculate Conception Major Seminary & College", location: "Guiguinto, Bulacan", type: "Private" }
+  { name: "Immaculate Conception Major Seminary & College", location: "Guiguinto, Bulacan", type: "Private" },
+  { name: "Bulacan State University – Hagonoy Campus", location: "Hagonoy, Bulacan", type: "Public" },
+  { name: "Bulacan State University – Sarmiento Campus", location: "City of San Jose del Monte", type: "Public" },
+  { name: "Polytechnic University of the Philippines", location: "Sta. Mesa, Manila / Pulilan", type: "Public" },
+  { name: "Pamantasan ng Lungsod ng Maynila", location: "Intramuros, Manila", type: "Public" },
+  { name: "University of the Philippines Diliman", location: "Quezon City", type: "Public" }
 ];
 
 const announcements = [
@@ -252,6 +257,31 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
 
   const [errors, setErrors] = useState({});
   const [termsAgreed, setTermsAgreed] = useState(true);
+  const [collegeDropdownOpen, setCollegeDropdownOpen] = useState(false);
+
+  // Searchable College Dropdown:
+  // When users type, exact prefix matches automatically appear at the very top of options,
+  // followed by substring/location matches.
+  const collegeSearchTerm = (formData.school || '').trim().toLowerCase();
+  const sortedCollegeOptions = useMemo(() => {
+    if (!collegeSearchTerm) {
+      return colleges;
+    }
+    const exactPrefixMatches = [];
+    const substringMatches = [];
+
+    colleges.forEach(c => {
+      const nameLower = c.name.toLowerCase();
+      const locLower = c.location.toLowerCase();
+      if (nameLower.startsWith(collegeSearchTerm)) {
+        exactPrefixMatches.push(c);
+      } else if (nameLower.includes(collegeSearchTerm) || locLower.includes(collegeSearchTerm)) {
+        substringMatches.push(c);
+      }
+    });
+
+    return [...exactPrefixMatches, ...substringMatches];
+  }, [collegeSearchTerm]);
 
   // Student Account Auth State
   const [authOpen, setAuthOpen] = useState(false);
@@ -1900,19 +1930,129 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
                           </select>
                           {errors.program && <span className="field-error">{errors.program}</span>}
                         </label>
-                        <label className="full">
-                          College / University
-                          <input
-                            className={errors.school ? 'input-error' : ''}
-                            value={formData.school || ''}
-                            onChange={(e) => {
-                              setFormData(p => ({ ...p, school: e.target.value }));
-                              clearError('school');
-                            }}
-                            placeholder="e.g. Bulacan State University"
-                          />
+                        <div className="full" style={{ position: 'relative' }}>
+                          <label style={{ display: 'block', fontSize: 13, fontWeight: 600, marginBottom: 6, color: 'var(--ink)' }}>
+                            College / University
+                          </label>
+                          <div style={{ position: 'relative', width: '100%' }}>
+                            <input
+                              type="text"
+                              className={errors.school ? 'input-error' : ''}
+                              value={formData.school || ''}
+                              onChange={(e) => {
+                                setFormData(p => ({ ...p, school: e.target.value }));
+                                clearError('school');
+                                setCollegeDropdownOpen(true);
+                              }}
+                              onFocus={() => setCollegeDropdownOpen(true)}
+                              onBlur={() => {
+                                setTimeout(() => setCollegeDropdownOpen(false), 220);
+                              }}
+                              placeholder="e.g. Bulacan State University"
+                              autoComplete="off"
+                              style={{ paddingRight: 36, width: '100%', boxSizing: 'border-box' }}
+                            />
+                            <button
+                              type="button"
+                              tabIndex={-1}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                setCollegeDropdownOpen(prev => !prev);
+                              }}
+                              style={{
+                                position: 'absolute',
+                                right: 10,
+                                top: '50%',
+                                transform: 'translateY(-50%)',
+                                background: 'none',
+                                border: 'none',
+                                cursor: 'pointer',
+                                color: 'var(--muted)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                padding: 4
+                              }}
+                              aria-label="Toggle college dropdown"
+                            >
+                              <Icon name="chevronDown" size={16} />
+                            </button>
+                          </div>
                           {errors.school && <span className="field-error">{errors.school}</span>}
-                        </label>
+
+                          {/* Searchable Dropdown Menu */}
+                          {collegeDropdownOpen && (
+                            <div
+                              style={{
+                                position: 'absolute',
+                                top: '100%',
+                                left: 0,
+                                right: 0,
+                                zIndex: 60,
+                                background: '#ffffff',
+                                border: '1px solid var(--line-strong, #c8c7c2)',
+                                borderRadius: 8,
+                                boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.15)',
+                                maxHeight: 230,
+                                overflowY: 'auto',
+                                marginTop: 4
+                              }}
+                            >
+                              {sortedCollegeOptions.length > 0 ? (
+                                sortedCollegeOptions.map((c, idx) => {
+                                  const isExactPrefix = collegeSearchTerm && c.name.toLowerCase().startsWith(collegeSearchTerm);
+                                  return (
+                                    <div
+                                      key={idx}
+                                      onMouseDown={() => {
+                                        setFormData(p => ({ ...p, school: c.name }));
+                                        clearError('school');
+                                        setCollegeDropdownOpen(false);
+                                      }}
+                                      style={{
+                                        padding: '10px 14px',
+                                        cursor: 'pointer',
+                                        borderBottom: '1px solid #f1f5f9',
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        background: isExactPrefix ? 'rgba(37, 99, 235, 0.06)' : '#ffffff',
+                                        transition: 'background 0.1s ease'
+                                      }}
+                                      onMouseEnter={(e) => e.currentTarget.style.background = '#f1f5f9'}
+                                      onMouseLeave={(e) => e.currentTarget.style.background = isExactPrefix ? 'rgba(37, 99, 235, 0.06)' : '#ffffff'}
+                                    >
+                                      <div>
+                                        <div style={{ fontSize: 13, fontWeight: isExactPrefix ? 700 : 500, color: isExactPrefix ? '#1d4ed8' : 'var(--ink)' }}>
+                                          {isExactPrefix && <span style={{ marginRight: 6, fontSize: 11, background: '#dbeafe', color: '#1e40af', padding: '1px 5px', borderRadius: 3 }}>Match</span>}
+                                          {c.name}
+                                        </div>
+                                        <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 2 }}>
+                                          📍 {c.location}
+                                        </div>
+                                      </div>
+                                      <span style={{
+                                        fontSize: 10,
+                                        fontWeight: 600,
+                                        padding: '2px 7px',
+                                        borderRadius: 4,
+                                        background: c.type === 'Public' ? '#dcfce7' : '#f1f5f9',
+                                        color: c.type === 'Public' ? '#166534' : '#475569',
+                                        flexShrink: 0,
+                                        marginLeft: 8
+                                      }}>
+                                        {c.type}
+                                      </span>
+                                    </div>
+                                  );
+                                })
+                              ) : (
+                                <div style={{ padding: '12px 14px', fontSize: 12, color: 'var(--muted)', textAlign: 'center' }}>
+                                  No predefined match. You may continue typing your custom college name.
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
                         <label>
                           Course / Degree
                           <input
