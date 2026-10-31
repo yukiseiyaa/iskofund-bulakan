@@ -396,6 +396,8 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
         if (res.user) {
           setCurrentUser(res.user);
           setAuthOpen(false);
+          setStep(1);
+          setApplicationOpen(true);
           notify(`Account created successfully for ${res.user.name}!`);
         } else {
           setAuthErrors({ general: res.error || "Could not complete registration." });
@@ -409,6 +411,8 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
         };
         setCurrentUser(fallbackUser);
         setAuthOpen(false);
+        setStep(1);
+        setApplicationOpen(true);
         notify(`Account created for ${fallbackUser.name}!`);
       });
     } else {
@@ -419,6 +423,8 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
         if (res.success && res.user) {
           setCurrentUser(res.user);
           setAuthOpen(false);
+          setStep(1);
+          setApplicationOpen(true);
           notify(`Welcome back, ${res.user.name}!`);
         } else {
           // If login fails in demo or credentials mismatch, offer friendly fallback
@@ -430,6 +436,8 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
           };
           setCurrentUser(fallbackUser);
           setAuthOpen(false);
+          setStep(1);
+          setApplicationOpen(true);
           notify(`Welcome back, ${fallbackUser.name}!`);
         }
       }).catch(() => {
@@ -441,6 +449,8 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
         };
         setCurrentUser(fallbackUser);
         setAuthOpen(false);
+        setStep(1);
+        setApplicationOpen(true);
         notify(`Welcome back, ${fallbackUser.name}!`);
       });
     }
@@ -457,6 +467,8 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
     localStorage.setItem('iskofund_user', JSON.stringify(user));
     setCurrentUser(user);
     setAuthOpen(false);
+    setStep(1);
+    setApplicationOpen(true);
     notify(`Logged in with ${provider} as Juan Dela Cruz.`);
   };
 
@@ -591,6 +603,11 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
     if (step < 4) {
       setStep(s => s + 1);
     } else {
+      if (!currentUser || !currentUser.isLoggedIn) {
+        openAuthModal('login');
+        notify("Authentication required: Please sign in or register before submitting your application.");
+        return;
+      }
       handleFinalSubmit();
     }
   };
@@ -607,6 +624,11 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
 
   const openAppModal = (prog = null) => {
     if (prog) setFormData(p => ({ ...p, program: prog }));
+    if (!currentUser || !currentUser.isLoggedIn) {
+      openAuthModal('signup');
+      notify("Please sign in or create an account before applying for a scholarship.");
+      return;
+    }
     setStep(1);
     setErrors({});
     setSubmitted(false);
@@ -658,18 +680,26 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
   };
 
   const handleFinalSubmit = async () => {
+    if (!currentUser || !currentUser.isLoggedIn) {
+      openAuthModal('signup');
+      notify("Please sign in or create an account before submitting your application.");
+      return;
+    }
+
     const genCode = "ISKO-BUL-" + Math.floor(1000 + Math.random() * 9000);
     const newRecord = {
       code: genCode,
-      name: formData.name || "Student Applicant",
+      userId: currentUser.uid || currentUser.email || '',
+      applicantEmail: currentUser.email || formData.email || '',
+      name: formData.name || currentUser.name || "Student Applicant",
       studentId: formData.studentId || "",
       program: `${formData.program || 'Tulong-Dunong'} (AY 2026–2027)`,
       barangay: formData.barangay || "Bulakan",
       school: formData.school || "Bulacan State University",
       course: formData.course || "",
       year: formData.year || "",
-      phone: formData.phone || "",
-      email: formData.email || "",
+      phone: formData.phone || currentUser.phone || "",
+      email: formData.email || currentUser.email || "",
       gwa: formData.gwa || "",
       date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit' }),
       status: "SUBMITTED",

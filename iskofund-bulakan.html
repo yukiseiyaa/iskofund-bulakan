@@ -5369,6 +5369,11 @@ footer button:hover {
   };
 
   window.openApplication = function() {
+    if (!currentUser || !currentUser.isLoggedIn) {
+      window.openAuthModal('signup');
+      window.notify("Please sign in or create an account before applying for a scholarship.");
+      return;
+    }
     currentStep = 1;
     formErrors = {};
     document.getElementById('application-modal-backdrop').classList.add('open');
@@ -5604,6 +5609,11 @@ footer button:hover {
   };
 
   window.submitApplication = function() {
+    if (!currentUser || !currentUser.isLoggedIn) {
+      window.openAuthModal('signup');
+      window.notify("Please sign in or create an account before submitting your application.");
+      return;
+    }
     if (!window.validateStep(4)) return;
 
     const genCode = "ISKO-BUL-" + Math.floor(1000 + Math.random() * 9000);
