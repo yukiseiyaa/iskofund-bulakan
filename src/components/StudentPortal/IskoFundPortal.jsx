@@ -21,7 +21,6 @@ import {
 import '../../styles/figma-portal.css';
 import { saveApplication, getApplicationByTrackingCode, subscribeToApplications } from '../../services/databaseService';
 import { registerWithFirebase, loginWithFirebase, logoutUser, subscribeToAuth } from '../../services/authService';
-import { isFirebaseConfigured, firebaseConfig } from '../../services/firebase';
 
 const ICON_MAP = {
   arrow: ArrowRight,
@@ -302,7 +301,6 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
     }
   });
   const [userMenuOpen, setUserMenuOpen] = useState(false);
-  const [firebaseModalOpen, setFirebaseModalOpen] = useState(false);
 
   useEffect(() => {
     // Real-time synchronization of applications with Firebase Firestore
@@ -820,23 +818,6 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
         <div className="wrap utility-inner">
           <span>{isFilipino ? "Republika ng Pilipinas · Bayan ng Bulakan" : "Republic of the Philippines · Municipality of Bulakan"}</span>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <button
-              className="evaluator-badge"
-              style={{
-                background: isFirebaseConfigured ? 'rgba(34, 197, 94, 0.15)' : 'rgba(234, 179, 8, 0.15)',
-                color: isFirebaseConfigured ? '#15803d' : '#854d0e',
-                border: isFirebaseConfigured ? '1px solid rgba(34, 197, 94, 0.4)' : '1px solid rgba(234, 179, 8, 0.4)',
-                cursor: 'pointer',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 5
-              }}
-              onClick={() => setFirebaseModalOpen(true)}
-              title="Firebase Database Status"
-            >
-              <Database size={12} />
-              <span>{isFirebaseConfigured ? `Firebase: Connected (${firebaseConfig.projectId})` : 'Database: Local (Connect Firebase)'}</span>
-            </button>
             <button
               className="evaluator-badge"
               onClick={() => setEvaluatorModalOpen(true)}
@@ -2223,124 +2204,6 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
                   }}
                 >
                   Submit feedback
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Firebase Database Connection Modal */}
-      {firebaseModalOpen && (
-        <div
-          className="evaluator-modal-backdrop open"
-          onClick={(e) => { if (e.target === e.currentTarget) setFirebaseModalOpen(false); }}
-        >
-          <div className="evaluator-modal" style={{ maxWidth: 640 }}>
-            <div className="eval-header" style={{ background: '#0f172a' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <span style={{ fontSize: 22 }}>🔥</span>
-                <div>
-                  <h3 style={{ margin: 0, fontSize: 16, color: '#fff' }}>Firebase Cloud Database &amp; Auth</h3>
-                  <p style={{ margin: '2px 0 0', fontSize: 11, color: '#94a3b8' }}>Real-time student records &amp; synchronized scholarship applications</p>
-                </div>
-              </div>
-              <button
-                onClick={() => setFirebaseModalOpen(false)}
-                style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}
-                aria-label="Close modal"
-              >
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m6 6 12 12M18 6 6 18"/></svg>
-              </button>
-            </div>
-            <div className="eval-body" style={{ padding: 20 }}>
-              <div style={{
-                padding: '12px 16px',
-                borderRadius: 8,
-                marginBottom: 16,
-                background: isFirebaseConfigured ? '#f0fdf4' : '#fefce8',
-                border: isFirebaseConfigured ? '1px solid #bbf7d0' : '1px solid #fef08a',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between'
-              }}>
-                <div>
-                  <div style={{ fontWeight: 700, fontSize: 13, color: isFirebaseConfigured ? '#166534' : '#854d0e' }}>
-                    {isFirebaseConfigured ? '✓ Connected to Firebase Cloud Firestore' : 'ℹ Local Database / Offline Fallback Active'}
-                  </div>
-                  <div style={{ fontSize: 11, color: isFirebaseConfigured ? '#15803d' : '#a16207', marginTop: 2 }}>
-                    {isFirebaseConfigured
-                      ? `Project ID: ${firebaseConfig.projectId} · Cloud Collections: applications, users`
-                      : 'Applications are currently saved locally. Add Firebase project credentials in .env to sync live to cloud.'}
-                  </div>
-                </div>
-                <span style={{
-                  padding: '4px 10px',
-                  borderRadius: 99,
-                  fontSize: 11,
-                  fontWeight: 700,
-                  background: isFirebaseConfigured ? '#22c55e' : '#eab308',
-                  color: '#fff'
-                }}>
-                  {isFirebaseConfigured ? 'ONLINE' : 'LOCAL'}
-                </span>
-              </div>
-
-              <div className="eval-card" style={{ marginBottom: 16 }}>
-                <h4 style={{ fontSize: 13, fontWeight: 700, marginBottom: 6, color: 'var(--ink)' }}>How Firebase is Connected</h4>
-                <p style={{ fontSize: 12, color: 'var(--muted)', marginBottom: 10 }}>
-                  IskoFund connects to Google Firebase Cloud Firestore via the official Firebase Web SDK (v11+):
-                </p>
-                <ul style={{ fontSize: 12, color: '#334155', paddingLeft: 18, margin: 0, lineHeight: 1.6 }}>
-                  <li><strong>Collection <code>applications</code>:</strong> Student applications submitted through this portal are saved directly to Firestore and synced in real-time to the LGU Aid Officer dashboard.</li>
-                  <li><strong>Application Tracker:</strong> Real-time lookup by tracking code (e.g. <code>ISKO-BUL-8821</code>) directly queries Firestore.</li>
-                  <li><strong>Firebase Authentication:</strong> Email and password accounts are securely managed via Firebase Auth.</li>
-                  <li><strong>Offline Resilience:</strong> If offline or in dev mode without API keys, local storage fallback activates seamlessly.</li>
-                </ul>
-              </div>
-
-              <div className="eval-card">
-                <h4 style={{ fontSize: 13, fontWeight: 700, marginBottom: 8, color: 'var(--ink)' }}>Connecting Your Firebase Project</h4>
-                <p style={{ fontSize: 12, color: 'var(--muted)', marginBottom: 8 }}>
-                  To link your personal or production Firebase instance, create or update <code>.env</code> in the project root:
-                </p>
-                <pre style={{
-                  background: '#0f172a',
-                  color: '#38bdf8',
-                  padding: 12,
-                  borderRadius: 6,
-                  fontSize: 11,
-                  overflowX: 'auto',
-                  margin: 0
-                }}>
-{`VITE_FIREBASE_API_KEY=AIzaSy...
-VITE_FIREBASE_AUTH_DOMAIN=your-app.firebaseapp.com
-VITE_FIREBASE_PROJECT_ID=your-project-id
-VITE_FIREBASE_STORAGE_BUCKET=your-app.appspot.com
-VITE_FIREBASE_MESSAGING_SENDER_ID=123456789012
-VITE_FIREBASE_APP_ID=1:123456789012:web:abcdef`}
-                </pre>
-              </div>
-
-              <div style={{ marginTop: 16, display: 'flex', justifyContent: 'flex-end', gap: 10 }}>
-                <button
-                  type="button"
-                  onClick={() => {
-                    notify("Database connection verified.");
-                    setFirebaseModalOpen(false);
-                  }}
-                  style={{
-                    padding: '8px 16px',
-                    borderRadius: 6,
-                    background: '#2563eb',
-                    color: '#fff',
-                    border: 'none',
-                    fontWeight: 600,
-                    fontSize: 12,
-                    cursor: 'pointer'
-                  }}
-                >
-                  Close &amp; Continue
                 </button>
               </div>
             </div>
