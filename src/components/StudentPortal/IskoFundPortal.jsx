@@ -1158,9 +1158,16 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
             </div>
 
             <div className="hero-float impact-float">
-              <span>MUNICIPAL EDUCATION FUND</span>
-              <strong>{siteSettings.totalBudget}</strong>
-              <div><b>{siteSettings.slotsRemaining} scholars</b><b>14 barangays</b></div>
+              <span>{siteSettings.educationFundLabel || 'MUNICIPAL EDUCATION FUND'}</span>
+              <strong>{siteSettings.totalBudget || '₱12,500,000'}</strong>
+              <div>
+                <b>
+                  {siteSettings.slotsRemaining 
+                    ? (siteSettings.slotsRemaining.toLowerCase().includes('scholar') ? siteSettings.slotsRemaining : `${siteSettings.slotsRemaining} scholars`) 
+                    : '450 slots scholars'}
+                </b>
+                <b>{siteSettings.barangayCoverageText || '14 barangays'}</b>
+              </div>
             </div>
           </div>
         </section>

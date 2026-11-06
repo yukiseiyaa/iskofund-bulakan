@@ -3862,9 +3862,9 @@ footer button:hover {
             </div>
 
             <div class="hero-float impact-float">
-              <span>MUNICIPAL EDUCATION FUND</span>
+              <span id="hero-fund-label">MUNICIPAL EDUCATION FUND</span>
               <strong id="hero-budget-text">₱12,500,000</strong>
-              <div><b id="hero-slots-text">450+ scholars</b><b>14 barangays</b></div>
+              <div><b id="hero-slots-text">450 slots scholars</b><b id="hero-coverage-text">14 barangays</b></div>
             </div>
           </div>
         </section>
@@ -5417,13 +5417,25 @@ footer button:hover {
         }
 
         // 5. Total Budget & Scholar Quota
+        if (d.educationFundLabel) {
+          const flEl = document.getElementById('hero-fund-label');
+          if (flEl) flEl.textContent = d.educationFundLabel;
+        }
         if (d.totalBudget) {
           const bgEl = document.getElementById('hero-budget-text');
           if (bgEl) bgEl.textContent = d.totalBudget;
         }
         if (d.slotsRemaining) {
           const slEl = document.getElementById('hero-slots-text');
-          if (slEl) slEl.textContent = `${escapeHtml(d.slotsRemaining)} scholars`;
+          if (slEl) {
+            slEl.textContent = d.slotsRemaining.toLowerCase().includes('scholar') 
+              ? d.slotsRemaining 
+              : `${d.slotsRemaining} scholars`;
+          }
+        }
+        if (d.barangayCoverageText) {
+          const bcEl = document.getElementById('hero-coverage-text');
+          if (bcEl) bcEl.textContent = d.barangayCoverageText;
         }
       }, (err) => {
         console.warn("[Firestore] Site settings sync warning:", err);

@@ -1594,15 +1594,49 @@
               <label class="form-label">Submission Deadline Date</label>
               <input type="text" id="input-deadline-date" class="form-input" placeholder="e.g. September 30, 2026">
             </div>
+          </div>
 
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <!-- Card 3: Municipal Education Fund Hero Floating Card -->
+          <div class="cms-card">
+            <div class="cms-card-head">
+              <h3>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                Municipal Education Fund Floating Card
+              </h3>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Fund Header Label</label>
+              <input type="text" id="input-fund-label" class="form-input" placeholder="e.g. MUNICIPAL EDUCATION FUND" oninput="updateFundCardPreview()">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Total Fund Allocation / Budget</label>
+              <input type="text" id="input-total-budget" class="form-input" placeholder="e.g. ₱12,500,000" oninput="updateFundCardPreview()">
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
               <div class="form-group">
-                <label class="form-label">Education Fund Budget</label>
-                <input type="text" id="input-total-budget" class="form-input" placeholder="e.g. ₱12,500,000">
+                <label class="form-label">Scholars / Slots Label</label>
+                <input type="text" id="input-quota-slots" class="form-input" placeholder="e.g. 450 slots scholars" oninput="updateFundCardPreview()">
               </div>
               <div class="form-group">
-                <label class="form-label">Total Scholar Slots</label>
-                <input type="text" id="input-quota-slots" class="form-input" placeholder="e.g. 450 slots">
+                <label class="form-label">Coverage / Scope Label</label>
+                <input type="text" id="input-coverage-text" class="form-input" placeholder="e.g. 14 barangays" oninput="updateFundCardPreview()">
+              </div>
+            </div>
+
+            <!-- Live Card Preview Matching Student Portal Hero -->
+            <div style="background:#faf8f5; border:1px dashed var(--line); border-radius:8px; padding:16px; margin-top:6px; display:flex; flex-direction:column; align-items:center;">
+              <small style="font-size:10px; font-weight:800; text-transform:uppercase; color:var(--muted); letter-spacing:0.06em; margin-bottom:12px; display:block;">Live Portal Floating Card Preview</small>
+              
+              <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:20px 22px; width:100%; max-width:270px; box-shadow:0 10px 24px rgba(0,0,0,0.06); box-sizing:border-box;">
+                <span id="preview-fund-label" style="display:block; font-size:11px; font-weight:800; color:#8a0303; letter-spacing:0.04em; text-transform:uppercase; margin-bottom:6px;">MUNICIPAL EDUCATION FUND</span>
+                <strong id="preview-fund-amount" style="display:block; font-size:27px; font-weight:900; color:#0f172a; letter-spacing:-0.02em; line-height:1.15; margin-bottom:12px; font-family:'Newsreader', Georgia, serif;">₱12,500,000</strong>
+                <div style="display:flex; justify-content:space-between; border-top:1px solid #f1f5f9; padding-top:10px; font-size:12px; color:#475569;">
+                  <b id="preview-fund-slots" style="font-weight:700;">450 slots scholars</b>
+                  <b id="preview-fund-coverage" style="font-weight:700;">14 barangays</b>
+                </div>
               </div>
             </div>
           </div>
@@ -3069,12 +3103,20 @@
           if (document.getElementById('input-deadline-date')) {
             document.getElementById('input-deadline-date').value = s.deadlineDate || 'September 30, 2026';
           }
+          if (document.getElementById('input-fund-label')) {
+            document.getElementById('input-fund-label').value = s.educationFundLabel || 'MUNICIPAL EDUCATION FUND';
+          }
           if (document.getElementById('input-total-budget')) {
             document.getElementById('input-total-budget').value = s.totalBudget || '₱12,500,000';
           }
           if (document.getElementById('input-quota-slots')) {
-            document.getElementById('input-quota-slots').value = s.slotsRemaining || '450 slots';
+            document.getElementById('input-quota-slots').value = s.slotsRemaining || '450 slots scholars';
           }
+          if (document.getElementById('input-coverage-text')) {
+            document.getElementById('input-coverage-text').value = s.barangayCoverageText || '14 barangays';
+          }
+          updateFundCardPreview();
+
           if (document.getElementById('input-hero-title')) {
             document.getElementById('input-hero-title').value = s.heroTitle || 'Scholarships made simple and transparent.';
           }
@@ -3089,6 +3131,22 @@
       } catch (err) {
         console.warn("[Firestore] Site settings exception:", err);
       }
+    }
+
+    function updateFundCardPreview() {
+      const label = document.getElementById('input-fund-label')?.value || 'MUNICIPAL EDUCATION FUND';
+      const budget = document.getElementById('input-total-budget')?.value || '₱12,500,000';
+      const slots = document.getElementById('input-quota-slots')?.value || '450 slots scholars';
+      const coverage = document.getElementById('input-coverage-text')?.value || '14 barangays';
+
+      const pLabel = document.getElementById('preview-fund-label');
+      if (pLabel) pLabel.textContent = label;
+      const pAmount = document.getElementById('preview-fund-amount');
+      if (pAmount) pAmount.textContent = budget;
+      const pSlots = document.getElementById('preview-fund-slots');
+      if (pSlots) pSlots.textContent = slots;
+      const pCoverage = document.getElementById('preview-fund-coverage');
+      if (pCoverage) pCoverage.textContent = coverage;
     }
 
     function updateCmsStatusPill(val) {
@@ -3113,8 +3171,10 @@
       const academicYear = document.getElementById('input-academic-year').value.trim();
       const applicationStatus = document.getElementById('select-app-status').value;
       const deadlineDate = document.getElementById('input-deadline-date').value.trim();
-      const totalBudget = document.getElementById('input-total-budget').value.trim();
-      const slotsRemaining = document.getElementById('input-quota-slots').value.trim();
+      const educationFundLabel = document.getElementById('input-fund-label')?.value.trim() || 'MUNICIPAL EDUCATION FUND';
+      const totalBudget = document.getElementById('input-total-budget')?.value.trim() || '₱12,500,000';
+      const slotsRemaining = document.getElementById('input-quota-slots')?.value.trim() || '450 slots scholars';
+      const barangayCoverageText = document.getElementById('input-coverage-text')?.value.trim() || '14 barangays';
       const heroTitle = document.getElementById('input-hero-title').value.trim();
       const heroSubtitle = document.getElementById('input-hero-subtitle').value.trim();
 
@@ -3125,8 +3185,10 @@
         academicYear,
         applicationStatus,
         deadlineDate,
+        educationFundLabel,
         totalBudget,
         slotsRemaining,
+        barangayCoverageText,
         heroTitle,
         heroSubtitle,
         updatedAt: new Date().toISOString()
