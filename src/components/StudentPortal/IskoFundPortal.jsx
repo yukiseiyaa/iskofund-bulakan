@@ -818,14 +818,6 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
         <div className="wrap utility-inner">
           <span>{isFilipino ? "Republika ng Pilipinas · Bayan ng Bulakan" : "Republic of the Philippines · Municipality of Bulakan"}</span>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <button
-              className="evaluator-badge"
-              onClick={() => setEvaluatorModalOpen(true)}
-              title="View Predictive Engine"
-            >
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-              <span>Predictive Engine</span>
-            </button>
             <button onClick={() => setLanguage(l => l === "English" ? "Filipino" : "English")}>
               {language === "English" ? "English / Filipino" : "Filipino / English"}
             </button>
