@@ -2502,7 +2502,8 @@ footer button:hover {
 
 /* Small Modals (Language & Feedback) */
 .lang-modal-backdrop,
-.feedback-modal-backdrop {
+.feedback-modal-backdrop,
+.admin-modal-backdrop {
   display: none;
   position: fixed;
   inset: 0;
@@ -2515,9 +2516,22 @@ footer button:hover {
 }
 
 .lang-modal-backdrop.open,
-.feedback-modal-backdrop.open {
+.feedback-modal-backdrop.open,
+.admin-modal-backdrop.open {
   display: grid;
   animation: fade .18s ease;
+}
+
+.admin-modal {
+  background: #fff;
+  border-radius: 8px;
+  max-width: 900px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  overflow: hidden;
 }
 
 .lang-box,
@@ -3735,7 +3749,11 @@ footer button:hover {
       <div class="utility" style="display:block;">
         <div class="wrap utility-inner">
           <span id="txt-lgu-heading">Republic of the Philippines · Municipality of Bulakan</span>
-          <div style="display:flex; align-items:center; gap:16px;">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <button onclick="window.openAdminPanel()" id="btn-admin-top" style="display:inline-flex; align-items:center; gap:6px; background:rgba(30,58,138,0.08); color:#1e3a8a; border:1px solid rgba(30,58,138,0.25); padding:4px 10px; border-radius:4px; font-size:11px; font-weight:700; cursor:pointer;" title="LGU Aid Officer Review Desk">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span>Admin Panel</span>
+            </button>
             <button onclick="window.toggleLanguage()" id="btn-lang-top">English / Filipino</button>
           </div>
         </div>
@@ -4418,6 +4436,69 @@ footer button:hover {
         </div>
       </div>
 
+      <!-- LGU Aid Officer Admin Panel Modal -->
+      <div class="admin-modal-backdrop" id="admin-modal-backdrop" onclick="if(event.target===this)window.closeAdminPanel()">
+        <div class="admin-modal">
+          <div style="background:#1e3a8a; padding:16px 20px; display:flex; justify-content:space-between; align-items:center; color:#fff;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span style="font-size:24px;">🏛️</span>
+              <div>
+                <h3 style="margin:0; font-size:16px; color:#fff; font-weight:700;">LGU Aid Officer — Applicant Review Desk</h3>
+                <p style="margin:2px 0 0; font-size:11px; color:#bfdbfe;">Bayan ng Bulakan · MSWDO Scholarship Management &amp; Decision Desk</p>
+              </div>
+            </div>
+            <button onclick="window.closeAdminPanel()" style="background:none; border:none; color:#fff; cursor:pointer; font-size:18px; line-height:1; display:flex; align-items:center;" aria-label="Close Admin Desk">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 6 12 12M18 6 6 18"/></svg>
+            </button>
+          </div>
+
+          <div style="padding:20px; overflow-y:auto; flex:1; max-height:calc(90vh - 70px);">
+            <!-- Stats overview -->
+            <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-bottom:16px;" id="admin-stats-container">
+              <!-- Dynamically populated -->
+            </div>
+
+            <!-- Toolbar & Filter -->
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:14px; flex-wrap:wrap;">
+              <div style="display:flex; gap:6px; background:#f1f5f9; padding:3px; border-radius:6px;" id="admin-filter-tabs">
+                <button type="button" class="admin-tab-btn" data-filter="ALL" onclick="window.setAdminFilter('ALL', this)" style="padding:5px 12px; border-radius:5px; border:none; background:#fff; color:#1e3a8a; font-weight:700; font-size:12px; cursor:pointer; box-shadow:0 1px 3px rgba(0,0,0,0.1);">All</button>
+                <button type="button" class="admin-tab-btn" data-filter="PENDING" onclick="window.setAdminFilter('PENDING', this)" style="padding:5px 12px; border-radius:5px; border:none; background:transparent; color:#64748b; font-weight:500; font-size:12px; cursor:pointer;">Pending</button>
+                <button type="button" class="admin-tab-btn" data-filter="APPROVED" onclick="window.setAdminFilter('APPROVED', this)" style="padding:5px 12px; border-radius:5px; border:none; background:transparent; color:#64748b; font-weight:500; font-size:12px; cursor:pointer;">Accepted</button>
+                <button type="button" class="admin-tab-btn" data-filter="DECLINED" onclick="window.setAdminFilter('DECLINED', this)" style="padding:5px 12px; border-radius:5px; border:none; background:transparent; color:#64748b; font-weight:500; font-size:12px; cursor:pointer;">Declined</button>
+              </div>
+              <div style="min-width:260px;">
+                <input type="text" id="admin-search-input" oninput="window.renderAdminApplicants()" placeholder="Search applicant name or tracking code..." style="width:100%; padding:7px 12px; font-size:12px; border-radius:6px; border:1px solid #cbd5e1; outline:none; box-sizing:border-box;">
+              </div>
+            </div>
+
+            <!-- Table of applicants -->
+            <div style="border:1px solid #e2e8f0; border-radius:8px; overflow-x:auto;">
+              <table style="width:100%; border-collapse:collapse; font-size:12px; text-align:left;" id="admin-table">
+                <thead>
+                  <tr style="background:#f8fafc; border-bottom:1px solid #e2e8f0; color:#475569; font-size:11px; text-transform:uppercase;">
+                    <th style="padding:10px 14px;">Applicant</th>
+                    <th style="padding:10px 14px;">School &amp; Program</th>
+                    <th style="padding:10px 14px;">Income / Circumstance</th>
+                    <th style="padding:10px 14px;">Status</th>
+                    <th style="padding:10px 14px; text-align:right;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-table-body">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+
+            <div style="margin-top:14px; display:flex; justify-content:space-between; align-items:center; font-size:11px; color:#64748b;">
+              <span>💡 Accepting or declining immediately updates the student's live tracking status.</span>
+              <button type="button" onclick="window.closeAdminPanel()" style="padding:7px 16px; border-radius:6px; background:#1e3a8a; color:#fff; border:none; font-weight:700; font-size:12px; cursor:pointer;">
+                Close Desk
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Evaluator Modal: Capstone Predictive Engine & Solver -->
       <div class="evaluator-modal-backdrop" id="evaluator-modal-backdrop">
         <div class="evaluator-modal">
@@ -5089,60 +5170,371 @@ footer button:hover {
     window.trackApplication();
   };
 
+  let currentAdminFilter = 'ALL';
+
+  function getStoredApplications() {
+    let apps = {};
+    try {
+      apps = JSON.parse(localStorage.getItem('iskofund_portal_apps') || '{}');
+    } catch(e) {}
+
+    // Seed default applicants if empty so the admin has test applicants ready
+    if (!apps || Object.keys(apps).length === 0) {
+      apps = {
+        "ISKO-BUL-8821": {
+          id: "ISKO-BUL-8821",
+          code: "ISKO-BUL-8821",
+          name: "Maria Santos Bautista",
+          studentId: "2026-00412",
+          barangay: "Matungao",
+          phone: "0917-882-1920",
+          school: "Bulacan State University – Meneses Campus",
+          course: "BS Information Technology",
+          annualHouseholdIncome: 72000,
+          program: "Tulong-Dunong (AY 2026–2027)",
+          date: "Sep 04",
+          status: "SUBMITTED",
+          stage: "Submitted",
+          notes: "Verification in progress. Awaiting LGU officer review.",
+          disbursement: "Pending municipal committee approval"
+        },
+        "ISKO-BUL-4209": {
+          id: "ISKO-BUL-4209",
+          code: "ISKO-BUL-4209",
+          name: "Juan Miguel Dela Cruz",
+          studentId: "2026-00188",
+          barangay: "San Jose",
+          phone: "0918-420-9112",
+          school: "Baliuag University",
+          course: "BS Civil Engineering",
+          annualHouseholdIncome: 84000,
+          program: "Academic Excellence Grant",
+          date: "Sep 05",
+          status: "APPROVED",
+          stage: "Approved",
+          notes: "Application approved by Municipal Aid Committee. Scholarship grant allocation confirmed.",
+          disbursement: "₱5,000 / semester — Scheduled for payout"
+        },
+        "ISKO-BUL-3351": {
+          id: "ISKO-BUL-3351",
+          code: "ISKO-BUL-3351",
+          name: "Bea Carmela Reyes",
+          studentId: "2026-00335",
+          barangay: "Poblacion",
+          phone: "0920-335-1440",
+          school: "Bulacan State University (BulSU)",
+          course: "BS Accountancy",
+          annualHouseholdIncome: 140000,
+          program: "Tulong-Dunong Grant",
+          date: "Sep 06",
+          status: "DECLINED",
+          stage: "Declined",
+          notes: "Application review concluded: Does not meet current allocation quota or qualification criteria.",
+          disbursement: "Not eligible for this cycle"
+        }
+      };
+      try {
+        localStorage.setItem('iskofund_portal_apps', JSON.stringify(apps));
+      } catch(e) {}
+    }
+    return apps;
+  }
+
+  window.openAdminPanel = function() {
+    document.getElementById('admin-modal-backdrop').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    window.renderAdminApplicants();
+  };
+
+  window.closeAdminPanel = function() {
+    document.getElementById('admin-modal-backdrop').classList.remove('open');
+    document.body.style.overflow = '';
+  };
+
+  window.setAdminFilter = function(filter, btn) {
+    currentAdminFilter = filter;
+    const btns = document.querySelectorAll('#admin-filter-tabs button');
+    btns.forEach(b => {
+      b.style.background = 'transparent';
+      b.style.color = '#64748b';
+      b.style.fontWeight = '500';
+      b.style.boxShadow = 'none';
+    });
+    if (btn) {
+      btn.style.background = '#fff';
+      btn.style.color = '#1e3a8a';
+      btn.style.fontWeight = '700';
+      btn.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+    }
+    window.renderAdminApplicants();
+  };
+
+  window.adminApprove = function(code) {
+    const apps = getStoredApplications();
+    if (!apps[code]) return;
+    apps[code].status = 'APPROVED';
+    apps[code].stage = 'Approved';
+    apps[code].notes = 'Application approved by Municipal Aid Committee. Scholarship grant allocation confirmed.';
+    apps[code].disbursement = '₱5,000 / semester — Scheduled for release via Landbank';
+    try {
+      localStorage.setItem('iskofund_portal_apps', JSON.stringify(apps));
+    } catch(e) {}
+    window.notify(`Application ${code} accepted & approved!`);
+    window.renderAdminApplicants();
+
+    const trackInput = document.getElementById('track-input');
+    if (trackInput && trackInput.value.trim().toUpperCase() === code) {
+      window.trackApplication();
+    }
+  };
+
+  window.adminDecline = function(code) {
+    const apps = getStoredApplications();
+    if (!apps[code]) return;
+    apps[code].status = 'DECLINED';
+    apps[code].stage = 'Declined';
+    apps[code].notes = 'Application review concluded: Does not meet current allocation quota or qualification criteria.';
+    apps[code].disbursement = 'Not eligible for this cycle';
+    try {
+      localStorage.setItem('iskofund_portal_apps', JSON.stringify(apps));
+    } catch(e) {}
+    window.notify(`Application ${code} declined.`);
+    window.renderAdminApplicants();
+
+    const trackInput = document.getElementById('track-input');
+    if (trackInput && trackInput.value.trim().toUpperCase() === code) {
+      window.trackApplication();
+    }
+  };
+
+  window.adminReset = function(code) {
+    const apps = getStoredApplications();
+    if (!apps[code]) return;
+    apps[code].status = 'SUBMITTED';
+    apps[code].stage = 'Submitted';
+    apps[code].notes = 'Application received. Initial document verification is queued with MSWDO scholarship officers.';
+    apps[code].disbursement = 'Pending municipal committee approval';
+    try {
+      localStorage.setItem('iskofund_portal_apps', JSON.stringify(apps));
+    } catch(e) {}
+    window.notify(`Application ${code} reset to pending review.`);
+    window.renderAdminApplicants();
+
+    const trackInput = document.getElementById('track-input');
+    if (trackInput && trackInput.value.trim().toUpperCase() === code) {
+      window.trackApplication();
+    }
+  };
+
+  window.renderAdminApplicants = function() {
+    const appsObj = getStoredApplications();
+    const appList = Object.values(appsObj);
+    const searchVal = (document.getElementById('admin-search-input')?.value || '').trim().toLowerCase();
+
+    const approvedCount = appList.filter(a => a.status === 'APPROVED').length;
+    const declinedCount = appList.filter(a => a.status === 'DECLINED').length;
+    const pendingCount = appList.length - approvedCount - declinedCount;
+
+    const statsContainer = document.getElementById('admin-stats-container');
+    if (statsContainer) {
+      statsContainer.innerHTML = `
+        <div style="background:#f8fafc; padding:10px 14px; border-radius:8px; border:1px solid #e2e8f0;">
+          <span style="font-size:11px; color:#64748b; text-transform:uppercase; font-weight:700;">Total Applicants</span>
+          <p style="font-size:20px; font-weight:800; margin:2px 0 0; color:#0f172a;">${appList.length}</p>
+        </div>
+        <div style="background:#fefce8; padding:10px 14px; border-radius:8px; border:1px solid #fef08a;">
+          <span style="font-size:11px; color:#854d0e; text-transform:uppercase; font-weight:700;">Pending Review</span>
+          <p style="font-size:20px; font-weight:800; margin:2px 0 0; color:#b45309;">${pendingCount}</p>
+        </div>
+        <div style="background:#f0fdf4; padding:10px 14px; border-radius:8px; border:1px solid #bbf7d0;">
+          <span style="font-size:11px; color:#166534; text-transform:uppercase; font-weight:700;">Accepted (Approved)</span>
+          <p style="font-size:20px; font-weight:800; margin:2px 0 0; color:#15803d;">${approvedCount}</p>
+        </div>
+        <div style="background:#fef2f2; padding:10px 14px; border-radius:8px; border:1px solid #fecaca;">
+          <span style="font-size:11px; color:#991b1b; text-transform:uppercase; font-weight:700;">Declined</span>
+          <p style="font-size:20px; font-weight:800; margin:2px 0 0; color:#b91c1c;">${declinedCount}</p>
+        </div>
+      `;
+    }
+
+    let filtered = appList;
+    if (currentAdminFilter === 'PENDING') {
+      filtered = filtered.filter(a => a.status !== 'APPROVED' && a.status !== 'DECLINED');
+    } else if (currentAdminFilter === 'APPROVED') {
+      filtered = filtered.filter(a => a.status === 'APPROVED');
+    } else if (currentAdminFilter === 'DECLINED') {
+      filtered = filtered.filter(a => a.status === 'DECLINED');
+    }
+
+    if (searchVal) {
+      filtered = filtered.filter(a =>
+        (a.name || '').toLowerCase().includes(searchVal) ||
+        (a.code || '').toLowerCase().includes(searchVal) ||
+        (a.barangay || '').toLowerCase().includes(searchVal) ||
+        (a.school || '').toLowerCase().includes(searchVal)
+      );
+    }
+
+    const tbody = document.getElementById('admin-table-body');
+    if (!tbody) return;
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="5" style="padding:32px 14px; text-align:center; color:#64748b;">
+            <p style="margin:0; font-weight:600;">No applicants found matching this filter.</p>
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = filtered.map(app => {
+      const isApproved = app.status === 'APPROVED';
+      const isDeclined = app.status === 'DECLINED';
+      const isPending = !isApproved && !isDeclined;
+
+      let badgeHtml = '';
+      if (isApproved) {
+        badgeHtml = `<span style="display:inline-flex; align-items:center; gap:4px; background:#dcfce7; color:#15803d; border:1px solid #bbf7d0; padding:3px 9px; border-radius:99px; font-size:11px; font-weight:700;">✓ Accepted</span>`;
+      } else if (isDeclined) {
+        badgeHtml = `<span style="display:inline-flex; align-items:center; gap:4px; background:#fee2e2; color:#b91c1c; border:1px solid #fca5a5; padding:3px 9px; border-radius:99px; font-size:11px; font-weight:700;">✕ Declined</span>`;
+      } else {
+        badgeHtml = `<span style="display:inline-flex; align-items:center; gap:4px; background:#fef3c7; color:#92400e; border:1px solid #fde68a; padding:3px 9px; border-radius:99px; font-size:11px; font-weight:700;">⏳ Pending</span>`;
+      }
+
+      return `
+        <tr style="border-bottom:1px solid #f1f5f9;">
+          <td style="padding:12px 14px;">
+            <strong style="display:block; color:#0f172a;">${escapeHtml(app.name || 'Applicant')}</strong>
+            <span style="font-family:monospace; color:#2563eb; font-size:11px; font-weight:700;">${escapeHtml(app.code || '')}</span>
+            <span style="color:#94a3b8; font-size:11px; margin-left:6px;">· Brgy. ${escapeHtml(app.barangay || 'Poblacion')}</span>
+          </td>
+          <td style="padding:12px 14px;">
+            <div style="color:#1e293b; font-weight:600;">${escapeHtml(app.school || 'Bulacan State University')}</div>
+            <div style="color:#64748b; font-size:11px;">${escapeHtml(app.program || 'Tulong-Dunong')}</div>
+          </td>
+          <td style="padding:12px 14px;">
+            <div style="color:#0f172a; font-weight:600;">${app.annualHouseholdIncome ? '₱' + Number(app.annualHouseholdIncome).toLocaleString() + '/yr' : 'Under ₱144k/yr'}</div>
+            <div style="color:#64748b; font-size:11px;">${app.circumstance === '4ps' ? '✓ 4Ps Beneficiary' : (app.stage || 'Submitted')}</div>
+          </td>
+          <td style="padding:12px 14px;">
+            ${badgeHtml}
+          </td>
+          <td style="padding:12px 14px; text-align:right;">
+            <div style="display:flex; gap:6px; justify-content:flex-end; align-items:center;">
+              <button
+                type="button"
+                onclick="window.adminApprove('${escapeHtml(app.code)}')"
+                ${isApproved ? 'disabled' : ''}
+                style="padding:5px 10px; border-radius:5px; border:none; background:${isApproved ? '#e2e8f0' : '#15803d'}; color:${isApproved ? '#94a3b8' : '#fff'}; font-weight:700; font-size:11px; cursor:${isApproved ? 'default' : 'pointer'}; display:inline-flex; align-items:center; gap:4px;"
+                title="Accept applicant for scholarship grant"
+              >
+                ✓ Accept
+              </button>
+              <button
+                type="button"
+                onclick="window.adminDecline('${escapeHtml(app.code)}')"
+                ${isDeclined ? 'disabled' : ''}
+                style="padding:5px 10px; border-radius:5px; border:none; background:${isDeclined ? '#e2e8f0' : '#b91c1c'}; color:${isDeclined ? '#94a3b8' : '#fff'}; font-weight:700; font-size:11px; cursor:${isDeclined ? 'default' : 'pointer'}; display:inline-flex; align-items:center; gap:4px;"
+                title="Decline applicant"
+              >
+                ✕ Decline
+              </button>
+              ${!isPending ? `
+                <button
+                  type="button"
+                  onclick="window.adminReset('${escapeHtml(app.code)}')"
+                  style="padding:5px 8px; border-radius:5px; border:1px solid #cbd5e1; background:#fff; color:#64748b; font-size:10px; font-weight:600; cursor:pointer;"
+                  title="Reset status back to pending"
+                >
+                  Reset
+                </button>
+              ` : ''}
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  };
+
   window.trackApplication = function() {
-    const code = (document.getElementById('track-input').value || '').trim();
+    const code = (document.getElementById('track-input').value || '').trim().toUpperCase();
     if (!code) {
       window.notify("Please enter a reference code.");
       return;
     }
 
+    const apps = getStoredApplications();
+    const app = apps[code] || {
+      code: code,
+      name: "Student Applicant",
+      barangay: "Bulakan",
+      school: "Bulacan State University",
+      program: "Tulong-Dunong (AY 2026–2027)",
+      status: "SUBMITTED",
+      stage: "Submitted",
+      date: "Sep 05",
+      notes: "Verification in progress. Awaiting LGU officer review.",
+      disbursement: "Pending municipal committee approval"
+    };
+
     const container = document.getElementById('track-result-container');
-    const formatted = escapeHtml(code.toUpperCase());
+    const formatted = escapeHtml(code);
+    const isApproved = app.status === 'APPROVED';
+    const isDeclined = app.status === 'DECLINED';
+
+    let statusPill = `<span style="background:#fef3c7; color:#92400e; border:1px solid #fde68a; padding:4px 10px; border-radius:99px; font-weight:700; font-size:11px;">IN REVIEW</span>`;
+    if (isApproved) {
+      statusPill = `<span style="background:#dcfce7; color:#15803d; border:1px solid #bbf7d0; padding:4px 10px; border-radius:99px; font-weight:700; font-size:11px;">✓ ACCEPTED (APPROVED)</span>`;
+    } else if (isDeclined) {
+      statusPill = `<span style="background:#fee2e2; color:#b91c1c; border:1px solid #fca5a5; padding:4px 10px; border-radius:99px; font-weight:700; font-size:11px;">✕ APPLICATION DECLINED</span>`;
+    }
 
     container.innerHTML = `
       <div class="track-head">
         <div>
-          <small>APPLICATION</small>
+          <small>APPLICATION REFERENCE</small>
           <strong>${formatted}</strong>
         </div>
-        <span>IN REVIEW</span>
+        ${statusPill}
       </div>
 
       <div class="track-progress">
         <div class="done">
           <i><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg></i>
-          <span><b>Submitted</b><small>Sep 04</small></span>
+          <span><b>Submitted</b><small>${escapeHtml(app.date || 'Sep 04')}</small></span>
         </div>
-        <div class="done">
+        <div class="${isDeclined ? '' : 'done'}">
           <i><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg></i>
-          <span><b>Verified</b><small>Sep 05</small></span>
+          <span><b>Verified</b><small>${isDeclined ? 'Halted' : 'Verified'}</small></span>
         </div>
-        <div class="current">
-          <i></i>
-          <span><b>Assessment</b><small>In progress</small></span>
+        <div class="${isApproved ? 'done' : (isDeclined ? '' : 'current')}">
+          <i>${isApproved ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg>' : ''}</i>
+          <span><b>Assessment</b><small>${isApproved ? 'Passed' : (isDeclined ? 'Ineligible' : 'In progress')}</small></span>
         </div>
-        <div class="">
-          <i></i>
-          <span><b>Approval</b><small>Next</small></span>
+        <div class="${isApproved ? 'done' : ''}">
+          <i>${isApproved ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg>' : ''}</i>
+          <span><b>Approval</b><small>${isApproved ? 'Approved' : (isDeclined ? 'Declined' : 'Pending')}</small></span>
         </div>
       </div>
 
       <div class="track-message">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
         <p>
-          <strong>Social worker assessment</strong>
-          <span>Verification complete. Expected municipal board endorsement within 24 hours.</span>
+          <strong>${escapeHtml(app.name || 'Applicant')} (${escapeHtml(app.barangay || 'Bulakan')})</strong>
+          <span>${escapeHtml(app.notes || 'Verification in progress.')}</span>
         </p>
       </div>
 
       <div style="margin-top:16px; padding:12px 16px; background:#faf8f5; border:1px solid var(--line); border-radius:4px; font-size:11px; display:flex; justify-content:space-between; align-items:center;">
         <div>
-          <span style="color:var(--muted); text-transform:uppercase; font-size:9px; font-weight:700;">Grant Type</span>
-          <p style="font-weight:700; color:var(--ink); margin:0;">Tulong-Dunong (AY 2026–2027)</p>
+          <span style="color:var(--muted); text-transform:uppercase; font-size:9px; font-weight:700;">Grant &amp; Institution</span>
+          <p style="font-weight:700; color:var(--ink); margin:0;">${escapeHtml(app.program || 'Tulong-Dunong')} — ${escapeHtml(app.school || 'Bulacan State University')}</p>
         </div>
         <div style="text-align:right;">
-          <span style="color:var(--muted); text-transform:uppercase; font-size:9px; font-weight:700;">Disbursement Window</span>
-          <p style="font-weight:700; color:var(--accent); margin:0;">October 15–20, 2026 via Landbank</p>
+          <span style="color:var(--muted); text-transform:uppercase; font-size:9px; font-weight:700;">Disbursement Status</span>
+          <p style="font-weight:700; color:${isApproved ? '#15803d' : (isDeclined ? '#b91c1c' : 'var(--accent)')}; margin:0;">${escapeHtml(app.disbursement || 'Pending approval')}</p>
         </div>
       </div>
     `;
@@ -5685,6 +6077,35 @@ footer button:hover {
     if (!window.validateStep(4)) return;
 
     const genCode = "ISKO-BUL-" + Math.floor(1000 + Math.random() * 9000);
+    const newRecord = {
+      id: genCode,
+      code: genCode,
+      name: formData.name || "Student Applicant",
+      studentId: formData.studentId || "2026-" + Math.floor(10000 + Math.random() * 90000),
+      barangay: formData.barangay || "Poblacion",
+      phone: formData.phone || "0917-000-0000",
+      email: currentUser ? currentUser.email : "student@bulakan.gov.ph",
+      school: formData.school || "Bulacan State University (BulSU)",
+      course: formData.course || "BS Information Technology",
+      yearLevel: formData.yearLevel || "1st Year",
+      gpa: formData.gpa || "1.75",
+      income: formData.income || "under12",
+      annualHouseholdIncome: formData.income === "under12" ? 48000 : 96000,
+      circumstance: formData.circumstance || "4ps",
+      program: formData.program || "Tulong-Dunong Grant",
+      date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit' }),
+      status: "SUBMITTED",
+      stage: "Submitted",
+      notes: "Application received. Initial document verification is queued with MSWDO scholarship officers.",
+      disbursement: "Pending municipal committee approval"
+    };
+
+    const apps = getStoredApplications();
+    apps[genCode] = newRecord;
+    try {
+      localStorage.setItem('iskofund_portal_apps', JSON.stringify(apps));
+    } catch(e) {}
+
     const body = document.getElementById('modal-body-container');
     const actions = document.getElementById('modal-footer-actions');
     actions.style.display = 'none';

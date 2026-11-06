@@ -19,7 +19,7 @@ import {
   X
 } from 'lucide-react';
 import '../../styles/figma-portal.css';
-import { saveApplication, getApplicationByTrackingCode, subscribeToApplications } from '../../services/databaseService';
+import { saveApplication, getApplicationByTrackingCode, subscribeToApplications, updateApplicationStatus } from '../../services/databaseService';
 import { registerWithFirebase, loginWithFirebase, logoutUser, subscribeToAuth } from '../../services/authService';
 
 const ICON_MAP = {
@@ -220,6 +220,75 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
   const [trackResult, setTrackResult] = useState(false);
   const [activeTrackedApp, setActiveTrackedApp] = useState(null);
   const [trackNotFound, setTrackNotFound] = useState(false);
+  const [adminPanelOpen, setAdminPanelOpen] = useState(false);
+  const [adminFilter, setAdminFilter] = useState('ALL');
+  const [adminQuery, setAdminQuery] = useState('');
+
+  const handleAdminApprove = async (appCode) => {
+    const updates = {
+      status: 'APPROVED',
+      stage: 'Approved',
+      notes: 'Application approved by Municipal Aid Committee. Scholarship grant allocation confirmed.',
+      disbursement: '₱5,000 / semester — Scheduled for payout'
+    };
+    setSavedApplications(prev => {
+      const updated = {
+        ...prev,
+        [appCode]: { ...prev[appCode], ...updates }
+      };
+      try { localStorage.setItem('iskofund_portal_apps', JSON.stringify(updated)); } catch {}
+      return updated;
+    });
+    if (activeTrackedApp && activeTrackedApp.code === appCode) {
+      setActiveTrackedApp(prev => ({ ...prev, ...updates }));
+    }
+    await updateApplicationStatus(appCode, updates);
+    notify(`Application ${appCode} accepted and approved!`);
+  };
+
+  const handleAdminDecline = async (appCode) => {
+    const updates = {
+      status: 'DECLINED',
+      stage: 'Declined',
+      notes: 'Application review concluded: Allocation capacity reached or criteria not met.',
+      disbursement: 'Not eligible for this cycle'
+    };
+    setSavedApplications(prev => {
+      const updated = {
+        ...prev,
+        [appCode]: { ...prev[appCode], ...updates }
+      };
+      try { localStorage.setItem('iskofund_portal_apps', JSON.stringify(updated)); } catch {}
+      return updated;
+    });
+    if (activeTrackedApp && activeTrackedApp.code === appCode) {
+      setActiveTrackedApp(prev => ({ ...prev, ...updates }));
+    }
+    await updateApplicationStatus(appCode, updates);
+    notify(`Application ${appCode} declined.`);
+  };
+
+  const handleAdminReset = async (appCode) => {
+    const updates = {
+      status: 'SUBMITTED',
+      stage: 'Submitted',
+      notes: 'Application received. Initial document verification is queued with MSWDO scholarship officers.',
+      disbursement: 'Pending municipal committee approval'
+    };
+    setSavedApplications(prev => {
+      const updated = {
+        ...prev,
+        [appCode]: { ...prev[appCode], ...updates }
+      };
+      try { localStorage.setItem('iskofund_portal_apps', JSON.stringify(updated)); } catch {}
+      return updated;
+    });
+    if (activeTrackedApp && activeTrackedApp.code === appCode) {
+      setActiveTrackedApp(prev => ({ ...prev, ...updates }));
+    }
+    await updateApplicationStatus(appCode, updates);
+    notify(`Application ${appCode} reset to pending review.`);
+  };
 
   const [files, setFiles] = useState({});
   const [language, setLanguage] = useState("English");
@@ -818,6 +887,26 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
         <div className="wrap utility-inner">
           <span>{isFilipino ? "Republika ng Pilipinas · Bayan ng Bulakan" : "Republic of the Philippines · Municipality of Bulakan"}</span>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <button
+              onClick={() => setAdminPanelOpen(true)}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 5,
+                background: 'rgba(30, 58, 138, 0.08)',
+                color: '#1e3a8a',
+                border: '1px solid rgba(30, 58, 138, 0.25)',
+                padding: '3px 10px',
+                borderRadius: 4,
+                fontSize: 11,
+                fontWeight: 700,
+                cursor: 'pointer'
+              }}
+              title="LGU Aid Officer Review Desk"
+            >
+              <ShieldCheck size={12} />
+              <span>Admin Panel</span>
+            </button>
             <button onClick={() => setLanguage(l => l === "English" ? "Filipino" : "English")}>
               {language === "English" ? "English / Filipino" : "Filipino / English"}
             </button>
@@ -2196,6 +2285,289 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
                   }}
                 >
                   Submit feedback
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* LGU Admin Review & Decision Desk Modal */}
+      {adminPanelOpen && (
+        <div
+          className="evaluator-modal-backdrop open"
+          onClick={(e) => { if (e.target === e.currentTarget) setAdminPanelOpen(false); }}
+        >
+          <div className="evaluator-modal" style={{ maxWidth: 880, width: '92%' }}>
+            <div className="eval-header" style={{ background: '#1e3a8a', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <span style={{ fontSize: 24 }}>🏛️</span>
+                <div>
+                  <h3 style={{ margin: 0, fontSize: 16, color: '#fff' }}>LGU Aid Officer — Applicant Review Desk</h3>
+                  <p style={{ margin: '2px 0 0', fontSize: 11, color: '#bfdbfe' }}>Bayan ng Bulakan · MSWDO Scholarship Management</p>
+                </div>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                {onSwitchToAdmin && (
+                  <button
+                    onClick={() => { setAdminPanelOpen(false); onSwitchToAdmin(); }}
+                    style={{
+                      background: 'rgba(255,255,255,0.15)', color: '#fff', border: '1px solid rgba(255,255,255,0.3)',
+                      padding: '5px 12px', borderRadius: 6, fontSize: 11, fontWeight: 700, cursor: 'pointer'
+                    }}
+                  >
+                    Open Optimizer Dashboard →
+                  </button>
+                )}
+                <button
+                  onClick={() => setAdminPanelOpen(false)}
+                  style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+                  aria-label="Close modal"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+            </div>
+
+            <div className="eval-body" style={{ padding: 20 }}>
+              {/* Stats overview */}
+              {(() => {
+                const appList = Object.values(savedApplications || {});
+                const approvedCount = appList.filter(a => a.status === 'APPROVED' || a.adminStatus === 'Approved').length;
+                const declinedCount = appList.filter(a => a.status === 'DECLINED' || a.adminStatus === 'Rejected').length;
+                const pendingCount = appList.length - approvedCount - declinedCount;
+
+                return (
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginBottom: 16 }}>
+                    <div style={{ background: '#f8fafc', padding: '10px 14px', borderRadius: 8, border: '1px solid #e2e8f0' }}>
+                      <span style={{ fontSize: 11, color: '#64748b', textTransform: 'uppercase', fontWeight: 700 }}>Total Applicants</span>
+                      <p style={{ fontSize: 20, fontWeight: 800, margin: '2px 0 0', color: '#0f172a' }}>{appList.length}</p>
+                    </div>
+                    <div style={{ background: '#fefce8', padding: '10px 14px', borderRadius: 8, border: '1px solid #fef08a' }}>
+                      <span style={{ fontSize: 11, color: '#854d0e', textTransform: 'uppercase', fontWeight: 700 }}>Pending Review</span>
+                      <p style={{ fontSize: 20, fontWeight: 800, margin: '2px 0 0', color: '#b45309' }}>{pendingCount}</p>
+                    </div>
+                    <div style={{ background: '#f0fdf4', padding: '10px 14px', borderRadius: 8, border: '1px solid #bbf7d0' }}>
+                      <span style={{ fontSize: 11, color: '#166534', textTransform: 'uppercase', fontWeight: 700 }}>Accepted (Approved)</span>
+                      <p style={{ fontSize: 20, fontWeight: 800, margin: '2px 0 0', color: '#15803d' }}>{approvedCount}</p>
+                    </div>
+                    <div style={{ background: '#fef2f2', padding: '10px 14px', borderRadius: 8, border: '1px solid #fecaca' }}>
+                      <span style={{ fontSize: 11, color: '#991b1b', textTransform: 'uppercase', fontWeight: 700 }}>Declined</span>
+                      <p style={{ fontSize: 20, fontWeight: 800, margin: '2px 0 0', color: '#b91c1c' }}>{declinedCount}</p>
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* Toolbar */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10, marginBottom: 14, flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', gap: 6, background: '#f1f5f9', padding: 3, borderRadius: 6 }}>
+                  {[
+                    { id: 'ALL', label: 'All' },
+                    { id: 'PENDING', label: 'Pending' },
+                    { id: 'APPROVED', label: 'Accepted' },
+                    { id: 'DECLINED', label: 'Declined' }
+                  ].map(tab => (
+                    <button
+                      key={tab.id}
+                      onClick={() => setAdminFilter(tab.id)}
+                      style={{
+                        padding: '5px 12px', borderRadius: 5, border: 'none',
+                        background: adminFilter === tab.id ? '#fff' : 'transparent',
+                        color: adminFilter === tab.id ? '#1e3a8a' : '#64748b',
+                        fontWeight: adminFilter === tab.id ? 700 : 500,
+                        fontSize: 12, cursor: 'pointer',
+                        boxShadow: adminFilter === tab.id ? '0 1px 3px rgba(0,0,0,0.1)' : 'none'
+                      }}
+                    >
+                      {tab.label}
+                    </button>
+                  ))}
+                </div>
+                <div style={{ position: 'relative', minWidth: 260 }}>
+                  <input
+                    type="text"
+                    value={adminQuery}
+                    onChange={e => setAdminQuery(e.target.value)}
+                    placeholder="Search applicant name or tracking code..."
+                    style={{
+                      width: '100%', padding: '7px 12px', fontSize: 12,
+                      borderRadius: 6, border: '1px solid #cbd5e1', outline: 'none'
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Applicants list */}
+              <div style={{ maxHeight: 420, overflowY: 'auto', border: '1px solid #e2e8f0', borderRadius: 8 }}>
+                {(() => {
+                  let list = Object.values(savedApplications || {});
+                  if (adminFilter === 'PENDING') {
+                    list = list.filter(a => a.status !== 'APPROVED' && a.status !== 'DECLINED');
+                  } else if (adminFilter === 'APPROVED') {
+                    list = list.filter(a => a.status === 'APPROVED' || a.adminStatus === 'Approved');
+                  } else if (adminFilter === 'DECLINED') {
+                    list = list.filter(a => a.status === 'DECLINED' || a.adminStatus === 'Rejected');
+                  }
+
+                  if (adminQuery.trim()) {
+                    const q = adminQuery.toLowerCase();
+                    list = list.filter(a =>
+                      (a.name || '').toLowerCase().includes(q) ||
+                      (a.code || '').toLowerCase().includes(q) ||
+                      (a.barangay || '').toLowerCase().includes(q) ||
+                      (a.school || '').toLowerCase().includes(q)
+                    );
+                  }
+
+                  if (list.length === 0) {
+                    return (
+                      <div style={{ padding: '36px 20px', textAlign: 'center', color: '#64748b' }}>
+                        <p style={{ margin: 0, fontWeight: 600 }}>No applicants matching this view.</p>
+                        <small>Submitted applications from students will appear here in real-time.</small>
+                      </div>
+                    );
+                  }
+
+                  return (
+                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12, textAlign: 'left' }}>
+                      <thead>
+                        <tr style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0', color: '#475569', fontSize: 11, textTransform: 'uppercase' }}>
+                          <th style={{ padding: '10px 14px' }}>Applicant</th>
+                          <th style={{ padding: '10px 14px' }}>School &amp; Program</th>
+                          <th style={{ padding: '10px 14px' }}>Income / Circumstance</th>
+                          <th style={{ padding: '10px 14px' }}>Status</th>
+                          <th style={{ padding: '10px 14px', textAlign: 'right' }}>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {list.map(app => {
+                          const isApproved = app.status === 'APPROVED' || app.adminStatus === 'Approved';
+                          const isDeclined = app.status === 'DECLINED' || app.adminStatus === 'Rejected';
+                          const isPending = !isApproved && !isDeclined;
+
+                          return (
+                            <tr key={app.code} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                              <td style={{ padding: '12px 14px' }}>
+                                <strong style={{ display: 'block', color: '#0f172a' }}>{app.name || 'Applicant'}</strong>
+                                <span style={{ fontFamily: 'monospace', color: '#2563eb', fontSize: 11, fontWeight: 700 }}>{app.code}</span>
+                                <span style={{ color: '#94a3b8', fontSize: 11, marginLeft: 6 }}>· Brgy. {app.barangay || 'Poblacion'}</span>
+                              </td>
+                              <td style={{ padding: '12px 14px' }}>
+                                <div style={{ color: '#1e293b', fontWeight: 600 }}>{app.school || 'Bulacan State University'}</div>
+                                <div style={{ color: '#64748b', fontSize: 11 }}>{app.program || 'Tulong-Dunong'}</div>
+                              </td>
+                              <td style={{ padding: '12px 14px' }}>
+                                <div style={{ color: '#0f172a', fontWeight: 600 }}>
+                                  {app.annualHouseholdIncome ? `₱${Number(app.annualHouseholdIncome).toLocaleString()}/yr` : (app.income === 'under12' ? '< ₱144,000/yr' : 'Standard')}
+                                </div>
+                                <div style={{ color: '#64748b', fontSize: 11 }}>{app.circumstance === '4ps' ? '✓ 4Ps Beneficiary' : (app.stage || 'Submitted')}</div>
+                              </td>
+                              <td style={{ padding: '12px 14px' }}>
+                                {isApproved && (
+                                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, background: '#dcfce7', color: '#15803d', border: '1px solid #bbf7d0', padding: '3px 9px', borderRadius: 99, fontSize: 11, fontWeight: 700 }}>
+                                    ✓ Accepted
+                                  </span>
+                                )}
+                                {isDeclined && (
+                                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, background: '#fee2e2', color: '#b91c1c', border: '1px solid #fca5a5', padding: '3px 9px', borderRadius: 99, fontSize: 11, fontWeight: 700 }}>
+                                    ✕ Declined
+                                  </span>
+                                )}
+                                {isPending && (
+                                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, background: '#fef3c7', color: '#92400e', border: '1px solid #fde68a', padding: '3px 9px', borderRadius: 99, fontSize: 11, fontWeight: 700 }}>
+                                    ⏳ Pending
+                                  </span>
+                                )}
+                              </td>
+                              <td style={{ padding: '12px 14px', textAlign: 'right' }}>
+                                <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end', alignItems: 'center' }}>
+                                  <button
+                                    onClick={() => handleAdminApprove(app.code)}
+                                    disabled={isApproved}
+                                    style={{
+                                      padding: '5px 10px',
+                                      borderRadius: 5,
+                                      border: 'none',
+                                      background: isApproved ? '#e2e8f0' : '#15803d',
+                                      color: isApproved ? '#94a3b8' : '#fff',
+                                      fontWeight: 700,
+                                      fontSize: 11,
+                                      cursor: isApproved ? 'default' : 'pointer',
+                                      display: 'inline-flex',
+                                      alignItems: 'center',
+                                      gap: 4
+                                    }}
+                                    title="Accept & approve applicant for scholarship aid"
+                                  >
+                                    ✓ Accept
+                                  </button>
+                                  <button
+                                    onClick={() => handleAdminDecline(app.code)}
+                                    disabled={isDeclined}
+                                    style={{
+                                      padding: '5px 10px',
+                                      borderRadius: 5,
+                                      border: 'none',
+                                      background: isDeclined ? '#e2e8f0' : '#b91c1c',
+                                      color: isDeclined ? '#94a3b8' : '#fff',
+                                      fontWeight: 700,
+                                      fontSize: 11,
+                                      cursor: isDeclined ? 'default' : 'pointer',
+                                      display: 'inline-flex',
+                                      alignItems: 'center',
+                                      gap: 4
+                                    }}
+                                    title="Decline applicant"
+                                  >
+                                    ✕ Decline
+                                  </button>
+                                  {!isPending && (
+                                    <button
+                                      onClick={() => handleAdminReset(app.code)}
+                                      style={{
+                                        padding: '5px 8px',
+                                        borderRadius: 5,
+                                        border: '1px solid #cbd5e1',
+                                        background: '#fff',
+                                        color: '#64748b',
+                                        fontSize: 10,
+                                        fontWeight: 600,
+                                        cursor: 'pointer'
+                                      }}
+                                      title="Reset back to pending"
+                                    >
+                                      Reset
+                                    </button>
+                                  )}
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  );
+                })()}
+              </div>
+
+              <div style={{ marginTop: 14, display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 11, color: '#64748b' }}>
+                <span>💡 Actions sync in real time to student tracking reference codes.</span>
+                <button
+                  type="button"
+                  onClick={() => setAdminPanelOpen(false)}
+                  style={{
+                    padding: '7px 16px',
+                    borderRadius: 6,
+                    background: '#1e3a8a',
+                    color: '#fff',
+                    border: 'none',
+                    fontWeight: 700,
+                    fontSize: 12,
+                    cursor: 'pointer'
+                  }}
+                >
+                  Close Desk
                 </button>
               </div>
             </div>

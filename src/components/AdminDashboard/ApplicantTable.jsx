@@ -53,15 +53,35 @@ export default function ApplicantTable({ cohort, onUpdateStudentStatus }) {
   };
 
   const handleApprove = (s) => {
-    onUpdateStudentStatus(s.id, { adminStatus: 'Approved', awarded: true });
+    onUpdateStudentStatus(s.id, {
+      adminStatus: 'Approved',
+      status: 'APPROVED',
+      stage: 'Approved',
+      awarded: true,
+      notes: 'Application approved by Municipal Aid Committee. Scholarship grant allocation confirmed.',
+      disbursement: '₱5,000 / semester — Scheduled for payout'
+    });
     toast.success(`${s.name} approved for financial aid.`);
   };
   const handleReject = (s) => {
-    onUpdateStudentStatus(s.id, { adminStatus: 'Rejected', awarded: false });
-    toast.error(`${s.name} application rejected.`);
+    onUpdateStudentStatus(s.id, {
+      adminStatus: 'Rejected',
+      status: 'DECLINED',
+      stage: 'Declined',
+      awarded: false,
+      notes: 'Application review concluded: Allocation capacity reached or criteria not met.',
+      disbursement: 'Not eligible for this cycle'
+    });
+    toast.error(`${s.name} application declined.`);
   };
   const handlePend = (s) => {
-    onUpdateStudentStatus(s.id, { adminStatus: 'Pending Review' });
+    onUpdateStudentStatus(s.id, {
+      adminStatus: 'Pending Review',
+      status: 'SUBMITTED',
+      stage: 'Submitted',
+      notes: 'Application received. Initial document verification is queued with MSWDO scholarship officers.',
+      disbursement: 'Pending municipal committee approval'
+    });
     toast.info(`${s.name} set to Pending Review.`);
   };
 
@@ -276,12 +296,26 @@ export default function ApplicantTable({ cohort, onUpdateStudentStatus }) {
               </div>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 18, paddingTop: 12, borderTop: `1px solid ${colors.slate100}` }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 18, paddingTop: 12, borderTop: `1px solid ${colors.slate100}` }}>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <button
+                  onClick={() => { handleApprove(selectedStudent); setSelectedStudent(null); }}
+                  style={{ padding: '6px 14px', background: colors.success, color: '#fff', border: 'none', borderRadius: 6, fontSize: 12, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 5 }}
+                >
+                  ✓ Accept Aid
+                </button>
+                <button
+                  onClick={() => { handleReject(selectedStudent); setSelectedStudent(null); }}
+                  style={{ padding: '6px 14px', background: colors.error, color: '#fff', border: 'none', borderRadius: 6, fontSize: 12, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 5 }}
+                >
+                  ✕ Decline
+                </button>
+              </div>
               <button
                 onClick={() => setSelectedStudent(null)}
-                style={{ padding: '6px 14px', background: colors.accent, color: '#fff', border: 'none', borderRadius: 6, fontSize: 12, fontWeight: 700, cursor: 'pointer' }}
+                style={{ padding: '6px 14px', background: colors.slate100, color: colors.slate700, border: 'none', borderRadius: 6, fontSize: 12, fontWeight: 700, cursor: 'pointer' }}
               >
-                Close Profile
+                Close
               </button>
             </div>
           </div>
