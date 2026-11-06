@@ -3724,6 +3724,308 @@ footer button:hover {
   }
 }
 
+/* Full-Screen Split Auth Gateway Matching Theme */
+.auth-gateway-wrap {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: #ffffff;
+  display: flex;
+  overflow: hidden;
+  font-family: var(--sans);
+}
+.auth-gateway-wrap.hidden {
+  display: none !important;
+}
+.auth-gateway-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+.auth-gateway-left {
+  width: 44%;
+  min-width: 420px;
+  max-width: 540px;
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 40px 48px;
+  box-sizing: border-box;
+  background: #ffffff;
+  border-right: 1px solid var(--line);
+}
+.auth-gateway-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.gw-brand-crest {
+  width: 38px;
+  height: 38px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gw-brand-text strong {
+  display: block;
+  font-size: 16px;
+  font-family: var(--serif);
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+.gw-brand-text small {
+  display: block;
+  font-size: 9.5px;
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.auth-gateway-content {
+  margin: auto 0;
+  width: 100%;
+  max-width: 380px;
+}
+.auth-gw-title {
+  font-family: var(--sans);
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--ink);
+  margin: 0 0 6px 0;
+  letter-spacing: -0.02em;
+}
+.auth-gw-subtitle {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.45;
+  margin: 0 0 24px 0;
+}
+.gw-error-box {
+  background: #fef2f2;
+  border: 1px solid #f87171;
+  color: #991b1b;
+  padding: 9px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+.gw-input-group {
+  position: relative;
+  margin-bottom: 14px;
+}
+.gw-input-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+.gw-input {
+  width: 100%;
+  padding: 12px 14px 12px 42px;
+  border: 1px solid #dbe2ea;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 13.5px;
+  color: var(--ink);
+  background: #fff;
+  box-sizing: border-box;
+  transition: all 0.15s ease;
+  outline: none;
+}
+.gw-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(138, 3, 3, 0.1);
+}
+.gw-submit-btn {
+  width: 100%;
+  padding: 13px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s, transform 0.05s;
+  box-shadow: 0 4px 14px rgba(138, 3, 3, 0.22);
+  margin-top: 4px;
+}
+.gw-submit-btn:hover {
+  background: #6e0202;
+}
+.gw-submit-btn:active {
+  transform: scale(0.99);
+}
+.gw-forgot-wrap {
+  text-align: right;
+  margin-top: 10px;
+}
+.gw-forgot-link {
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: none;
+}
+.gw-forgot-link:hover {
+  text-decoration: underline;
+}
+.gw-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0;
+  color: #94a3b8;
+  font-size: 12px;
+}
+.gw-divider::before,
+.gw-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #e2e8f0;
+}
+.gw-divider span {
+  padding: 0 12px;
+  font-weight: 600;
+}
+.gw-social-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+.gw-social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid #dbe2ea;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #334155;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.gw-social-btn:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+.gw-switch-wrap {
+  text-align: center;
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 12px;
+}
+.gw-switch-link {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-weight: 800;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 4px;
+  font-family: inherit;
+  font-size: 13px;
+}
+.gw-switch-link:hover {
+  text-decoration: underline;
+}
+.gw-guest-wrap {
+  text-align: center;
+  margin-top: 10px;
+}
+.gw-guest-link {
+  background: none;
+  border: none;
+  color: #64748b;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: color 0.15s;
+}
+.gw-guest-link:hover {
+  color: var(--accent);
+}
+
+/* Right Panel: Quote & Visual Image */
+.auth-gateway-right {
+  flex: 1;
+  position: relative;
+  background-color: #f8fafc;
+  background-image: 
+    linear-gradient(180deg, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0.1) 100%),
+    url('https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?auto=format&fit=crop&w=1600&q=80');
+  background-size: cover;
+  background-position: center bottom;
+  display: flex;
+  flex-direction: column;
+  padding: 60px 70px;
+  box-sizing: border-box;
+}
+.gw-quote-overlay {
+  max-width: 580px;
+  margin-left: auto;
+  text-align: right;
+}
+.gw-quote-text {
+  margin: 0 0 10px 0;
+  font-family: var(--serif);
+  font-size: 32px;
+  line-height: 1.35;
+  color: #1e293b;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+.gw-quote-highlight {
+  color: var(--accent);
+  font-weight: 700;
+}
+.gw-quote-author {
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
+  color: #475569;
+  margin-bottom: 8px;
+  font-style: normal;
+}
+.gw-quote-sub {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+@media (max-width: 880px) {
+  .auth-gateway-right {
+    display: none;
+  }
+  .auth-gateway-left {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    border-right: none;
+    padding: 30px 24px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -3740,6 +4042,115 @@ footer button:hover {
   </style>
 </head>
 <body>
+
+  <!-- ========================================== -->
+  <!-- FULL-SCREEN SPLIT AUTHENTICATION GATEWAY   -->
+  <!-- ========================================== -->
+  <div id="auth-gateway-screen" class="auth-gateway-wrap hidden">
+    <div class="auth-gateway-container">
+      
+      <!-- LEFT PANEL: Log In / Sign Up Form -->
+      <div class="auth-gateway-left">
+        <div class="auth-gateway-brand">
+          <div class="gw-brand-crest">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="gw-brand-text">
+            <strong>IskoFund</strong>
+            <small>BAYAN NG BULAKAN</small>
+          </div>
+        </div>
+
+        <div class="auth-gateway-content">
+          <h2 id="gw-auth-title" class="auth-gw-title">Log In</h2>
+          <p id="gw-auth-subtitle" class="auth-gw-subtitle">Welcome back. Enter your student account details to continue.</p>
+
+          <div id="gw-auth-error" class="gw-error-box" style="display:none;"></div>
+
+          <form id="gw-auth-form" onsubmit="window.handleGatewayAuthSubmit(event)">
+            <!-- Name field (Sign Up only) -->
+            <div class="gw-input-group" id="gw-field-name" style="display:none;">
+              <span class="gw-input-icon">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </span>
+              <input type="text" id="gw-input-name" class="gw-input" placeholder="Full name (e.g. Juan Dela Cruz)">
+            </div>
+
+            <!-- Email field -->
+            <div class="gw-input-group" id="gw-field-email">
+              <span class="gw-input-icon">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              </span>
+              <input type="email" id="gw-input-email" class="gw-input" placeholder="Your email" required>
+            </div>
+
+            <!-- Password field -->
+            <div class="gw-input-group" id="gw-field-password">
+              <span class="gw-input-icon">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21 2-2 2m-1.5 1.5L14 9l-1.5-1.5-2 2 1.5 1.5L3 20a1.5 1.5 0 0 0 2 2l9-9 1.5 1.5 2-2-1.5-1.5 3.5-3.5a1.5 1.5 0 0 0 0-2Z"/></svg>
+              </span>
+              <input type="password" id="gw-input-password" class="gw-input" placeholder="Password" required>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" id="gw-submit-btn" class="gw-submit-btn">
+              Log In
+            </button>
+          </form>
+
+          <div class="gw-forgot-wrap" id="gw-forgot-wrap">
+            <a href="javascript:void(0)" onclick="window.handleGatewayForgot()" class="gw-forgot-link">Forgot password?</a>
+          </div>
+
+          <!-- Divider -->
+          <div class="gw-divider">
+            <span>or</span>
+          </div>
+
+          <!-- Social Buttons -->
+          <div class="gw-social-row">
+            <button type="button" class="gw-social-btn" onclick="window.loginWithProvider('Google')">
+              <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+              <span>Google</span>
+            </button>
+
+            <button type="button" class="gw-social-btn" onclick="window.loginWithProvider('Facebook')">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              <span>Facebook</span>
+            </button>
+          </div>
+
+          <!-- Mode Switcher -->
+          <div class="gw-switch-wrap">
+            <span id="gw-switch-prompt">Don't have an account?</span>
+            <button type="button" id="gw-switch-btn" onclick="window.toggleGatewayMode()" class="gw-switch-link">
+              Sign Up
+            </button>
+          </div>
+
+          <!-- Guest Explore link -->
+          <div class="gw-guest-wrap">
+            <button type="button" onclick="window.dismissGatewayAsGuest()" class="gw-guest-link">
+              Explore portal as guest →
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT PANEL: Quote & Aesthetic Study Image -->
+      <div class="auth-gateway-right">
+        <div class="gw-quote-overlay">
+          <blockquote class="gw-quote-text">
+            “The future belongs to those who <span class="gw-quote-highlight">believe in the beauty of their dreams</span>.”
+          </blockquote>
+          <cite class="gw-quote-author">— Eleanor Roosevelt</cite>
+          <div class="gw-quote-sub">Tanggapan ng Punong Bayan • IskoFund Bulakan Scholarship Support</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <div id="root">
     <div class="site">
       <!-- Skip link -->
@@ -4715,16 +5126,140 @@ footer button:hover {
     currentUser = null;
   }
 
-  // Student Auth Functions
+  // Student Auth Functions & Gateway
+  let gwAuthMode = 'login';
+
+  window.setGatewayAuthMode = function(mode) {
+    gwAuthMode = mode;
+    const isLogin = mode === 'login';
+    const titleEl = document.getElementById('gw-auth-title');
+    const subEl = document.getElementById('gw-auth-subtitle');
+    const nameField = document.getElementById('gw-field-name');
+    const submitBtn = document.getElementById('gw-submit-btn');
+    const forgotWrap = document.getElementById('gw-forgot-wrap');
+    const switchPrompt = document.getElementById('gw-switch-prompt');
+    const switchBtn = document.getElementById('gw-switch-btn');
+    const errBox = document.getElementById('gw-auth-error');
+
+    if (titleEl) titleEl.textContent = isLogin ? 'Log In' : 'Sign Up';
+    if (subEl) subEl.textContent = isLogin 
+      ? 'Welcome back. Enter your student account details to continue.' 
+      : 'Create your IskoFund account to apply and track municipal scholarships.';
+    if (nameField) nameField.style.display = isLogin ? 'none' : 'block';
+    if (submitBtn) submitBtn.textContent = isLogin ? 'Log In' : 'Sign Up';
+    if (forgotWrap) forgotWrap.style.display = isLogin ? 'block' : 'none';
+    if (switchPrompt) switchPrompt.textContent = isLogin ? "Don't have an account?" : "Already have an account?";
+    if (switchBtn) switchBtn.textContent = isLogin ? 'Sign Up' : 'Log In';
+    if (errBox) {
+      errBox.style.display = 'none';
+      errBox.textContent = '';
+    }
+  };
+
+  window.toggleGatewayMode = function() {
+    window.setGatewayAuthMode(gwAuthMode === 'login' ? 'signup' : 'login');
+  };
+
+  window.handleGatewayAuthSubmit = function(e) {
+    if (e) e.preventDefault();
+    const errBox = document.getElementById('gw-auth-error');
+    const emailInput = document.getElementById('gw-input-email');
+    const pwdInput = document.getElementById('gw-input-password');
+    const nameInput = document.getElementById('gw-input-name');
+
+    const email = (emailInput?.value || '').trim();
+    const password = (pwdInput?.value || '').trim();
+    const name = (nameInput?.value || '').trim();
+
+    if (gwAuthMode === 'signup' && (!name || name.length < 2)) {
+      if (errBox) {
+        errBox.textContent = 'Please enter your full name (at least 2 characters).';
+        errBox.style.display = 'block';
+      }
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
+      if (errBox) {
+        errBox.textContent = 'Please enter a valid email address.';
+        errBox.style.display = 'block';
+      }
+      return;
+    }
+
+    if (!password || password.length < 6) {
+      if (errBox) {
+        errBox.textContent = 'Password must be at least 6 characters.';
+        errBox.style.display = 'block';
+      }
+      return;
+    }
+
+    const resolvedName = gwAuthMode === 'signup' && name 
+      ? name 
+      : (email.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) || "Juan Dela Cruz");
+
+    const user = {
+      name: resolvedName,
+      email: email,
+      phone: "0917 123 4567",
+      isLoggedIn: true
+    };
+
+    localStorage.setItem('iskofund_user', JSON.stringify(user));
+    currentUser = user;
+    window.updateHeaderAuthState();
+    window.dismissGatewayAsGuest();
+
+    if (gwAuthMode === 'login') {
+      window.notify(`Welcome back, ${user.name}!`);
+    } else {
+      window.notify(`Account created successfully for ${user.name}!`);
+    }
+  };
+
+  window.loginWithProvider = function(provider) {
+    window.authWithSocial(provider);
+    window.dismissGatewayAsGuest();
+  };
+
+  window.handleGatewayForgot = function() {
+    const emailInput = document.getElementById('gw-input-email');
+    const email = (emailInput?.value || '').trim();
+    if (!email) {
+      window.notify("Please enter your email above and click 'Forgot password?' again.");
+      if (emailInput) emailInput.focus();
+    } else {
+      window.notify(`Password reset instructions sent to ${email}.`);
+    }
+  };
+
+  window.dismissGatewayAsGuest = function() {
+    const gw = document.getElementById('auth-gateway-screen');
+    if (gw) gw.classList.add('hidden');
+    document.body.style.overflow = '';
+  };
+
   window.openAuthModal = function(mode = 'login') {
+    const gw = document.getElementById('auth-gateway-screen');
+    if (gw) {
+      window.setGatewayAuthMode(mode);
+      gw.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      return;
+    }
     window.setAuthMode(mode);
     window.setAuthChannel('email');
-    document.getElementById('auth-modal-backdrop').classList.add('open');
+    const modal = document.getElementById('auth-modal-backdrop');
+    if (modal) modal.classList.add('open');
     document.body.style.overflow = 'hidden';
   };
 
   window.closeAuthModal = function() {
-    document.getElementById('auth-modal-backdrop').classList.remove('open');
+    window.dismissGatewayAsGuest();
+    const modal = document.getElementById('auth-modal-backdrop');
+    if (modal) modal.classList.remove('open');
     document.body.style.overflow = '';
   };
 
@@ -4902,6 +5437,12 @@ footer button:hover {
     currentUser = null;
     window.updateHeaderAuthState();
     window.notify("Logged out successfully.");
+    const gw = document.getElementById('auth-gateway-screen');
+    if (gw) {
+      window.setGatewayAuthMode('login');
+      gw.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
   };
 
   window.updateHeaderAuthState = function() {
@@ -6601,6 +7142,20 @@ footer button:hover {
     window.renderAnnouncements();
     window.renderFaqs();
     window.updateEstimator();
+
+    // Show split-screen login/signup gateway on first visit if user is not logged in
+    try {
+      const savedUser = localStorage.getItem('iskofund_user');
+      const isAuth = savedUser && JSON.parse(savedUser)?.isLoggedIn;
+      const gw = document.getElementById('auth-gateway-screen');
+      if (gw && !isAuth) {
+        gw.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+    } catch (e) {
+      const gw = document.getElementById('auth-gateway-screen');
+      if (gw) gw.classList.remove('hidden');
+    }
   });
   </script>
 </body>

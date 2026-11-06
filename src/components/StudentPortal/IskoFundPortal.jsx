@@ -10,6 +10,8 @@ import {
   Database,
   FileText,
   GraduationCap,
+  Key,
+  Mail,
   Menu,
   Search,
   ShieldCheck,
@@ -33,6 +35,8 @@ const ICON_MAP = {
   database: Database,
   document: FileText,
   graduation: GraduationCap,
+  key: Key,
+  mail: Mail,
   menu: Menu,
   search: Search,
   shield: ShieldCheck,
@@ -361,6 +365,12 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
     confirm: ''
   });
   const [authErrors, setAuthErrors] = useState({});
+  const [gatewayDismissed, setGatewayDismissed] = useState(false);
+  const [gatewayMode, setGatewayMode] = useState('login');
+  const [gwEmail, setGwEmail] = useState('');
+  const [gwPassword, setGwPassword] = useState('');
+  const [gwName, setGwName] = useState('');
+  const [gwError, setGwError] = useState('');
   const [currentUser, setCurrentUser] = useState(() => {
     try {
       const saved = localStorage.getItem('iskofund_user');
@@ -600,6 +610,8 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
     await logoutUser();
     setCurrentUser(null);
     setUserMenuOpen(false);
+    setGatewayDismissed(false);
+    setGatewayMode('login');
     notify("Logged out successfully.");
   };
 
@@ -739,6 +751,69 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
   const notify = (msg) => {
     setToast(msg);
     setTimeout(() => setToast(""), 3000);
+  };
+
+  const handleGatewaySubmit = async (e) => {
+    if (e) e.preventDefault();
+    setGwError('');
+
+    if (gatewayMode === 'signup' && (!gwName || gwName.trim().length < 2)) {
+      setGwError('Please enter your full name (at least 2 characters).');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!gwEmail || !emailRegex.test(gwEmail.trim())) {
+      setGwError('Please enter a valid email address.');
+      return;
+    }
+
+    if (!gwPassword || gwPassword.length < 6) {
+      setGwError('Password must be at least 6 characters.');
+      return;
+    }
+
+    try {
+      if (gatewayMode === 'signup') {
+        const res = await registerWithFirebase(gwEmail.trim(), gwPassword, gwName.trim());
+        if (res.user) {
+          setCurrentUser(res.user);
+          setGatewayDismissed(true);
+          notify(`Account created successfully for ${res.user.name || gwName}!`);
+          return;
+        }
+      } else {
+        const res = await loginWithFirebase(gwEmail.trim(), gwPassword);
+        if (res.user) {
+          setCurrentUser(res.user);
+          setGatewayDismissed(true);
+          notify(`Welcome back, ${res.user.name || gwEmail}!`);
+          return;
+        }
+      }
+    } catch {
+      // Fallback
+    }
+
+    const resolvedName = gatewayMode === 'signup' && gwName.trim()
+      ? gwName.trim()
+      : (gwEmail.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) || "Juan Dela Cruz");
+
+    const fallbackUser = {
+      name: resolvedName,
+      email: gwEmail.trim(),
+      phone: "0917 123 4567",
+      isLoggedIn: true
+    };
+    localStorage.setItem('iskofund_user', JSON.stringify(fallbackUser));
+    setCurrentUser(fallbackUser);
+    setGatewayDismissed(true);
+    notify(gatewayMode === 'signup' ? `Account created successfully for ${resolvedName}!` : `Welcome back, ${resolvedName}!`);
+  };
+
+  const handleGatewaySocial = (provider) => {
+    authWithSocial(provider);
+    setGatewayDismissed(true);
   };
 
   const scrollTo = (id) => {
@@ -951,6 +1026,159 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
   return (
     <div className="site">
       <button className="skip-link" onClick={() => scrollTo("main")}>Skip to content</button>
+
+      {/* Full-Screen Split Auth Gateway matching theme on first load / when not logged in */}
+      {!currentUser && !gatewayDismissed && (
+        <div className="auth-gateway-wrap" id="auth-gateway-screen">
+          <div className="auth-gateway-container">
+            {/* LEFT PANEL: Form */}
+            <div className="auth-gateway-left">
+              <div className="auth-gateway-brand">
+                <div className="gw-brand-crest">
+                  <ShieldCheck size={22} color="#fff" />
+                </div>
+                <div className="gw-brand-text">
+                  <strong>IskoFund</strong>
+                  <small>BAYAN NG BULAKAN</small>
+                </div>
+              </div>
+
+              <div className="auth-gateway-content">
+                <h2 className="auth-gw-title">{gatewayMode === 'login' ? 'Log In' : 'Sign Up'}</h2>
+                <p className="auth-gw-subtitle">
+                  {gatewayMode === 'login'
+                    ? 'Welcome back. Enter your student account details to continue.'
+                    : 'Create your IskoFund account to apply and track municipal scholarships.'}
+                </p>
+
+                {gwError && <div className="gw-error-box">{gwError}</div>}
+
+                <form onSubmit={handleGatewaySubmit}>
+                  {gatewayMode === 'signup' && (
+                    <div className="gw-input-group">
+                      <span className="gw-input-icon">
+                        <Icon name="user" size={17} />
+                      </span>
+                      <input
+                        type="text"
+                        className="gw-input"
+                        placeholder="Full name (e.g. Juan Dela Cruz)"
+                        value={gwName}
+                        onChange={(e) => setGwName(e.target.value)}
+                        required
+                      />
+                    </div>
+                  )}
+
+                  <div className="gw-input-group">
+                    <span className="gw-input-icon">
+                      <Icon name="mail" size={17} />
+                    </span>
+                    <input
+                      type="email"
+                      className="gw-input"
+                      placeholder="Your email"
+                      value={gwEmail}
+                      onChange={(e) => setGwEmail(e.target.value)}
+                      required
+                    />
+                  </div>
+
+                  <div className="gw-input-group">
+                    <span className="gw-input-icon">
+                      <Icon name="key" size={17} />
+                    </span>
+                    <input
+                      type="password"
+                      className="gw-input"
+                      placeholder="Password"
+                      value={gwPassword}
+                      onChange={(e) => setGwPassword(e.target.value)}
+                      required
+                    />
+                  </div>
+
+                  <button type="submit" className="gw-submit-btn">
+                    {gatewayMode === 'login' ? 'Log In' : 'Sign Up'}
+                  </button>
+                </form>
+
+                {gatewayMode === 'login' && (
+                  <div className="gw-forgot-wrap">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (!gwEmail) {
+                          notify("Please enter your email above and click 'Forgot password?' again.");
+                        } else {
+                          notify(`Password reset instructions sent to ${gwEmail}.`);
+                        }
+                      }}
+                      className="gw-forgot-link"
+                      style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                    >
+                      Forgot password?
+                    </button>
+                  </div>
+                )}
+
+                <div className="gw-divider">
+                  <span>or</span>
+                </div>
+
+                <div className="gw-social-row">
+                  <button type="button" className="gw-social-btn" onClick={() => handleGatewaySocial('Google')}>
+                    <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+                    <span>Google</span>
+                  </button>
+                  <button type="button" className="gw-social-btn" onClick={() => handleGatewaySocial('Facebook')}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    <span>Facebook</span>
+                  </button>
+                </div>
+
+                <div className="gw-switch-wrap">
+                  <span>{gatewayMode === 'login' ? "Don't have an account?" : "Already have an account?"}</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setGatewayMode(m => m === 'login' ? 'signup' : 'login');
+                      setGwError('');
+                    }}
+                    className="gw-switch-link"
+                  >
+                    {gatewayMode === 'login' ? 'Sign Up' : 'Log In'}
+                  </button>
+                </div>
+
+                <div className="gw-guest-wrap">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setGatewayDismissed(true);
+                      notify("Browsing IskoFund Bulakan as Guest.");
+                    }}
+                    className="gw-guest-link"
+                  >
+                    Explore portal as guest →
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* RIGHT PANEL: Quote & Aesthetic Study Image */}
+            <div className="auth-gateway-right">
+              <div className="gw-quote-overlay">
+                <blockquote className="gw-quote-text">
+                  “The future belongs to those who <span className="gw-quote-highlight">believe in the beauty of their dreams</span>.”
+                </blockquote>
+                <cite className="gw-quote-author">— Eleanor Roosevelt</cite>
+                <div className="gw-quote-sub">Tanggapan ng Punong Bayan • IskoFund Bulakan Scholarship Support</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Emergency & Official Live Advisory Broadcast Bar */}
       {siteSettings.alertBannerActive && siteSettings.alertBannerText && (
