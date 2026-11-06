@@ -3743,15 +3743,15 @@ footer button:hover {
   height: 100%;
 }
 .auth-gateway-left {
-  width: 44%;
-  min-width: 420px;
-  max-width: 540px;
+  width: 33%;
+  min-width: 360px;
+  max-width: 440px;
   height: 100%;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 40px 48px;
+  padding: 38px 42px;
   box-sizing: border-box;
   background: #ffffff;
   border-right: 1px solid var(--line);
@@ -3760,52 +3760,53 @@ footer button:hover {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 .gw-brand-crest {
   width: 38px;
   height: 38px;
-  background: var(--accent);
+  background: #8a0303;
   color: #fff;
-  border-radius: 6px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 2px 8px rgba(138, 3, 3, 0.25);
 }
 .gw-brand-text strong {
   display: block;
-  font-size: 16px;
-  font-family: var(--serif);
+  font-size: 17px;
+  font-family: var(--sans);
+  font-weight: 800;
   color: var(--ink);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
   line-height: 1.1;
 }
 .gw-brand-text small {
   display: block;
-  font-size: 9.5px;
+  font-size: 9px;
   font-weight: 800;
-  color: var(--accent);
+  color: #8a0303;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 .auth-gateway-content {
   margin: auto 0;
   width: 100%;
-  max-width: 380px;
 }
 .auth-gw-title {
   font-family: var(--sans);
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 800;
-  color: var(--ink);
+  color: #111827;
   margin: 0 0 6px 0;
   letter-spacing: -0.02em;
 }
 .auth-gw-subtitle {
   font-size: 13px;
-  color: var(--muted);
+  color: #64748b;
   line-height: 1.45;
-  margin: 0 0 24px 0;
+  margin: 0 0 22px 0;
 }
 .gw-error-box {
   background: #fef2f2;
@@ -3819,7 +3820,7 @@ footer button:hover {
 }
 .gw-input-group {
   position: relative;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 .gw-input-icon {
   position: absolute;
@@ -3834,37 +3835,37 @@ footer button:hover {
 .gw-input {
   width: 100%;
   padding: 12px 14px 12px 42px;
-  border: 1px solid #dbe2ea;
+  border: 1px solid #d1d5db;
   border-radius: 8px;
   font-family: inherit;
   font-size: 13.5px;
-  color: var(--ink);
+  color: #111827;
   background: #fff;
   box-sizing: border-box;
   transition: all 0.15s ease;
   outline: none;
 }
 .gw-input:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(138, 3, 3, 0.1);
+  border-color: #8a0303;
+  box-shadow: 0 0 0 3px rgba(138, 3, 3, 0.12);
 }
 .gw-submit-btn {
   width: 100%;
   padding: 13px;
   border: none;
   border-radius: 8px;
-  background: var(--accent);
+  background: #8a0303;
   color: #fff;
   font-family: inherit;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
   transition: background-color 0.15s, transform 0.05s;
-  box-shadow: 0 4px 14px rgba(138, 3, 3, 0.22);
+  box-shadow: 0 4px 14px rgba(138, 3, 3, 0.28);
   margin-top: 4px;
 }
 .gw-submit-btn:hover {
-  background: #6e0202;
+  background: #730202;
 }
 .gw-submit-btn:active {
   transform: scale(0.99);
@@ -3875,36 +3876,38 @@ footer button:hover {
 }
 .gw-forgot-link {
   font-size: 12px;
-  color: var(--accent);
-  font-weight: 700;
+  color: #1f2937;
+  font-weight: 600;
   text-decoration: none;
+  transition: color 0.15s;
 }
 .gw-forgot-link:hover {
+  color: #8a0303;
   text-decoration: underline;
 }
 .gw-divider {
   display: flex;
   align-items: center;
   text-align: center;
-  margin: 20px 0;
-  color: #94a3b8;
+  margin: 18px 0;
+  color: #9ca3af;
   font-size: 12px;
 }
 .gw-divider::before,
 .gw-divider::after {
   content: '';
   flex: 1;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e5e7eb;
 }
 .gw-divider span {
   padding: 0 12px;
-  font-weight: 600;
+  font-weight: 500;
 }
 .gw-social-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-  margin-bottom: 22px;
+  margin-bottom: 20px;
 }
 .gw-social-btn {
   display: flex;
@@ -3912,30 +3915,30 @@ footer button:hover {
   justify-content: center;
   gap: 8px;
   padding: 10px;
-  border: 1px solid #dbe2ea;
+  border: 1px solid #d1d5db;
   border-radius: 8px;
   background: #ffffff;
-  color: #334155;
+  color: #374151;
   font-family: inherit;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 .gw-social-btn:hover {
-  background: #f8fafc;
-  border-color: #cbd5e1;
+  background: #f9fafb;
+  border-color: #9ca3af;
 }
 .gw-switch-wrap {
   text-align: center;
   font-size: 13px;
-  color: #64748b;
-  margin-bottom: 12px;
+  color: #4b5563;
+  margin-bottom: 10px;
 }
 .gw-switch-link {
   background: none;
   border: none;
-  color: var(--accent);
+  color: #8a0303;
   font-weight: 800;
   cursor: pointer;
   padding: 0;
@@ -3948,12 +3951,12 @@ footer button:hover {
 }
 .gw-guest-wrap {
   text-align: center;
-  margin-top: 10px;
+  margin-top: 6px;
 }
 .gw-guest-link {
   background: none;
   border: none;
-  color: #64748b;
+  color: #6b7280;
   font-size: 12.5px;
   font-weight: 600;
   cursor: pointer;
@@ -3961,56 +3964,63 @@ footer button:hover {
   transition: color 0.15s;
 }
 .gw-guest-link:hover {
-  color: var(--accent);
+  color: #8a0303;
 }
 
 /* Right Panel: Quote & Visual Image */
 .auth-gateway-right {
   flex: 1;
   position: relative;
-  background-color: #f8fafc;
+  background-color: #f1f5f9;
   background-image: 
-    linear-gradient(180deg, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0.1) 100%),
-    url('https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?auto=format&fit=crop&w=1600&q=80');
+    linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(0,0,0,0.05) 50%, rgba(0,0,0,0.2) 100%),
+    url('assets/study-graduation-bg.jpg'),
+    url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1600&q=80');
   background-size: cover;
-  background-position: center bottom;
+  background-position: center center;
   display: flex;
   flex-direction: column;
-  padding: 60px 70px;
+  padding: 48px 56px;
   box-sizing: border-box;
 }
 .gw-quote-overlay {
   max-width: 580px;
   margin-left: auto;
   text-align: right;
+  backdrop-filter: blur(3px);
+  background: rgba(255, 255, 255, 0.45);
+  padding: 18px 24px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
 }
 .gw-quote-text {
   margin: 0 0 10px 0;
-  font-family: var(--serif);
-  font-size: 32px;
+  font-family: var(--sans);
+  font-size: 28px;
   line-height: 1.35;
   color: #1e293b;
-  font-weight: 400;
-  letter-spacing: -0.01em;
+  font-weight: 600;
+  letter-spacing: -0.02em;
 }
 .gw-quote-highlight {
-  color: var(--accent);
-  font-weight: 700;
+  color: #8a0303;
+  font-weight: 800;
 }
 .gw-quote-author {
   display: block;
-  font-size: 15px;
+  font-size: 13.5px;
   font-weight: 700;
-  color: #475569;
-  margin-bottom: 8px;
+  color: #334155;
+  margin-bottom: 6px;
   font-style: normal;
 }
 .gw-quote-sub {
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: #64748b;
 }
 
 @media (max-width: 880px) {
@@ -4131,7 +4141,7 @@ footer button:hover {
           <!-- Guest Explore link -->
           <div class="gw-guest-wrap">
             <button type="button" onclick="window.dismissGatewayAsGuest()" class="gw-guest-link">
-              Explore portal as guest →
+              Explore portal as guest <span style="font-size:10px; margin-left:3px;">⌵</span>
             </button>
           </div>
         </div>
@@ -4141,10 +4151,11 @@ footer button:hover {
       <div class="auth-gateway-right">
         <div class="gw-quote-overlay">
           <blockquote class="gw-quote-text">
-            “The future belongs to those who <span class="gw-quote-highlight">believe in the beauty of their dreams</span>.”
+            “The future belongs to those who<br>
+            <span class="gw-quote-highlight">believe in the beauty of their dreams.”</span>
           </blockquote>
           <cite class="gw-quote-author">— Eleanor Roosevelt</cite>
-          <div class="gw-quote-sub">Tanggapan ng Punong Bayan • IskoFund Bulakan Scholarship Support</div>
+          <div class="gw-quote-sub">TANGGAPAN NG PUNONG BAYAN • ISKOFUND BULAKAN SCHOLARSHIP SUPPORT</div>
         </div>
       </div>
 

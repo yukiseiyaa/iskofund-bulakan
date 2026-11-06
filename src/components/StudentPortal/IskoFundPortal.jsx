@@ -1160,7 +1160,7 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
                     }}
                     className="gw-guest-link"
                   >
-                    Explore portal as guest →
+                    Explore portal as guest <span style={{ fontSize: 10, marginLeft: 3 }}>⌵</span>
                   </button>
                 </div>
               </div>
@@ -1170,10 +1170,11 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
             <div className="auth-gateway-right">
               <div className="gw-quote-overlay">
                 <blockquote className="gw-quote-text">
-                  “The future belongs to those who <span className="gw-quote-highlight">believe in the beauty of their dreams</span>.”
+                  “The future belongs to those who<br />
+                  <span className="gw-quote-highlight">believe in the beauty of their dreams.”</span>
                 </blockquote>
                 <cite className="gw-quote-author">— Eleanor Roosevelt</cite>
-                <div className="gw-quote-sub">Tanggapan ng Punong Bayan • IskoFund Bulakan Scholarship Support</div>
+                <div className="gw-quote-sub">TANGGAPAN NG PUNONG BAYAN • ISKOFUND BULAKAN SCHOLARSHIP SUPPORT</div>
               </div>
             </div>
           </div>
