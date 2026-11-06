@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IskoFund Bulakan — LGU Aid Officer Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --ink: #111315;
+      --ink-soft: #25282d;
+      --paper: #f4f2ed;
+      --white: #ffffff;
+      --muted: #4b5058;
+      --muted-light: #6a707a;
+      --line: #deddd9;
+      --line-strong: #c8c7c2;
+      --accent: #8a0303;
+      --accent-dark: #620101;
+      --accent-light: #faeaea;
+      --success: #19633e;
+      --success-bg: #eaf4ee;
+      --warning: #9a6700;
+      --warning-bg: #fef8e7;
+
+      color: var(--ink);
+      background: var(--paper);
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .wrap {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 24px;
+      width: 100%;
+    }
+
+    /* Utility Bar */
+    .utility {
+      background: var(--ink);
+      color: #e2e8f0;
+      font-size: 12px;
+      font-weight: 500;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 7px 0;
+    }
+    .utility-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+    .utility-inner a {
+      color: #cbd5e1;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.15s;
+    }
+    .utility-inner a:hover {
+      color: #fff;
+    }
+
+    /* Header */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(244, 242, 237, 0.94);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line);
+    }
+    .header-inner {
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .identity {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+      color: var(--ink);
+    }
+    .identity .mark {
+      width: 44px;
+      height: 44px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(138, 3, 3, 0.25);
+    }
+    .identity-text strong {
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      display: block;
+      line-height: 1.1;
+    }
+    .identity-text small {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      text-transform: uppercase;
+      display: block;
+      margin-top: 2px;
+    }
+
+    .portal-tag {
+      background: var(--accent-light);
+      color: var(--accent);
+      border: 1px solid rgba(138, 3, 3, 0.2);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 99px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Buttons */
+    .btn {
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+    .btn-light {
+      background: var(--white);
+      border-color: var(--line);
+      color: var(--ink);
+    }
+    .btn-light:hover {
+      background: #faf8f5;
+      border-color: var(--line-strong);
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: var(--accent-dark);
+    }
+    .btn-success {
+      background: var(--success);
+      color: #fff;
+    }
+    .btn-success:hover {
+      background: #144e31;
+    }
+    .btn-danger {
+      background: #dc2626;
+      color: #fff;
+    }
+    .btn-danger:hover {
+      background: #b91c1c;
+    }
+
+    /* Page Hero / Desk Header */
+    .desk-hero {
+      padding: 36px 0 28px;
+    }
+    .desk-hero-card {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 32px 36px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+      position: relative;
+    }
+    .desk-eyebrow {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .desk-hero h1 {
+      font-size: clamp(26px, 3.2vw, 36px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.18;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .desk-hero h1 em {
+      font-family: 'Newsreader', Georgia, serif;
+      font-style: italic;
+      font-weight: 500;
+      color: var(--accent);
+    }
+    .desk-hero p {
+      color: var(--muted);
+      font-size: 14px;
+      max-width: 680px;
+    }
+
+    /* Metric Cards */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .metric-card {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 18px 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+      transition: transform 0.15s, border-color 0.15s;
+    }
+    .metric-card:hover {
+      border-color: var(--line-strong);
+    }
+    .metric-card small {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .metric-card strong {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      display: block;
+      line-height: 1;
+    }
+    .metric-card .desc {
+      font-size: 11px;
+      color: var(--muted-light);
+      margin-top: 4px;
+    }
+
+    /* Table Section */
+    .desk-section {
+      padding: 0 0 60px;
+    }
+    .desk-panel {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+    }
+
+    /* Controls Bar */
+    .desk-controls {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      background: #faf9f6;
+    }
+    .filter-tabs {
+      display: flex;
+      background: var(--paper);
+      padding: 4px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      gap: 4px;
+    }
+    .filter-tab {
+      background: transparent;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .filter-tab.active {
+      background: var(--white);
+      color: var(--ink);
+      font-weight: 700;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .filter-tab span {
+      margin-left: 4px;
+      padding: 1px 6px;
+      background: rgba(0,0,0,0.06);
+      border-radius: 99px;
+      font-size: 10px;
+    }
+
+    .search-box {
+      position: relative;
+      flex: 1;
+      max-width: 320px;
+    }
+    .search-box svg {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted-light);
+    }
+    .search-box input {
+      width: 100%;
+      padding: 8px 12px 8px 34px;
+      font-size: 13px;
+      font-family: inherit;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--white);
+      color: var(--ink);
+      outline: none;
+    }
+    .search-box input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(138, 3, 3, 0.08);
+    }
+
+    /* Table Styles */
+    .table-container {
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13px;
+    }
+    thead th {
+      background: #f8fafc;
+      padding: 12px 18px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-bottom: 1px solid var(--line);
+      white-space: nowrap;
+    }
+    tbody tr {
+      border-bottom: 1px solid var(--line);
+      transition: background 0.1s;
+    }
+    tbody tr:hover {
+      background: #faf8f5;
+    }
+    tbody td {
+      padding: 14px 18px;
+      vertical-align: middle;
+    }
+
+    /* Status Badges */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 99px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .status-approved {
+      background: var(--success-bg);
+      color: var(--success);
+      border: 1px solid #c8e6d4;
+    }
+    .status-declined {
+      background: var(--accent-light);
+      color: var(--accent);
+      border: 1px solid #f2c7c7;
+    }
+    .status-pending {
+      background: var(--warning-bg);
+      color: var(--warning);
+      border: 1px solid #f5e4b6;
+    }
+
+    /* Action Buttons in Table */
+    .table-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      justify-content: flex-end;
+    }
+    .btn-act {
+      padding: 5px 11px;
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.12s;
+    }
+    .btn-act-accept {
+      background: var(--success);
+      color: #fff;
+    }
+    .btn-act-accept:hover {
+      background: #144e31;
+    }
+    .btn-act-decline {
+      background: #fff;
+      border-color: #fca5a5;
+      color: #dc2626;
+    }
+    .btn-act-decline:hover {
+      background: #fee2e2;
+    }
+    .btn-act-view {
+      background: #fff;
+      border-color: var(--line);
+      color: var(--ink);
+    }
+    .btn-act-view:hover {
+      background: #f1f5f9;
+      border-color: var(--line-strong);
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(16, 18, 21, 0.75);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      place-items: center;
+      padding: 20px;
+    }
+    .modal-backdrop.open {
+      display: grid;
+      animation: fadeIn 0.15s ease;
+    }
+    .dossier-box {
+      background: #fff;
+      border-radius: 12px;
+      max-width: 680px;
+      width: 100%;
+      box-shadow: 0 24px 48px rgba(0,0,0,0.3);
+      overflow: hidden;
+      border: 1px solid var(--line);
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .modal-head {
+      background: var(--ink);
+      color: #fff;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .modal-head h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 0;
+    }
+    .modal-head p {
+      font-size: 11px;
+      color: #94a3b8;
+      margin: 2px 0 0;
+    }
+    .modal-head button {
+      background: none;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .modal-body {
+      padding: 24px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .modal-foot {
+      padding: 16px 24px;
+      border-top: 1px solid var(--line);
+      background: #faf9f6;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .dossier-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .dossier-item {
+      background: #faf8f5;
+      padding: 10px 14px;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+    }
+    .dossier-item small {
+      font-size: 10px;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 3px;
+    }
+    .dossier-item strong {
+      font-size: 13px;
+      color: var(--ink);
+      display: block;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--ink);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      gap: 8px;
+      animation: slideUp 0.2s ease;
+    }
+    .toast.show {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideUp {
+      from { transform: translateY(12px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .metrics-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    @media (max-width: 600px) {
+      .metrics-grid {
+        grid-template-columns: 1fr;
+      }
+      .desk-controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .search-box {
+        max-width: 100%;
+      }
+      .dossier-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Utility Bar -->
+  <div class="utility">
+    <div class="wrap utility-inner">
+      <span>Republika ng Pilipinas · Bayan ng Bulakan · Tanggapan ng Punong Bayan</span>
+      <div style="display:flex; align-items:center; gap:16px;">
+        <span style="color:#94a3b8;">MSWDO Scholarship Affairs Desk</span>
+        <a href="/iskofund-bulakan.html" title="Switch to Public Student Portal">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+          Student Portal
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="wrap header-inner">
+      <a href="/admin.html" class="identity">
+        <span class="mark">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </span>
+        <div class="identity-text">
+          <strong>IskoFund</strong>
+          <small>BULAKAN · AID OFFICER DESK</small>
+        </div>
+      </a>
+
+      <div class="header-actions">
+        <span class="portal-tag">
+          <span style="width:6px; height:6px; background:var(--accent); border-radius:50%; display:inline-block;"></span>
+          LGU Officer Console
+        </span>
+        <a href="/iskofund-bulakan.html" class="btn btn-light">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          Open Student Portal
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="wrap">
+    
+    <!-- Desk Banner -->
+    <section class="desk-hero">
+      <div class="desk-hero-card">
+        <div class="desk-eyebrow">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+          Municipal Social Welfare &amp; Development Office · Bulakan
+        </div>
+        <h1>
+          Applicant Review &amp;<br>
+          <em>Grant Allocation Desk.</em>
+        </h1>
+        <p>
+          Evaluate student scholarship applications, verify submitted income documentation, and confirm or decline aid grants for Academic Year 2026–2027. Decisions instantly sync with student tracking codes.
+        </p>
+
+        <!-- Metric Summary Cards -->
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <small>Total Applicants</small>
+            <strong id="metric-total">0</strong>
+            <span class="desc">Active student records</span>
+          </div>
+          <div class="metric-card">
+            <small style="color:var(--warning);">Pending Review</small>
+            <strong id="metric-pending" style="color:var(--warning);">0</strong>
+            <span class="desc">Awaiting decision</span>
+          </div>
+          <div class="metric-card">
+            <small style="color:var(--success);">Approved Grants</small>
+            <strong id="metric-approved" style="color:var(--success);">0</strong>
+            <span class="desc">Accepted for payout</span>
+          </div>
+          <div class="metric-card">
+            <small style="color:var(--accent);">Declined</small>
+            <strong id="metric-declined" style="color:var(--accent);">0</strong>
+            <span class="desc">Ineligible or over quota</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Table Section -->
+    <section class="desk-section">
+      <div class="desk-panel">
+        
+        <!-- Controls Bar -->
+        <div class="desk-controls">
+          <div class="filter-tabs" id="filter-tabs">
+            <button class="filter-tab active" data-filter="ALL" onclick="setFilter('ALL', this)">All Applicants <span id="count-all">0</span></button>
+            <button class="filter-tab" data-filter="PENDING" onclick="setFilter('PENDING', this)">Pending <span id="count-pending">0</span></button>
+            <button class="filter-tab" data-filter="APPROVED" onclick="setFilter('APPROVED', this)">Accepted <span id="count-approved">0</span></button>
+            <button class="filter-tab" data-filter="DECLINED" onclick="setFilter('DECLINED', this)">Declined <span id="count-declined">0</span></button>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:10px; flex:1; justify-content:flex-end;">
+            <div class="search-box">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              <input type="text" id="search-input" placeholder="Search applicant, code, barangay..." oninput="renderTable()">
+            </div>
+            <button class="btn btn-light" onclick="exportData()" title="Download summary report">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Export
+            </button>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Applicant / Reference Code</th>
+                <th>Barangay &amp; Contact</th>
+                <th>College &amp; Course</th>
+                <th>Household Income / Need</th>
+                <th>Current Status</th>
+                <th style="text-align:right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="applicant-tbody">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Applicant Dossier Modal -->
+  <div class="modal-backdrop" id="dossier-modal" onclick="if(event.target===this)closeDossier()">
+    <div class="dossier-box">
+      <div class="modal-head">
+        <div>
+          <h3 id="dossier-name">Applicant Dossier</h3>
+          <p id="dossier-code">Reference Code</p>
+        </div>
+        <button onclick="closeDossier()" aria-label="Close">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 6 12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="dossier-grid">
+          <div class="dossier-item">
+            <small>Full Name</small>
+            <strong id="d-name">—</strong>
+          </div>
+          <div class="dossier-item">
+            <small>Student ID</small>
+            <strong id="d-id">—</strong>
+          </div>
+          <div class="dossier-item">
+            <small>Barangay</small>
+            <strong id="d-barangay">—</strong>
+          </div>
+          <div class="dossier-item">
+            <small>Contact Number</small>
+            <strong id="d-phone">—</strong>
+          </div>
+          <div class="dossier-item" style="grid-column: span 2;">
+            <small>College / University</small>
+            <strong id="d-school">—</strong>
+          </div>
+          <div class="dossier-item" style="grid-column: span 2;">
+            <small>Degree Program / Course</small>
+            <strong id="d-course">—</strong>
+          </div>
+          <div class="dossier-item">
+            <small>Annual Household Income</small>
+            <strong id="d-income">—</strong>
+          </div>
+          <div class="dossier-item">
+            <small>Priority Circumstance</small>
+            <strong id="d-circ">—</strong>
+          </div>
+        </div>
+
+        <div style="background:#faf8f5; border:1px solid var(--line); border-radius:8px; padding:16px; margin-bottom:16px;">
+          <small style="font-size:10px; font-weight:800; text-transform:uppercase; color:var(--muted); letter-spacing:0.06em; display:block; margin-bottom:8px;">Submitted Verification Checklist (4/4)</small>
+          <ul style="font-size:12px; color:var(--ink); padding-left:18px; line-height:1.8;">
+            <li>✓ Certificate of Registration / Enrolment (Bulacan Institution verified)</li>
+            <li>✓ Certified True Copy of Grades / GWA Record</li>
+            <li>✓ Barangay Certificate of Indigency / Proof of Low Income</li>
+            <li>✓ Government-issued Student Identification Card</li>
+          </ul>
+        </div>
+
+        <div style="background:#f1f5f9; border-radius:6px; padding:12px 14px; font-size:12px;">
+          <span style="font-weight:700; color:#334155; display:block; margin-bottom:2px;">Current Assessment Notes:</span>
+          <span id="d-notes" style="color:#64748b;">—</span>
+        </div>
+      </div>
+
+      <div class="modal-foot">
+        <span id="d-status-badge"></span>
+        <div style="display:flex; gap:8px;">
+          <button class="btn btn-success" id="d-btn-accept" onclick="acceptFromDossier()">
+            ✓ Accept &amp; Allocate Aid
+          </button>
+          <button class="btn btn-danger" id="d-btn-decline" onclick="declineFromDossier()">
+            ✕ Decline
+          </button>
+          <button class="btn btn-light" onclick="closeDossier()">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+    <span id="toast-msg">Action completed.</span>
+  </div>
+
+  <script>
+    let activeFilter = 'ALL';
+    let selectedCode = null;
+
+    // Default Seed Applicants if none exist in localStorage
+    const DEFAULT_COHORT = {
+      "ISKO-BUL-8821": {
+        id: "ISKO-BUL-8821",
+        code: "ISKO-BUL-8821",
+        name: "Maria Santos Bautista",
+        studentId: "2026-00412",
+        barangay: "Matungao",
+        phone: "0917-882-1920",
+        school: "Bulacan State University – Meneses Campus",
+        course: "BS Information Technology",
+        annualHouseholdIncome: 72000,
+        program: "Tulong-Dunong (AY 2026–2027)",
+        date: "Sep 04",
+        status: "SUBMITTED",
+        stage: "Submitted",
+        circumstance: "4ps",
+        notes: "Verification in progress. Awaiting LGU officer review.",
+        disbursement: "Pending municipal committee approval"
+      },
+      "ISKO-BUL-4209": {
+        id: "ISKO-BUL-4209",
+        code: "ISKO-BUL-4209",
+        name: "Juan Miguel Dela Cruz",
+        studentId: "2026-00188",
+        barangay: "San Jose",
+        phone: "0918-420-9112",
+        school: "Baliuag University",
+        course: "BS Civil Engineering",
+        annualHouseholdIncome: 84000,
+        program: "Academic Excellence Grant",
+        date: "Sep 05",
+        status: "APPROVED",
+        stage: "Approved",
+        circumstance: "solo_parent",
+        notes: "Application approved by Municipal Aid Committee. Scholarship grant allocation confirmed.",
+        disbursement: "₱5,000 / semester — Scheduled for payout"
+      },
+      "ISKO-BUL-3351": {
+        id: "ISKO-BUL-3351",
+        code: "ISKO-BUL-3351",
+        name: "Bea Carmela Reyes",
+        studentId: "2026-00335",
+        barangay: "Poblacion",
+        phone: "0920-335-1440",
+        school: "Bulacan State University (BulSU)",
+        course: "BS Accountancy",
+        annualHouseholdIncome: 140000,
+        program: "Tulong-Dunong Grant",
+        date: "Sep 06",
+        status: "DECLINED",
+        stage: "Declined",
+        circumstance: "regular",
+        notes: "Application review concluded: Does not meet current allocation quota or qualification criteria.",
+        disbursement: "Not eligible for this cycle"
+      },
+      "ISKO-BUL-5192": {
+        id: "ISKO-BUL-5192",
+        code: "ISKO-BUL-5192",
+        name: "Christian Paul Alcantara",
+        studentId: "2026-00519",
+        barangay: "Bambang",
+        phone: "0928-519-2041",
+        school: "Bulacan Polytechnic College",
+        course: "Associate in Computer Technology",
+        annualHouseholdIncome: 48000,
+        program: "Tulong-Dunong Grant",
+        date: "Sep 07",
+        status: "SUBMITTED",
+        stage: "Submitted",
+        circumstance: "4ps",
+        notes: "Documents complete. High vulnerability tier verified.",
+        disbursement: "Pending municipal committee approval"
+      }
+    };
+
+    function getApplications() {
+      let apps = {};
+      try {
+        const raw = localStorage.getItem('iskofund_portal_apps');
+        if (raw) apps = JSON.parse(raw);
+      } catch (e) {}
+
+      if (!apps || Object.keys(apps).length === 0) {
+        apps = { ...DEFAULT_COHORT };
+        saveApplications(apps);
+      }
+      return apps;
+    }
+
+    function saveApplications(apps) {
+      try {
+        localStorage.setItem('iskofund_portal_apps', JSON.stringify(apps));
+      } catch (e) {}
+    }
+
+    function showToast(msg) {
+      const el = document.getElementById('toast');
+      document.getElementById('toast-msg').textContent = msg;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 3000);
+    }
+
+    function setFilter(filter, btn) {
+      activeFilter = filter;
+      document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderTable();
+    }
+
+    function renderTable() {
+      const apps = getApplications();
+      const list = Object.values(apps);
+      const query = (document.getElementById('search-input')?.value || '').trim().toLowerCase();
+
+      // Update counters
+      const approvedList = list.filter(a => a.status === 'APPROVED');
+      const declinedList = list.filter(a => a.status === 'DECLINED');
+      const pendingList = list.filter(a => a.status !== 'APPROVED' && a.status !== 'DECLINED');
+
+      document.getElementById('metric-total').textContent = list.length;
+      document.getElementById('metric-pending').textContent = pendingList.length;
+      document.getElementById('metric-approved').textContent = approvedList.length;
+      document.getElementById('metric-declined').textContent = declinedList.length;
+
+      document.getElementById('count-all').textContent = list.length;
+      document.getElementById('count-pending').textContent = pendingList.length;
+      document.getElementById('count-approved').textContent = approvedList.length;
+      document.getElementById('count-declined').textContent = declinedList.length;
+
+      // Filter
+      let filtered = list;
+      if (activeFilter === 'PENDING') filtered = pendingList;
+      else if (activeFilter === 'APPROVED') filtered = approvedList;
+      else if (activeFilter === 'DECLINED') filtered = declinedList;
+
+      if (query) {
+        filtered = filtered.filter(a => 
+          (a.name || '').toLowerCase().includes(query) ||
+          (a.code || '').toLowerCase().includes(query) ||
+          (a.barangay || '').toLowerCase().includes(query) ||
+          (a.school || '').toLowerCase().includes(query)
+        );
+      }
+
+      const tbody = document.getElementById('applicant-tbody');
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" style="padding: 40px; text-align: center; color: var(--muted);">
+              <strong>No applicant records found</strong>
+              <p style="font-size:12px; margin-top:4px;">Try selecting another filter or adjusting your search term.</p>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(app => {
+        const isApproved = app.status === 'APPROVED';
+        const isDeclined = app.status === 'DECLINED';
+        const isPending = !isApproved && !isDeclined;
+
+        let badge = '';
+        if (isApproved) {
+          badge = '<span class="status-badge status-approved">✓ Approved</span>';
+        } else if (isDeclined) {
+          badge = '<span class="status-badge status-declined">✕ Declined</span>';
+        } else {
+          badge = '<span class="status-badge status-pending">⏳ Pending Review</span>';
+        }
+
+        const incomeFmt = app.annualHouseholdIncome ? '₱' + Number(app.annualHouseholdIncome).toLocaleString() + '/yr' : 'Under ₱144k/yr';
+        const circTag = app.circumstance === '4ps' ? '· <strong style="color:var(--success);">4Ps Beneficiary</strong>' : '';
+
+        return `
+          <tr>
+            <td>
+              <strong style="display:block; color:var(--ink); font-size:14px;">${escapeHtml(app.name || 'Applicant')}</strong>
+              <span style="font-family:monospace; color:var(--accent); font-weight:700; font-size:11px;">${escapeHtml(app.code)}</span>
+              <span style="color:var(--muted-light); font-size:11px; margin-left:6px;">ID: ${escapeHtml(app.studentId || '—')}</span>
+            </td>
+            <td>
+              <strong style="display:block; color:var(--ink);">Brgy. ${escapeHtml(app.barangay || 'Poblacion')}</strong>
+              <span style="color:var(--muted); font-size:11px;">${escapeHtml(app.phone || '—')}</span>
+            </td>
+            <td>
+              <strong style="display:block; color:var(--ink); max-width:260px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHtml(app.school || 'Bulacan State University')}</strong>
+              <span style="color:var(--muted); font-size:11px;">${escapeHtml(app.course || 'Undergraduate')}</span>
+            </td>
+            <td>
+              <strong style="display:block; color:var(--ink);">${incomeFmt}</strong>
+              <span style="font-size:11px; color:var(--muted);">${circTag || 'Verified resident'}</span>
+            </td>
+            <td>
+              ${badge}
+            </td>
+            <td>
+              <div class="table-actions">
+                <button class="btn-act btn-act-view" onclick="openDossier('${escapeHtml(app.code)}')">
+                  Dossier
+                </button>
+                <button class="btn-act btn-act-accept" onclick="acceptApplicant('${escapeHtml(app.code)}')" ${isApproved ? 'disabled style="opacity:0.4; cursor:default;"' : ''}>
+                  ✓ Accept
+                </button>
+                <button class="btn-act btn-act-decline" onclick="declineApplicant('${escapeHtml(app.code)}')" ${isDeclined ? 'disabled style="opacity:0.4; cursor:default;"' : ''}>
+                  ✕ Decline
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function acceptApplicant(code) {
+      const apps = getApplications();
+      if (!apps[code]) return;
+      apps[code].status = 'APPROVED';
+      apps[code].stage = 'Approved';
+      apps[code].notes = 'Application approved by Municipal Aid Committee. Scholarship grant allocation confirmed.';
+      apps[code].disbursement = '₱5,000 / semester — Scheduled for payout via Landbank';
+      saveApplications(apps);
+      showToast(`Applicant ${code} accepted & approved!`);
+      renderTable();
+    }
+
+    function declineApplicant(code) {
+      const apps = getApplications();
+      if (!apps[code]) return;
+      apps[code].status = 'DECLINED';
+      apps[code].stage = 'Declined';
+      apps[code].notes = 'Application review concluded: Does not meet current allocation quota or qualification criteria.';
+      apps[code].disbursement = 'Not eligible for this cycle';
+      saveApplications(apps);
+      showToast(`Applicant ${code} has been declined.`);
+      renderTable();
+    }
+
+    function openDossier(code) {
+      selectedCode = code;
+      const apps = getApplications();
+      const app = apps[code];
+      if (!app) return;
+
+      document.getElementById('dossier-name').textContent = app.name || 'Applicant Dossier';
+      document.getElementById('dossier-code').textContent = `Reference: ${app.code}`;
+      document.getElementById('d-name').textContent = app.name || '—';
+      document.getElementById('d-id').textContent = app.studentId || '—';
+      document.getElementById('d-barangay').textContent = `Brgy. ${app.barangay || 'Poblacion'}`;
+      document.getElementById('d-phone').textContent = app.phone || '—';
+      document.getElementById('d-school').textContent = app.school || 'Bulacan State University';
+      document.getElementById('d-course').textContent = app.course || 'Undergraduate';
+      document.getElementById('d-income').textContent = app.annualHouseholdIncome ? '₱' + Number(app.annualHouseholdIncome).toLocaleString() + '/yr' : 'Under ₱144,000';
+      document.getElementById('d-circ').textContent = app.circumstance === '4ps' ? '4Ps Beneficiary (Priority Tier)' : 'Standard Residency Verification';
+      document.getElementById('d-notes').textContent = app.notes || 'Verification in progress.';
+
+      const isApproved = app.status === 'APPROVED';
+      const isDeclined = app.status === 'DECLINED';
+      let badgeHtml = '<span class="status-badge status-pending">Pending Review</span>';
+      if (isApproved) badgeHtml = '<span class="status-badge status-approved">✓ Accepted</span>';
+      else if (isDeclined) badgeHtml = '<span class="status-badge status-declined">✕ Declined</span>';
+      document.getElementById('d-status-badge').innerHTML = badgeHtml;
+
+      document.getElementById('d-btn-accept').disabled = isApproved;
+      document.getElementById('d-btn-decline').disabled = isDeclined;
+
+      document.getElementById('dossier-modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDossier() {
+      document.getElementById('dossier-modal').classList.remove('open');
+      document.body.style.overflow = '';
+      selectedCode = null;
+    }
+
+    function acceptFromDossier() {
+      if (selectedCode) {
+        acceptApplicant(selectedCode);
+        closeDossier();
+      }
+    }
+
+    function declineFromDossier() {
+      if (selectedCode) {
+        declineApplicant(selectedCode);
+        closeDossier();
+      }
+    }
+
+    function exportData() {
+      const apps = getApplications();
+      const list = Object.values(apps);
+      const csv = [
+        ['Reference Code', 'Full Name', 'Barangay', 'School', 'Course', 'Income', 'Status'],
+        ...list.map(a => [a.code, a.name, a.barangay, a.school, a.course, a.annualHouseholdIncome || '', a.status])
+      ].map(e => e.map(i => `"${(i || '').toString().replace(/"/g, '""')}"`).join(',')).join('\n');
+
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `IskoFund_Bulakan_Cohort_${Date.now()}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Applicant export downloaded (CSV).');
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    // Initial render
+    window.addEventListener('DOMContentLoaded', () => {
+      renderTable();
+    });
+  </script>
+</body>
+</html>
