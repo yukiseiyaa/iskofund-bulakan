@@ -793,7 +793,47 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
 
   const handleFileUpload = (docName, file) => {
     if (!file) return;
-    setFiles(prev => ({ ...prev, [docName]: { name: file.name, size: file.size } }));
+
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      let fileDataUrl = evt.target.result;
+      if (file.type && file.type.startsWith('image/')) {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const maxDim = 1200;
+          let w = img.width;
+          let h = img.height;
+          if (w > maxDim || h > maxDim) {
+            if (w > h) {
+              h = Math.round((h * maxDim) / w);
+              w = maxDim;
+            } else {
+              w = Math.round((w * maxDim) / h);
+              h = maxDim;
+            }
+          }
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+          fileDataUrl = canvas.toDataURL('image/jpeg', 0.82);
+
+          setFiles(prev => ({ 
+            ...prev, 
+            [docName]: { name: file.name, size: file.size, type: file.type, url: fileDataUrl } 
+          }));
+        };
+        img.src = fileDataUrl;
+      } else {
+        setFiles(prev => ({ 
+          ...prev, 
+          [docName]: { name: file.name, size: file.size, type: file.type, url: fileDataUrl } 
+        }));
+      }
+    };
+    reader.readAsDataURL(file);
+
     setErrors(prev => {
       if (!prev.docs || !prev.docs[docName]) return prev;
       const nextDocs = { ...prev.docs };
@@ -825,6 +865,7 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
       phone: formData.phone || currentUser.phone || "",
       email: formData.email || currentUser.email || "",
       gwa: formData.gwa || "",
+      documents: { ...files },
       date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit' }),
       status: "SUBMITTED",
       stage: "Submitted",

@@ -6280,7 +6280,7 @@ footer button:hover {
                       ${file ? file.name : (isMissing ? 'Upload required' : 'Select file')}
                     </small>
                   </div>
-                  <input type="file" id="file-input-${idSafe}" class="upload-input-hidden" onchange="window.handleFileSelect(event, '${doc}')">
+                  <input type="file" id="file-input-${idSafe}" class="upload-input-hidden" accept="image/*,application/pdf" onchange="window.handleFileSelect(event, '${doc}')">
                 </label>
               `;
             }).join('')}
@@ -6324,12 +6324,59 @@ footer button:hover {
   window.handleFileSelect = function(e, doc) {
     if (e.target.files && e.target.files[0]) {
       const f = e.target.files[0];
-      uploadedFiles[doc] = { name: f.name, size: f.size };
-      if (formErrors.docs && formErrors.docs[doc]) {
-        delete formErrors.docs[doc];
-      }
-      window.notify(`Uploaded ${doc}`);
-      window.renderStep();
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        let fileDataUrl = evt.target.result;
+        if (f.type && f.type.startsWith('image/')) {
+          const img = new Image();
+          img.onload = function() {
+            const canvas = document.createElement('canvas');
+            const maxDim = 1200;
+            let w = img.width;
+            let h = img.height;
+            if (w > maxDim || h > maxDim) {
+              if (w > h) {
+                h = Math.round((h * maxDim) / w);
+                w = maxDim;
+              } else {
+                w = Math.round((w * maxDim) / h);
+                h = maxDim;
+              }
+            }
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            fileDataUrl = canvas.toDataURL('image/jpeg', 0.82);
+
+            uploadedFiles[doc] = { 
+              name: f.name, 
+              size: f.size, 
+              type: f.type, 
+              url: fileDataUrl 
+            };
+            if (formErrors.docs && formErrors.docs[doc]) {
+              delete formErrors.docs[doc];
+            }
+            window.notify(`Uploaded ${doc}`);
+            window.renderStep();
+          };
+          img.src = fileDataUrl;
+        } else {
+          uploadedFiles[doc] = { 
+            name: f.name, 
+            size: f.size, 
+            type: f.type, 
+            url: fileDataUrl 
+          };
+          if (formErrors.docs && formErrors.docs[doc]) {
+            delete formErrors.docs[doc];
+          }
+          window.notify(`Uploaded ${doc}`);
+          window.renderStep();
+        }
+      };
+      reader.readAsDataURL(f);
     }
   };
 
@@ -6358,6 +6405,7 @@ footer button:hover {
       annualHouseholdIncome: formData.income === "under12" ? 48000 : 96000,
       circumstance: formData.circumstance || "4ps",
       program: formData.program || "Tulong-Dunong Grant",
+      documents: { ...uploadedFiles },
       date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit' }),
       status: "SUBMITTED",
       stage: "Submitted",

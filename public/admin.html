@@ -863,6 +863,140 @@
       border: 1px solid #cbd5e1;
     }
 
+    /* Document Verification & Lightbox Components */
+    .dossier-docs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .doc-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      text-align: left;
+      position: relative;
+    }
+    .doc-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .doc-thumb-wrap {
+      height: 95px;
+      background: #f8fafc;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-bottom: 1px solid var(--line);
+    }
+    .doc-thumb-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.2s;
+    }
+    .doc-card:hover .doc-thumb-wrap img {
+      transform: scale(1.04);
+    }
+    .doc-card-body {
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      flex: 1;
+    }
+    .doc-card-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.3;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .doc-card-status {
+      font-size: 10px;
+      font-weight: 700;
+      color: #15803d;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .doc-card-status.flagged {
+      color: #b91c1c;
+    }
+
+    /* Lightbox Modal */
+    .lightbox-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(4px);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .lightbox-backdrop.open {
+      display: flex;
+    }
+    .lightbox-modal {
+      background: #fff;
+      border-radius: 8px;
+      width: 100%;
+      max-width: 860px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+    }
+    .lightbox-head {
+      padding: 14px 18px;
+      background: #1e293b;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .lightbox-body {
+      flex: 1;
+      overflow: auto;
+      background: #0f172a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      min-height: 380px;
+    }
+    .lightbox-body img {
+      max-width: 100%;
+      max-height: 65vh;
+      object-fit: contain;
+      border-radius: 4px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      background: #fff;
+    }
+    .lightbox-foot {
+      padding: 12px 18px;
+      background: #f8fafc;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
     @media (max-width: 900px) {
       .metrics-grid {
         grid-template-columns: 1fr 1fr;
@@ -1479,14 +1613,18 @@
           </div>
         </div>
 
+        <!-- Submitted Documents & Authenticity Verification -->
         <div style="background:#faf8f5; border:1px solid var(--line); border-radius:6px; padding:14px; margin-bottom:16px;">
-          <small style="font-size:10px; font-weight:800; text-transform:uppercase; color:var(--muted); letter-spacing:0.06em; display:block; margin-bottom:8px;">Submitted Verification Checklist (4/4)</small>
-          <ul style="font-size:12px; color:var(--ink); padding-left:18px; line-height:1.75;">
-            <li>✓ Certificate of Registration / Enrolment (Bulacan Institution verified)</li>
-            <li>✓ Certified True Copy of Grades / GWA Record</li>
-            <li>✓ Barangay Certificate of Indigency / Proof of Low Income</li>
-            <li>✓ Government-issued Student Identification Card</li>
-          </ul>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:6px;">
+            <small style="font-size:10px; font-weight:800; text-transform:uppercase; color:var(--muted); letter-spacing:0.06em; margin:0;">
+              Submitted Verification Documents (<span id="d-doc-count">4</span>/4 Verified)
+            </small>
+            <span style="font-size:11px; color:#15803d; font-weight:700;">Click image below to inspect document</span>
+          </div>
+
+          <div class="dossier-docs-grid" id="dossier-docs-container">
+            <!-- 4 document cards rendered dynamically -->
+          </div>
         </div>
 
         <div style="background:#f1f5f9; border-radius:6px; padding:12px 14px; font-size:12px;">
@@ -1508,6 +1646,49 @@
           </button>
           <button class="btn btn-light" onclick="closeDossier()">
             Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Document Lightbox & Authenticity Inspector Modal -->
+  <div class="lightbox-backdrop" id="doc-lightbox-modal" onclick="if(event.target===this)closeDocLightbox()">
+    <div class="lightbox-modal">
+      <div class="lightbox-head">
+        <div>
+          <h3 id="lightbox-doc-title" style="margin:0; font-size:15px; font-weight:700;">Document Inspection</h3>
+          <p id="lightbox-doc-subtitle" style="margin:2px 0 0 0; font-size:11.5px; opacity:0.8;">Verifying municipal document authenticity</p>
+        </div>
+        <button onclick="closeDocLightbox()" style="background:none; border:none; color:#fff; cursor:pointer; padding:4px;" aria-label="Close document inspector">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 6-12 12M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="lightbox-body" id="lightbox-body-content">
+        <img id="lightbox-img" src="" alt="Document Full Preview">
+      </div>
+
+      <div class="lightbox-foot">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:11.5px; font-weight:700; color:var(--ink);">Verification Status:</span>
+          <button class="btn btn-act-accept" onclick="markCurrentDocStatus('verified')" style="padding:6px 12px; font-size:12px;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            Verified Authentic
+          </button>
+          <button class="btn btn-act-decline" onclick="markCurrentDocStatus('flagged')" style="padding:6px 12px; font-size:12px;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m6 6 12 12M18 6 6 18"/></svg>
+            Flag Discrepancy
+          </button>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:8px;">
+          <a id="lightbox-download-link" href="#" download="document" class="btn btn-light" style="padding:6px 12px; font-size:12px; text-decoration:none;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download Document
+          </a>
+          <button class="btn btn-light" onclick="closeDocLightbox()" style="padding:6px 12px; font-size:12px;">
+            Close Inspector
           </button>
         </div>
       </div>
@@ -1719,6 +1900,8 @@
               status: st,
               stage: d.stage || (st === 'APPROVED' ? 'Approved' : (st === 'DECLINED' ? 'Declined' : 'Submitted')),
               circumstance: d.circumstance || (d.is4PsBeneficiary ? '4ps' : 'regular'),
+              documents: d.documents || {},
+              verifiedDocuments: d.verifiedDocuments || {},
               notes: d.notes || (st === 'APPROVED' ? 'Application approved by Municipal Aid Committee.' : (st === 'DECLINED' ? 'Application review concluded.' : 'Verification in progress. Awaiting LGU officer review.')),
               disbursement: d.disbursement || (st === 'APPROVED' ? '₱5,000 / semester — Scheduled for payout via Landbank' : 'Pending municipal committee approval')
             };
@@ -2005,6 +2188,281 @@
       renderTable();
     }
 
+    // ==========================================
+    // DOCUMENT VERIFICATION & INSPECTION LIGHTBOX
+    // ==========================================
+    const REQUIRED_DOCS = [
+      { key: "Certificate of Registration", label: "Certificate of Registration (COR)", short: "COR / Matriculation" },
+      { key: "Certified Copy of Grades", label: "Certified Copy of Grades", short: "Grades / Transcript" },
+      { key: "Barangay Indigency", label: "Barangay Indigency", short: "Barangay Indigency" },
+      { key: "Valid Student ID", label: "Valid Student ID", short: "Student ID Card" }
+    ];
+
+    let currentLightboxDoc = null;
+
+    function generateSampleDocumentSvg(docKey, app) {
+      const name = (app && app.name) ? app.name.toUpperCase() : "JUAN DELA CRUZ";
+      const studentId = (app && app.studentId) ? app.studentId : "2026-00412";
+      const school = (app && app.school) ? app.school.toUpperCase() : "BULACAN STATE UNIVERSITY";
+      const course = (app && app.course) ? app.course.toUpperCase() : "BS INFORMATION TECHNOLOGY";
+      const barangay = (app && app.barangay) ? app.barangay.toUpperCase() : "POBLACION";
+
+      let svg = "";
+
+      if (docKey === "Certificate of Registration") {
+        svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 960" width="700" height="960" style="background:#fff; font-family:'Inter', Arial, sans-serif;">
+          <rect width="700" height="960" fill="#ffffff"/>
+          <rect x="25" y="25" width="650" height="910" fill="none" stroke="#8a0303" stroke-width="2"/>
+          <rect x="30" y="30" width="640" height="900" fill="none" stroke="#cbd5e1" stroke-width="1"/>
+          <circle cx="100" cy="90" r="38" fill="#8a0303"/>
+          <circle cx="100" cy="90" r="32" fill="#fff" stroke="#f59e0b" stroke-width="2"/>
+          <text x="100" y="97" font-size="20" font-weight="900" fill="#8a0303" text-anchor="middle">BulSU</text>
+          <text x="350" y="75" font-size="16" font-weight="800" fill="#1e293b" text-anchor="middle">REPUBLIC OF THE PHILIPPINES</text>
+          <text x="350" y="98" font-size="20" font-weight="900" fill="#8a0303" text-anchor="middle">${school}</text>
+          <text x="350" y="118" font-size="12" font-weight="600" fill="#64748b" text-anchor="middle">Office of the University Registrar • Malolos, Bulacan</text>
+          <line x1="50" y1="135" x2="650" y2="135" stroke="#8a0303" stroke-width="2"/>
+          <text x="350" y="165" font-size="15" font-weight="900" fill="#0f172a" text-anchor="middle" letter-spacing="1">CERTIFICATE OF REGISTRATION / MATRICULATION</text>
+          <text x="350" y="185" font-size="11" font-weight="700" fill="#166534" text-anchor="middle">FIRST SEMESTER, ACADEMIC YEAR 2026–2027</text>
+          <rect x="50" y="205" width="600" height="90" fill="#f8fafc" stroke="#e2e8f0"/>
+          <text x="65" y="230" font-size="11" font-weight="700" fill="#64748b">STUDENT NAME:</text>
+          <text x="175" y="230" font-size="13" font-weight="900" fill="#0f172a">${name}</text>
+          <text x="440" y="230" font-size="11" font-weight="700" fill="#64748b">STUDENT NO:</text>
+          <text x="535" y="230" font-size="13" font-weight="900" fill="#8a0303">${studentId}</text>
+          <text x="65" y="258" font-size="11" font-weight="700" fill="#64748b">DEGREE PROGRAM:</text>
+          <text x="175" y="258" font-size="11.5" font-weight="800" fill="#0f172a">${course}</text>
+          <text x="65" y="282" font-size="11" font-weight="700" fill="#64748b">MUNICIPAL RESIDENCY:</text>
+          <text x="210" y="282" font-size="11.5" font-weight="800" fill="#0f172a">BRGY. ${barangay}, BULAKAN, BULACAN</text>
+          <rect x="50" y="315" width="600" height="25" fill="#8a0303"/>
+          <text x="60" y="332" font-size="10.5" font-weight="800" fill="#fff">COURSE CODE</text>
+          <text x="170" y="332" font-size="10.5" font-weight="800" fill="#fff">DESCRIPTIVE TITLE</text>
+          <text x="470" y="332" font-size="10.5" font-weight="800" fill="#fff">UNITS</text>
+          <text x="540" y="332" font-size="10.5" font-weight="800" fill="#fff">ROOM / SCHED</text>
+          <g font-size="10.5" fill="#334155">
+            <text x="60" y="365">IT 311</text><text x="170" y="365">Advanced Database Systems</text><text x="480" y="365">3.0</text><text x="540" y="365">MWF 08:00-09:00</text>
+            <line x1="50" y1="380" x2="650" y2="380" stroke="#e2e8f0"/>
+            <text x="60" y="405">IT 312</text><text x="170" y="405">Web Systems &amp; Technologies</text><text x="480" y="405">3.0</text><text x="540" y="405">TTH 09:00-10:30</text>
+            <line x1="50" y1="420" x2="650" y2="420" stroke="#e2e8f0"/>
+            <text x="60" y="445">IT 313</text><text x="170" y="445">Information Assurance &amp; Security</text><text x="480" y="445">3.0</text><text x="540" y="445">MWF 10:00-11:00</text>
+            <line x1="50" y1="460" x2="650" y2="460" stroke="#e2e8f0"/>
+            <text x="60" y="485">IT 314</text><text x="170" y="485">Quantitative Methods &amp; Analytics</text><text x="480" y="485">3.0</text><text x="540" y="485">TTH 13:00-14:30</text>
+            <line x1="50" y1="500" x2="650" y2="500" stroke="#e2e8f0"/>
+            <text x="60" y="525">GE 108</text><text x="170" y="525">Ethics &amp; Civic Engagement</text><text x="480" y="525">3.0</text><text x="540" y="525">MWF 13:00-14:00</text>
+            <line x1="50" y1="540" x2="650" y2="540" stroke="#e2e8f0"/>
+            <text x="60" y="565">NSTP 2</text><text x="170" y="565">National Service Training Program</text><text x="480" y="565">3.0</text><text x="540" y="565">SAT 08:00-11:00</text>
+          </g>
+          <rect x="50" y="600" width="600" height="30" fill="#f1f5f9" stroke="#cbd5e1"/>
+          <text x="65" y="620" font-size="11" font-weight="800" fill="#0f172a">TOTAL ACADEMIC UNITS: 18.0</text>
+          <text x="440" y="620" font-size="11" font-weight="800" fill="#15803d">STATUS: OFFICIALLY ENROLLED</text>
+          <g transform="translate(420, 680) rotate(-10)">
+            <rect x="0" y="0" width="200" height="75" rx="6" fill="none" stroke="#15803d" stroke-width="3" stroke-dasharray="6,3"/>
+            <text x="100" y="28" font-size="13" font-weight="900" fill="#15803d" text-anchor="middle">OFFICE OF THE REGISTRAR</text>
+            <text x="100" y="48" font-size="15" font-weight="900" fill="#15803d" text-anchor="middle">AUTHENTICATED</text>
+            <text x="100" y="65" font-size="10" font-weight="700" fill="#15803d" text-anchor="middle">AY 2026–2027 ENROLMENT</text>
+          </g>
+          <line x1="80" y1="840" x2="260" y2="840" stroke="#475569" stroke-width="1.5"/>
+          <text x="170" y="860" font-size="11" font-weight="700" fill="#0f172a" text-anchor="middle">EDGARDO M. SANTOS, Ph.D.</text>
+          <text x="170" y="876" font-size="10" fill="#64748b" text-anchor="middle">University Registrar</text>
+          <line x1="430" y1="840" x2="610" y2="840" stroke="#475569" stroke-width="1.5"/>
+          <text x="520" y="860" font-size="11" font-weight="700" fill="#0f172a" text-anchor="middle">${name}</text>
+          <text x="520" y="876" font-size="10" fill="#64748b" text-anchor="middle">Student Signature</text>
+        </svg>`;
+      } else if (docKey === "Certified Copy of Grades") {
+        svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 960" width="700" height="960" style="background:#fff; font-family:'Inter', Arial, sans-serif;">
+          <rect width="700" height="960" fill="#ffffff"/>
+          <rect x="25" y="25" width="650" height="910" fill="none" stroke="#1e293b" stroke-width="2"/>
+          <text x="350" y="70" font-size="15" font-weight="800" fill="#1e293b" text-anchor="middle">REPUBLIC OF THE PHILIPPINES</text>
+          <text x="350" y="92" font-size="19" font-weight="900" fill="#8a0303" text-anchor="middle">${school}</text>
+          <text x="350" y="112" font-size="12" font-weight="600" fill="#64748b" text-anchor="middle">COLLEGE OF INFORMATION AND COMMUNICATIONS TECHNOLOGY</text>
+          <line x1="50" y1="130" x2="650" y2="130" stroke="#8a0303" stroke-width="2"/>
+          <text x="350" y="160" font-size="16" font-weight="900" fill="#0f172a" text-anchor="middle">OFFICIAL SCHOLASTIC REPORT &amp; GRADES RECORD</text>
+          <rect x="50" y="180" width="600" height="75" fill="#f8fafc" stroke="#e2e8f0"/>
+          <text x="65" y="205" font-size="11" font-weight="700" fill="#64748b">STUDENT NAME:</text><text x="175" y="205" font-size="13" font-weight="900" fill="#0f172a">${name}</text>
+          <text x="440" y="205" font-size="11" font-weight="700" fill="#64748b">STUDENT ID:</text><text x="530" y="205" font-size="13" font-weight="900" fill="#8a0303">${studentId}</text>
+          <text x="65" y="235" font-size="11" font-weight="700" fill="#64748b">PROGRAM:</text><text x="145" y="235" font-size="11.5" font-weight="800" fill="#0f172a">${course}</text>
+          <rect x="50" y="275" width="600" height="25" fill="#1e293b"/>
+          <text x="65" y="292" font-size="10.5" font-weight="800" fill="#fff">SUBJECT</text>
+          <text x="210" y="292" font-size="10.5" font-weight="800" fill="#fff">DESCRIPTION</text>
+          <text x="470" y="292" font-size="10.5" font-weight="800" fill="#fff">UNITS</text>
+          <text x="540" y="292" font-size="10.5" font-weight="800" fill="#fff">GRADE</text>
+          <text x="605" y="292" font-size="10.5" font-weight="800" fill="#fff">REMARKS</text>
+          <g font-size="11" fill="#334155">
+            <text x="65" y="325">IT 221</text><text x="210" y="325">Data Structures &amp; Algorithms</text><text x="480" y="325">3.0</text><text x="545" y="325" font-weight="800" fill="#15803d">1.25</text><text x="605" y="325" font-weight="700" fill="#15803d">Passed</text>
+            <line x1="50" y1="340" x2="650" y2="340" stroke="#e2e8f0"/>
+            <text x="65" y="365">IT 222</text><text x="210" y="365">Object-Oriented Programming</text><text x="480" y="365">3.0</text><text x="545" y="365" font-weight="800" fill="#15803d">1.50</text><text x="605" y="365" font-weight="700" fill="#15803d">Passed</text>
+            <line x1="50" y1="380" x2="650" y2="380" stroke="#e2e8f0"/>
+            <text x="65" y="405">IT 223</text><text x="210" y="405">Computer Networking I</text><text x="480" y="405">3.0</text><text x="545" y="405" font-weight="800" fill="#15803d">1.25</text><text x="605" y="405" font-weight="700" fill="#15803d">Passed</text>
+            <line x1="50" y1="420" x2="650" y2="420" stroke="#e2e8f0"/>
+            <text x="65" y="445">MATH 102</text><text x="210" y="445">Discrete Mathematics</text><text x="480" y="445">3.0</text><text x="545" y="445" font-weight="800" fill="#15803d">1.75</text><text x="605" y="445" font-weight="700" fill="#15803d">Passed</text>
+            <line x1="50" y1="460" x2="650" y2="460" stroke="#e2e8f0"/>
+            <text x="65" y="485">GE 105</text><text x="210" y="485">Purposive Communication</text><text x="480" y="485">3.0</text><text x="545" y="485" font-weight="800" fill="#15803d">1.25</text><text x="605" y="485" font-weight="700" fill="#15803d">Passed</text>
+          </g>
+          <rect x="50" y="530" width="600" height="50" fill="#dcfce7" stroke="#86efac"/>
+          <text x="70" y="560" font-size="14" font-weight="900" fill="#14532d">SEMESTER GENERAL WEIGHTED AVERAGE (GWA): 1.40</text>
+          <text x="500" y="560" font-size="12" font-weight="800" fill="#15803d">DEAN'S LIST QUALIFIED</text>
+          <g transform="translate(100, 680) rotate(-8)">
+            <circle cx="90" cy="50" r="48" fill="none" stroke="#b91c1c" stroke-width="2.5" stroke-dasharray="5,2"/>
+            <text x="90" y="42" font-size="11" font-weight="900" fill="#b91c1c" text-anchor="middle">CERTIFIED TRUE COPY</text>
+            <text x="90" y="58" font-size="10" font-weight="800" fill="#b91c1c" text-anchor="middle">OFFICE OF THE DEAN</text>
+            <text x="90" y="72" font-size="9" fill="#b91c1c" text-anchor="middle">CICT • BULSU</text>
+          </g>
+          <line x1="400" y1="780" x2="600" y2="780" stroke="#475569" stroke-width="1.5"/>
+          <text x="500" y="800" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">DR. MARIA CRISTINA RAMOS</text>
+          <text x="500" y="816" font-size="10" fill="#64748b" text-anchor="middle">Dean, College of ICT</text>
+        </svg>`;
+      } else if (docKey === "Barangay Indigency") {
+        svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 960" width="700" height="960" style="background:#fff; font-family:'Inter', Arial, sans-serif;">
+          <rect width="700" height="960" fill="#ffffff"/>
+          <rect x="25" y="25" width="650" height="910" fill="none" stroke="#8a0303" stroke-width="2.5"/>
+          <circle cx="110" cy="95" r="42" fill="#8a0303"/>
+          <circle cx="110" cy="95" r="36" fill="#fff" stroke="#f59e0b" stroke-width="2"/>
+          <text x="110" y="103" font-size="12" font-weight="900" fill="#8a0303" text-anchor="middle">BULAKAN</text>
+          <text x="350" y="70" font-size="13" font-weight="800" fill="#64748b" text-anchor="middle">REPUBLIKA NG PILIPINAS • LALAWIGAN NG BULACAN</text>
+          <text x="350" y="94" font-size="18" font-weight="900" fill="#8a0303" text-anchor="middle">PAMAHALAANG BAYAN NG BULAKAN</text>
+          <text x="350" y="118" font-size="15" font-weight="900" fill="#0f172a" text-anchor="middle">BARANGAY ${barangay}</text>
+          <text x="350" y="136" font-size="11" font-weight="700" fill="#64748b" text-anchor="middle">TANGGAPAN NG PUNONG BARANGAY</text>
+          <line x1="50" y1="150" x2="650" y2="150" stroke="#8a0303" stroke-width="2"/>
+          <text x="350" y="210" font-size="22" font-weight="900" fill="#8a0303" text-anchor="middle" letter-spacing="1">PATUNAY NG KAHIRAPAN</text>
+          <text x="350" y="232" font-size="13" font-weight="800" fill="#0f172a" text-anchor="middle">(CERTIFICATE OF INDIGENCY &amp; LOW INCOME)</text>
+          <g font-size="14" fill="#1e293b">
+            <text x="70" y="290" font-weight="700">SA KINAUUKULAN:</text>
+            <text x="70" y="340">Ito ay pagpapatunay na si <tspan font-weight="900" fill="#8a0303">${name}</tspan>, nasa wastong gulang, ay</text>
+            <text x="70" y="375">isang lehitimong residente at mamamayan ng <tspan font-weight="800">Barangay ${barangay}, Bulakan, Bulacan</tspan>.</text>
+            <text x="70" y="430">Pinatutunayan pa na ang kanyang pamilya ay nabibilang sa sektor ng</text>
+            <text x="70" y="465"><tspan font-weight="800" fill="#8a0303">Low-Income / Indigent Household</tspan> na may limitadong kakayahang</text>
+            <text x="70" y="500">pinansyal upang maitaguyod ang kanyang pag-aaral sa kolehiyo.</text>
+            <text x="70" y="560">Ang sertipikasyong ito ay iginagawad sa kahilingan ng nabanggit na mag-aaral</text>
+            <text x="70" y="595">para sa kanyang aplikasyon sa <tspan font-weight="800">IskoFund Bulakan Scholarship Grant</tspan></text>
+            <text x="70" y="630">ng Tanggapan ng Punong Bayan at MSWDO ngayong Taong Panuruan 2026–2027.</text>
+          </g>
+          <g transform="translate(110, 710)">
+            <circle cx="50" cy="50" r="48" fill="none" stroke="#8a0303" stroke-width="3" stroke-dasharray="6,2"/>
+            <text x="50" y="45" font-size="10" font-weight="900" fill="#8a0303" text-anchor="middle">OFFICIAL SEAL</text>
+            <text x="50" y="60" font-size="9" font-weight="800" fill="#8a0303" text-anchor="middle">BRGY. ${barangay}</text>
+          </g>
+          <line x1="380" y1="800" x2="620" y2="800" stroke="#0f172a" stroke-width="1.5"/>
+          <text x="500" y="825" font-size="13" font-weight="900" fill="#0f172a" text-anchor="middle">HON. VICENTE B. MENDOZA</text>
+          <text x="500" y="845" font-size="11" font-weight="700" fill="#64748b" text-anchor="middle">Punong Barangay • Bulakan, Bulacan</text>
+        </svg>`;
+      } else {
+        svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500" style="background:#fff; font-family:'Inter', Arial, sans-serif;">
+          <rect width="800" height="500" rx="14" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+          <rect width="800" height="85" rx="14" fill="#8a0303"/>
+          <rect y="70" width="800" height="15" fill="#f59e0b"/>
+          <text x="40" y="45" font-size="20" font-weight="900" fill="#fff" letter-spacing="0.5">${school}</text>
+          <text x="40" y="66" font-size="11" font-weight="600" fill="#fde68a">OFFICIAL STUDENT IDENTIFICATION CARD • REPUBLIC OF THE PHILIPPINES</text>
+          <rect x="50" y="120" width="180" height="230" rx="6" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/>
+          <circle cx="140" cy="190" r="42" fill="#cbd5e1"/>
+          <path d="M90 290 Q140 240 190 290" fill="#94a3b8"/>
+          <text x="140" y="325" font-size="11" font-weight="700" fill="#64748b" text-anchor="middle">STUDENT PHOTO</text>
+          <text x="260" y="150" font-size="11" font-weight="800" fill="#64748b">STUDENT FULL NAME</text>
+          <text x="260" y="180" font-size="20" font-weight="900" fill="#0f172a">${name}</text>
+          <text x="260" y="220" font-size="11" font-weight="800" fill="#64748b">STUDENT IDENTIFICATION NUMBER</text>
+          <text x="260" y="245" font-size="17" font-weight="900" fill="#8a0303">${studentId}</text>
+          <text x="260" y="285" font-size="11" font-weight="800" fill="#64748b">DEGREE PROGRAM &amp; CAMPUS</text>
+          <text x="260" y="308" font-size="13" font-weight="800" fill="#0f172a">${course}</text>
+          <text x="260" y="340" font-size="11" font-weight="800" fill="#64748b">MUNICIPALITY</text>
+          <text x="360" y="340" font-size="12" font-weight="800" fill="#15803d">BRGY. ${barangay}, BULAKAN</text>
+          <rect y="400" width="800" height="100" rx="0" fill="#f8fafc" stroke="#e2e8f0"/>
+          <g transform="translate(60, 420)">
+            <rect x="0" y="0" width="3" height="45" fill="#0f172a"/><rect x="6" y="0" width="2" height="45" fill="#0f172a"/><rect x="12" y="0" width="5" height="45" fill="#0f172a"/><rect x="20" y="0" width="2" height="45" fill="#0f172a"/><rect x="25" y="0" width="4" height="45" fill="#0f172a"/><rect x="33" y="0" width="2" height="45" fill="#0f172a"/><rect x="40" y="0" width="6" height="45" fill="#0f172a"/><rect x="50" y="0" width="2" height="45" fill="#0f172a"/><rect x="56" y="0" width="5" height="45" fill="#0f172a"/><rect x="65" y="0" width="3" height="45" fill="#0f172a"/><rect x="72" y="0" width="4" height="45" fill="#0f172a"/><rect x="80" y="0" width="2" height="45" fill="#0f172a"/><rect x="85" y="0" width="7" height="45" fill="#0f172a"/><rect x="96" y="0" width="3" height="45" fill="#0f172a"/><rect x="104" y="0" width="4" height="45" fill="#0f172a"/><rect x="112" y="0" width="2" height="45" fill="#0f172a"/><rect x="118" y="0" width="5" height="45" fill="#0f172a"/><rect x="126" y="0" width="3" height="45" fill="#0f172a"/><rect x="133" y="0" width="6" height="45" fill="#0f172a"/><rect x="144" y="0" width="2" height="45" fill="#0f172a"/><rect x="150" y="0" width="4" height="45" fill="#0f172a"/><rect x="158" y="0" width="3" height="45" fill="#0f172a"/><rect x="165" y="0" width="5" height="45" fill="#0f172a"/><rect x="174" y="0" width="2" height="45" fill="#0f172a"/><rect x="180" y="0" width="4" height="45" fill="#0f172a"/>
+            <text x="90" y="60" font-size="10" font-family="monospace" font-weight="700" fill="#475569" text-anchor="middle">${studentId}-VALID-AY2627</text>
+          </g>
+          <text x="650" y="440" font-size="11" font-weight="800" fill="#64748b" text-anchor="middle">VALIDITY STATUS</text>
+          <text x="650" y="465" font-size="14" font-weight="900" fill="#15803d" text-anchor="middle">ACTIVE • AY 2026–2027</text>
+        </svg>`;
+      }
+
+      return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+    }
+
+    function renderDossierDocuments(app) {
+      const container = document.getElementById('dossier-docs-container');
+      if (!container) return;
+
+      const docs = app.documents || {};
+      const verifiedMap = app.verifiedDocuments || {};
+      let verifiedCount = 0;
+
+      container.innerHTML = REQUIRED_DOCS.map(item => {
+        const docData = docs[item.key];
+        const hasCustomUpload = docData && docData.url;
+        const imgUrl = hasCustomUpload ? docData.url : generateSampleDocumentSvg(item.key, app);
+        const fileName = (docData && docData.name) ? docData.name : `${item.key.toLowerCase().replace(/\s+/g, '_')}_official.jpg`;
+        const vStatus = verifiedMap[item.key] || 'verified';
+        if (vStatus === 'verified') verifiedCount++;
+        const isFlagged = vStatus === 'flagged';
+
+        return `
+          <div class="doc-card" onclick="openDocLightbox('${escapeHtml(item.key)}', '${encodeURIComponent(imgUrl)}', '${escapeHtml(fileName)}')">
+            <div class="doc-thumb-wrap">
+              <img src="${imgUrl}" alt="${escapeHtml(item.label)}" loading="lazy">
+              <span style="position:absolute; bottom:4px; right:4px; background:rgba(0,0,0,0.65); color:#fff; font-size:9px; padding:1px 5px; border-radius:3px; font-weight:700;">
+                🔍 Inspect
+              </span>
+            </div>
+            <div class="doc-card-body">
+              <span class="doc-card-title" title="${escapeHtml(item.label)}">${escapeHtml(item.short)}</span>
+              <span class="doc-card-status ${isFlagged ? 'flagged' : ''}">
+                ${isFlagged ? `
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  Flagged
+                ` : `
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  Verified
+                `}
+              </span>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      const countEl = document.getElementById('d-doc-count');
+      if (countEl) countEl.textContent = `${verifiedCount}`;
+    }
+
+    function openDocLightbox(docKey, encodedImgUrl, fileName) {
+      const imgUrl = decodeURIComponent(encodedImgUrl);
+      currentLightboxDoc = { key: docKey, url: imgUrl, name: fileName };
+
+      document.getElementById('lightbox-doc-title').textContent = docKey;
+      document.getElementById('lightbox-doc-subtitle').textContent = `Document inspection for Reference: ${selectedCode || 'Student'} • File: ${fileName}`;
+      const img = document.getElementById('lightbox-img');
+      img.src = imgUrl;
+
+      const dLink = document.getElementById('lightbox-download-link');
+      dLink.href = imgUrl;
+      dLink.download = fileName;
+
+      document.getElementById('doc-lightbox-modal').classList.add('open');
+    }
+
+    function closeDocLightbox() {
+      document.getElementById('doc-lightbox-modal').classList.remove('open');
+      currentLightboxDoc = null;
+    }
+
+    function markCurrentDocStatus(verdict) {
+      if (!currentLightboxDoc || !selectedCode) return;
+      const apps = getApplications();
+      const app = apps[selectedCode];
+      if (!app) return;
+
+      if (!app.verifiedDocuments) app.verifiedDocuments = {};
+      app.verifiedDocuments[currentLightboxDoc.key] = verdict;
+      apps[selectedCode] = app;
+      saveApplications(apps);
+
+      if (firestoreDb) {
+        firestoreDb.collection('applications').doc(selectedCode).set({
+          verifiedDocuments: app.verifiedDocuments
+        }, { merge: true }).catch(err => console.warn('[Firestore] Doc verify error:', err));
+      }
+
+      renderDossierDocuments(app);
+      showToast(verdict === 'verified' ? `Document marked verified authentic.` : `Document flagged for review.`);
+      closeDocLightbox();
+    }
+
     function openDossier(code) {
       selectedCode = code;
       const apps = getApplications();
@@ -2044,11 +2502,14 @@
       document.getElementById('d-btn-accept').style.display = isApproved ? 'none' : 'inline-flex';
       document.getElementById('d-btn-decline').style.display = isDeclined ? 'none' : 'inline-flex';
 
+      renderDossierDocuments(app);
+
       document.getElementById('dossier-modal').classList.add('open');
       document.body.style.overflow = 'hidden';
     }
 
     function closeDossier() {
+      closeDocLightbox();
       document.getElementById('dossier-modal').classList.remove('open');
       document.body.style.overflow = '';
       selectedCode = null;
