@@ -4024,3 +4024,162 @@ footer button:hover {
     padding: 30px 24px;
   }
 }
+
+/* OAuth Account Chooser Modal (Google / Facebook) */
+.oauth-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100001;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
+}
+.oauth-modal-backdrop.hidden {
+  display: none !important;
+}
+.oauth-card {
+  background: #ffffff;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  font-family: var(--sans);
+  animation: oauthPop 0.16s ease-out;
+}
+@keyframes oauthPop {
+  from { opacity: 0; transform: scale(0.96) translateY(6px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.oauth-header {
+  padding: 22px 26px 14px;
+  border-bottom: 1px solid #e5e7eb;
+}
+.oauth-brand-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.oauth-title {
+  font-size: 19px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 4px;
+  letter-spacing: -0.01em;
+}
+.oauth-sub {
+  font-size: 13px;
+  color: #4b5563;
+  margin: 0;
+}
+.oauth-sub strong {
+  color: #111827;
+}
+.oauth-account-list {
+  padding: 8px 0;
+  max-height: 290px;
+  overflow-y: auto;
+}
+.oauth-account-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 12px 24px;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.12s ease;
+  box-sizing: border-box;
+}
+.oauth-account-item:hover {
+  background: #f1f5f9;
+}
+.oauth-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #8a0303;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.oauth-avatar.google-blue {
+  background: #4285F4;
+}
+.oauth-avatar.fb-blue {
+  background: #1877F2;
+}
+.oauth-avatar.neutral {
+  background: #e2e8f0;
+  color: #475569;
+}
+.oauth-info {
+  flex: 1;
+  min-width: 0;
+}
+.oauth-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.25;
+}
+.oauth-email {
+  font-size: 12.5px;
+  color: #64748b;
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.oauth-tag {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #059669;
+  background: #ecfdf5;
+  padding: 1px 6px;
+  border-radius: 4px;
+  margin-top: 3px;
+}
+.oauth-footer {
+  padding: 12px 24px;
+  border-top: 1px solid #e5e7eb;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.oauth-cancel-btn {
+  background: none;
+  border: none;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.12s;
+  font-family: inherit;
+}
+.oauth-cancel-btn:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+.oauth-badge {
+  font-size: 11px;
+  color: #9ca3af;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}

@@ -4036,6 +4036,165 @@ footer button:hover {
   }
 }
 
+/* OAuth Account Chooser Modal (Google / Facebook) */
+.oauth-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100001;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
+}
+.oauth-modal-backdrop.hidden {
+  display: none !important;
+}
+.oauth-card {
+  background: #ffffff;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  font-family: var(--sans);
+  animation: oauthPop 0.16s ease-out;
+}
+@keyframes oauthPop {
+  from { opacity: 0; transform: scale(0.96) translateY(6px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.oauth-header {
+  padding: 22px 26px 14px;
+  border-bottom: 1px solid #e5e7eb;
+}
+.oauth-brand-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.oauth-title {
+  font-size: 19px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 4px;
+  letter-spacing: -0.01em;
+}
+.oauth-sub {
+  font-size: 13px;
+  color: #4b5563;
+  margin: 0;
+}
+.oauth-sub strong {
+  color: #111827;
+}
+.oauth-account-list {
+  padding: 8px 0;
+  max-height: 290px;
+  overflow-y: auto;
+}
+.oauth-account-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 12px 24px;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.12s ease;
+  box-sizing: border-box;
+}
+.oauth-account-item:hover {
+  background: #f1f5f9;
+}
+.oauth-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #8a0303;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.oauth-avatar.google-blue {
+  background: #4285F4;
+}
+.oauth-avatar.fb-blue {
+  background: #1877F2;
+}
+.oauth-avatar.neutral {
+  background: #e2e8f0;
+  color: #475569;
+}
+.oauth-info {
+  flex: 1;
+  min-width: 0;
+}
+.oauth-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.25;
+}
+.oauth-email {
+  font-size: 12.5px;
+  color: #64748b;
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.oauth-tag {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #059669;
+  background: #ecfdf5;
+  padding: 1px 6px;
+  border-radius: 4px;
+  margin-top: 3px;
+}
+.oauth-footer {
+  padding: 12px 24px;
+  border-top: 1px solid #e5e7eb;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.oauth-cancel-btn {
+  background: none;
+  border: none;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.12s;
+  font-family: inherit;
+}
+.oauth-cancel-btn:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+.oauth-badge {
+  font-size: 11px;
+  color: #9ca3af;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -4159,6 +4318,47 @@ footer button:hover {
         </div>
       </div>
 
+    </div>
+  </div>
+
+  <!-- OAuth Account Chooser Modal (Google / Facebook) -->
+  <div id="oauth-account-modal" class="oauth-modal-backdrop hidden" onclick="window.handleOauthBackdropClick(event)">
+    <div class="oauth-card" role="dialog" aria-modal="true" aria-labelledby="oauth-title">
+      <div class="oauth-header">
+        <div class="oauth-brand-row">
+          <span id="oauth-provider-icon"></span>
+          <span id="oauth-provider-brand" style="font-weight:700; font-size:15px; color:#374151;"></span>
+        </div>
+        <h3 id="oauth-title" class="oauth-title">Choose an account</h3>
+        <p id="oauth-subtitle" class="oauth-sub">to continue to <strong>IskoFund Bulakan</strong></p>
+      </div>
+
+      <div class="oauth-account-list" id="oauth-accounts-container">
+        <!-- Will be populated dynamically based on provider -->
+      </div>
+
+      <!-- Custom Account Form (Hidden by default) -->
+      <div id="oauth-custom-form-wrap" style="display:none; padding:16px 26px; background:#f8fafc; border-top:1px solid #e5e7eb;">
+        <h4 style="margin:0 0 10px 0; font-size:13px; font-weight:700; color:#1e293b;" id="oauth-custom-title">Sign in with another account</h4>
+        <div style="margin-bottom:10px;">
+          <input type="text" id="oauth-custom-name" placeholder="Full name (e.g. Maria Santos)" class="gw-input" style="padding:10px 14px; font-size:13px;">
+        </div>
+        <div style="margin-bottom:12px;">
+          <input type="email" id="oauth-custom-email" placeholder="Email address" class="gw-input" style="padding:10px 14px; font-size:13px;">
+        </div>
+        <div style="display:flex; gap:8px; justify-content:flex-end;">
+          <button type="button" onclick="window.hideOauthCustomForm()" class="oauth-cancel-btn">Cancel</button>
+          <button type="button" onclick="window.confirmCustomOauthAccount()" class="gw-submit-btn" style="width:auto; padding:8px 18px; margin:0; font-size:13px;" id="oauth-custom-submit-btn">Continue</button>
+        </div>
+      </div>
+
+      <div class="oauth-footer">
+        <button type="button" onclick="window.closeSocialAccountChooser()" class="oauth-cancel-btn">Cancel</button>
+        <span class="oauth-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Secure Auth
+        </span>
+      </div>
     </div>
   </div>
 
@@ -5230,9 +5430,154 @@ footer button:hover {
     }
   };
 
-  window.loginWithProvider = function(provider) {
-    window.authWithSocial(provider);
+  // Social Auth Account Chooser (Google / Facebook)
+  let currentOauthProvider = 'Google';
+
+  const OAUTH_SAMPLE_ACCOUNTS = {
+    Google: [
+      { name: "Juan Dela Cruz", email: "juan.delacruz@gmail.com", phone: "0917 123 4567", initials: "JD", tag: "Bulakan Scholar (Active)" },
+      { name: "Maria Clara Santos", email: "maria.santos2026@gmail.com", phone: "0918 765 4321", initials: "MC", tag: "BulSU Malolos Scholar" },
+      { name: "Christian Dale Reyes", email: "cd.reyes@gmail.com", phone: "0920 555 7890", initials: "CR", tag: "BSU Meycauayan Applicant" }
+    ],
+    Facebook: [
+      { name: "Juan Dela Cruz", email: "juan.delacruz@facebook.com", phone: "0917 123 4567", initials: "JD", tag: "Connected via Facebook" },
+      { name: "Maria Clara Santos", email: "maria.santos2026@facebook.com", phone: "0918 765 4321", initials: "MC", tag: "Connected via Facebook" },
+      { name: "Christian Dale Reyes", email: "cd.reyes@facebook.com", phone: "0920 555 7890", initials: "CR", tag: "Connected via Facebook" }
+    ]
+  };
+
+  window.openSocialAccountChooser = function(provider = 'Google') {
+    currentOauthProvider = provider;
+    const modal = document.getElementById('oauth-account-modal');
+    if (!modal) {
+      window.selectSocialAccount("Juan Dela Cruz", `juan.delacruz@${provider.toLowerCase()}.com`);
+      return;
+    }
+
+    const iconEl = document.getElementById('oauth-provider-icon');
+    const brandEl = document.getElementById('oauth-provider-brand');
+    const titleEl = document.getElementById('oauth-title');
+    const subtitleEl = document.getElementById('oauth-subtitle');
+    const listEl = document.getElementById('oauth-accounts-container');
+    window.hideOauthCustomForm();
+
+    if (provider === 'Google') {
+      if (iconEl) iconEl.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>`;
+      if (brandEl) brandEl.textContent = 'Google';
+      if (titleEl) titleEl.textContent = 'Choose an account';
+      if (subtitleEl) subtitleEl.innerHTML = 'to continue to <strong>IskoFund Bulakan</strong>';
+    } else {
+      if (iconEl) iconEl.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>`;
+      if (brandEl) brandEl.textContent = 'Facebook';
+      if (titleEl) titleEl.textContent = 'Log in with Facebook';
+      if (subtitleEl) subtitleEl.innerHTML = 'to continue to <strong>IskoFund Bulakan</strong>';
+    }
+
+    const accounts = OAUTH_SAMPLE_ACCOUNTS[provider] || OAUTH_SAMPLE_ACCOUNTS.Google;
+    let html = '';
+    accounts.forEach(acc => {
+      const avatarClass = provider === 'Google' ? 'oauth-avatar google-blue' : 'oauth-avatar fb-blue';
+      html += `
+        <button type="button" class="oauth-account-item" onclick="window.selectSocialAccount('${escapeHtml(acc.name)}', '${escapeHtml(acc.email)}', '${acc.phone}')">
+          <div class="${avatarClass}">${acc.initials}</div>
+          <div class="oauth-info">
+            <div class="oauth-name">${escapeHtml(acc.name)}</div>
+            <div class="oauth-email">${escapeHtml(acc.email)}</div>
+            <span class="oauth-tag">${escapeHtml(acc.tag)}</span>
+          </div>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+      `;
+    });
+
+    html += `
+      <button type="button" class="oauth-account-item" onclick="window.showOauthCustomForm()" style="border-top:1px solid #f1f5f9;">
+        <div class="oauth-avatar neutral">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+        </div>
+        <div class="oauth-info">
+          <div class="oauth-name">Use another account</div>
+          <div class="oauth-email">Enter your own name and email</div>
+        </div>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+    `;
+
+    if (listEl) listEl.innerHTML = html;
+    modal.classList.remove('hidden');
+  };
+
+  window.closeSocialAccountChooser = function() {
+    const modal = document.getElementById('oauth-account-modal');
+    if (modal) modal.classList.add('hidden');
+    window.hideOauthCustomForm();
+  };
+
+  window.handleOauthBackdropClick = function(e) {
+    if (e.target === document.getElementById('oauth-account-modal')) {
+      window.closeSocialAccountChooser();
+    }
+  };
+
+  window.showOauthCustomForm = function() {
+    const customWrap = document.getElementById('oauth-custom-form-wrap');
+    if (customWrap) {
+      customWrap.style.display = 'block';
+      const customTitle = document.getElementById('oauth-custom-title');
+      if (customTitle) customTitle.textContent = `Sign in with another ${currentOauthProvider} account`;
+      const nameInput = document.getElementById('oauth-custom-name');
+      if (nameInput) nameInput.focus();
+    }
+  };
+
+  window.hideOauthCustomForm = function() {
+    const customWrap = document.getElementById('oauth-custom-form-wrap');
+    if (customWrap) customWrap.style.display = 'none';
+  };
+
+  window.confirmCustomOauthAccount = function() {
+    const nameVal = (document.getElementById('oauth-custom-name')?.value || '').trim();
+    const emailVal = (document.getElementById('oauth-custom-email')?.value || '').trim();
+
+    if (!nameVal || nameVal.length < 2) {
+      window.notify("Please enter your full name.");
+      document.getElementById('oauth-custom-name')?.focus();
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailVal || !emailRegex.test(emailVal)) {
+      window.notify("Please enter a valid email address.");
+      document.getElementById('oauth-custom-email')?.focus();
+      return;
+    }
+
+    window.selectSocialAccount(nameVal, emailVal, "0917 123 4567");
+  };
+
+  window.selectSocialAccount = function(name, email, phone = "0917 123 4567") {
+    const user = {
+      name: name,
+      email: email,
+      phone: phone,
+      provider: currentOauthProvider,
+      isLoggedIn: true
+    };
+    localStorage.setItem('iskofund_user', JSON.stringify(user));
+    currentUser = user;
+    window.updateHeaderAuthState();
+    window.closeSocialAccountChooser();
     window.dismissGatewayAsGuest();
+    const authModal = document.getElementById('auth-modal-backdrop');
+    if (authModal) authModal.classList.remove('open');
+    window.notify(`Signed in with ${currentOauthProvider} as ${name}.`);
+  };
+
+  window.loginWithProvider = function(provider) {
+    window.openSocialAccountChooser(provider);
+  };
+
+  window.authWithSocial = function(provider) {
+    window.openSocialAccountChooser(provider);
   };
 
   window.handleGatewayForgot = function() {
@@ -5412,21 +5757,6 @@ footer button:hover {
     } else {
       window.notify(`Account created successfully for ${user.name}!`);
     }
-  };
-
-  window.authWithSocial = function(provider) {
-    const user = {
-      name: "Juan Dela Cruz",
-      email: "juan.delacruz@gmail.com",
-      phone: "0917 123 4567",
-      provider: provider,
-      isLoggedIn: true
-    };
-    localStorage.setItem('iskofund_user', JSON.stringify(user));
-    currentUser = user;
-    window.updateHeaderAuthState();
-    window.closeAuthModal();
-    window.notify(`Logged in with ${provider} as Juan Dela Cruz.`);
   };
 
   window.toggleUserMenu = function(e) {
