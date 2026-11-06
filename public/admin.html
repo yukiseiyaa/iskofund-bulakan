@@ -869,12 +869,77 @@
     <span id="toast-msg">Action completed.</span>
   </div>
 
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
   <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDRNUr85YxIN_eT64Od0KtBpUpdkRU4Wa8",
+      authDomain: "iskofund-4c9c5.firebaseapp.com",
+      projectId: "iskofund-4c9c5",
+      storageBucket: "iskofund-4c9c5.firebasestorage.app",
+      messagingSenderId: "882266355814",
+      appId: "1:882266355814:web:67d16f91e748ad77bfd5a7",
+      measurementId: "G-PKPMBL3DRC"
+    };
+
+    let firestoreDb = null;
+    try {
+      if (typeof firebase !== 'undefined') {
+        if (!firebase.apps.length) {
+          firebase.initializeApp(firebaseConfig);
+        }
+        firestoreDb = firebase.firestore();
+        console.log("[Firebase] Admin Portal connected to Firestore project:", firebaseConfig.projectId);
+      }
+    } catch (err) {
+      console.warn("[Firebase] Init error:", err);
+    }
+
     let activeFilter = 'ALL';
     let selectedCode = null;
 
-    // Seed Applicants
+    // Seed Cohort matching live Cloud Firestore project
     const DEFAULT_COHORT = {
+      "ISKO-BUL-2243": {
+        id: "ISKO-BUL-2243",
+        code: "ISKO-BUL-2243",
+        name: "JB Sarmiento",
+        studentId: "2024-400193",
+        barangay: "Taliptip",
+        phone: "09218664987",
+        email: "jbsarmiento58@gmail.com",
+        school: "Bulacan State University – Main Campus",
+        course: "BS Information Technology",
+        annualHouseholdIncome: 96000,
+        program: "Tulong-Dunong (AY 2026–2027)",
+        date: "Oct 31",
+        status: "SUBMITTED",
+        stage: "Submitted",
+        circumstance: "regular",
+        notes: "Application received. Initial document verification is queued with MSWDO scholarship officers.",
+        disbursement: "Pending municipal committee approval"
+      },
+      "ISKO-BUL-8547": {
+        id: "ISKO-BUL-8547",
+        code: "ISKO-BUL-8547",
+        name: "JB Sarmiento",
+        studentId: "2024-400193",
+        barangay: "Taliptip",
+        phone: "09218664987",
+        email: "jbsarmiento58@gmail.com",
+        school: "STI College – Malolos",
+        course: "BS Information Technology",
+        annualHouseholdIncome: 96000,
+        program: "Tulong-Dunong (AY 2026–2027)",
+        date: "Oct 31",
+        status: "SUBMITTED",
+        stage: "Submitted",
+        circumstance: "regular",
+        notes: "Application received. Initial document verification is queued with MSWDO scholarship officers.",
+        disbursement: "Pending municipal committee approval"
+      },
       "ISKO-BUL-8821": {
         id: "ISKO-BUL-8821",
         code: "ISKO-BUL-8821",
@@ -882,70 +947,17 @@
         studentId: "2026-00412",
         barangay: "Matungao",
         phone: "0917-882-1920",
+        email: "maria.bautista@example.com",
         school: "Bulacan State University – Meneses Campus",
         course: "BS Information Technology",
         annualHouseholdIncome: 72000,
         program: "Tulong-Dunong (AY 2026–2027)",
         date: "Sep 04",
         status: "SUBMITTED",
-        stage: "Submitted",
+        stage: "Assessment",
         circumstance: "4ps",
-        notes: "Verification in progress. Awaiting LGU officer review.",
-        disbursement: "Pending municipal committee approval"
-      },
-      "ISKO-BUL-4209": {
-        id: "ISKO-BUL-4209",
-        code: "ISKO-BUL-4209",
-        name: "Juan Miguel Dela Cruz",
-        studentId: "2026-00188",
-        barangay: "San Jose",
-        phone: "0918-420-9112",
-        school: "Baliuag University",
-        course: "BS Civil Engineering",
-        annualHouseholdIncome: 84000,
-        program: "Academic Excellence Grant",
-        date: "Sep 05",
-        status: "APPROVED",
-        stage: "Approved",
-        circumstance: "solo_parent",
-        notes: "Application approved by Municipal Aid Committee. Scholarship grant allocation confirmed.",
-        disbursement: "₱5,000 / semester — Scheduled for payout"
-      },
-      "ISKO-BUL-3351": {
-        id: "ISKO-BUL-3351",
-        code: "ISKO-BUL-3351",
-        name: "Bea Carmela Reyes",
-        studentId: "2026-00335",
-        barangay: "Poblacion",
-        phone: "0920-335-1440",
-        school: "Bulacan State University (BulSU)",
-        course: "BS Accountancy",
-        annualHouseholdIncome: 140000,
-        program: "Tulong-Dunong Grant",
-        date: "Sep 06",
-        status: "DECLINED",
-        stage: "Declined",
-        circumstance: "regular",
-        notes: "Application review concluded: Does not meet current allocation quota or qualification criteria.",
-        disbursement: "Not eligible for this cycle"
-      },
-      "ISKO-BUL-5192": {
-        id: "ISKO-BUL-5192",
-        code: "ISKO-BUL-5192",
-        name: "Christian Paul Alcantara",
-        studentId: "2026-00519",
-        barangay: "Bambang",
-        phone: "0928-519-2041",
-        school: "Bulacan Polytechnic College",
-        course: "Associate in Computer Technology",
-        annualHouseholdIncome: 48000,
-        program: "Tulong-Dunong Grant",
-        date: "Sep 07",
-        status: "SUBMITTED",
-        stage: "Submitted",
-        circumstance: "4ps",
-        notes: "Documents complete. High vulnerability tier verified.",
-        disbursement: "Pending municipal committee approval"
+        notes: "Verification complete. Expected municipal board endorsement within 24 hours.",
+        disbursement: "October 15–20, 2026 via Landbank"
       }
     };
 
@@ -956,7 +968,8 @@
         if (raw) apps = JSON.parse(raw);
       } catch (e) {}
 
-      if (!apps || Object.keys(apps).length === 0) {
+      // If cache is empty or only holds legacy mock records, reset to Firestore cohort
+      if (!apps || Object.keys(apps).length === 0 || (!apps['ISKO-BUL-2243'] && !apps['ISKO-BUL-8547'])) {
         apps = { ...DEFAULT_COHORT };
         saveApplications(apps);
       }
@@ -967,6 +980,61 @@
       try {
         localStorage.setItem('iskofund_portal_apps', JSON.stringify(apps));
       } catch (e) {}
+    }
+
+    // Real-Time Listener: Synchronize with live Cloud Firestore
+    function setupFirestoreListener() {
+      if (!firestoreDb) return;
+      try {
+        firestoreDb.collection('applications').onSnapshot((snapshot) => {
+          const liveFirestoreApps = {};
+          snapshot.forEach((doc) => {
+            const d = doc.data();
+            const code = doc.id || d.code;
+            if (!code) return;
+
+            let st = (d.status || 'SUBMITTED').toString().trim().toUpperCase();
+            if (st === 'APPROVED' || st === 'ACCEPTED') {
+              st = 'APPROVED';
+            } else if (st === 'DECLINED' || st === 'REJECTED') {
+              st = 'DECLINED';
+            } else {
+              st = 'SUBMITTED';
+            }
+
+            liveFirestoreApps[code] = {
+              id: code,
+              code: code,
+              name: d.name || 'Applicant',
+              studentId: d.studentId || d.id || '—',
+              barangay: d.barangay || 'Poblacion',
+              phone: d.phone || '—',
+              email: d.email || d.applicantEmail || '',
+              school: d.school || 'Bulacan State University',
+              course: d.course || d.major || 'Undergraduate',
+              annualHouseholdIncome: d.annualHouseholdIncome || (d.income === 'under12' ? 48000 : 96000),
+              program: d.program || 'Tulong-Dunong (AY 2026–2027)',
+              date: d.date || 'Oct 31',
+              status: st,
+              stage: d.stage || (st === 'APPROVED' ? 'Approved' : (st === 'DECLINED' ? 'Declined' : 'Submitted')),
+              circumstance: d.circumstance || (d.is4PsBeneficiary ? '4ps' : 'regular'),
+              notes: d.notes || (st === 'APPROVED' ? 'Application approved by Municipal Aid Committee.' : (st === 'DECLINED' ? 'Application review concluded.' : 'Verification in progress. Awaiting LGU officer review.')),
+              disbursement: d.disbursement || (st === 'APPROVED' ? '₱5,000 / semester — Scheduled for payout via Landbank' : 'Pending municipal committee approval')
+            };
+          });
+
+          // Live Firestore records are authoritative
+          if (Object.keys(liveFirestoreApps).length > 0) {
+            saveApplications(liveFirestoreApps);
+          }
+          renderTable();
+          console.log("[Firestore] Live snapshot received: " + Object.keys(liveFirestoreApps).length + " applications loaded directly from Cloud Firestore.");
+        }, (error) => {
+          console.warn("[Firestore] Live listener subscription error:", error);
+        });
+      } catch (err) {
+        console.warn("[Firestore] Listener initialization exception:", err);
+      }
     }
 
     function showToast(msg) {
@@ -1115,36 +1183,75 @@
 
     function acceptApplicant(code) {
       const apps = getApplications();
-      if (!apps[code]) return;
-      apps[code].status = 'APPROVED';
-      apps[code].stage = 'Approved';
-      apps[code].notes = 'Application approved by Municipal Aid Committee. Scholarship grant allocation confirmed.';
-      apps[code].disbursement = '₱5,000 / semester — Scheduled for payout via Landbank';
-      saveApplications(apps);
+      const updates = {
+        status: 'APPROVED',
+        stage: 'Approved',
+        notes: 'Application approved by Municipal Aid Committee. Scholarship grant allocation confirmed.',
+        disbursement: '₱5,000 / semester — Scheduled for payout via Landbank'
+      };
+
+      if (apps[code]) {
+        apps[code] = { ...apps[code], ...updates };
+        saveApplications(apps);
+      }
+
+      // Sync to live Firebase Cloud Firestore
+      if (firestoreDb) {
+        firestoreDb.collection('applications').doc(code).set(updates, { merge: true })
+          .then(() => console.log(`[Firestore] Document ${code} marked APPROVED in Cloud Firestore`))
+          .catch(err => console.warn(`[Firestore] Update error:`, err));
+      }
+
       showToast(`Applicant ${code} accepted & approved!`);
       renderTable();
     }
 
     function declineApplicant(code) {
       const apps = getApplications();
-      if (!apps[code]) return;
-      apps[code].status = 'DECLINED';
-      apps[code].stage = 'Declined';
-      apps[code].notes = 'Application review concluded: Does not meet current allocation quota or qualification criteria.';
-      apps[code].disbursement = 'Not eligible for this cycle';
-      saveApplications(apps);
+      const updates = {
+        status: 'DECLINED',
+        stage: 'Declined',
+        notes: 'Application review concluded: Does not meet current allocation quota or qualification criteria.',
+        disbursement: 'Not eligible for this cycle'
+      };
+
+      if (apps[code]) {
+        apps[code] = { ...apps[code], ...updates };
+        saveApplications(apps);
+      }
+
+      // Sync to live Firebase Cloud Firestore
+      if (firestoreDb) {
+        firestoreDb.collection('applications').doc(code).set(updates, { merge: true })
+          .then(() => console.log(`[Firestore] Document ${code} marked DECLINED in Cloud Firestore`))
+          .catch(err => console.warn(`[Firestore] Update error:`, err));
+      }
+
       showToast(`Applicant ${code} has been declined.`);
       renderTable();
     }
 
     function resetApplicant(code) {
       const apps = getApplications();
-      if (!apps[code]) return;
-      apps[code].status = 'SUBMITTED';
-      apps[code].stage = 'Submitted';
-      apps[code].notes = 'Verification in progress. Awaiting LGU officer review.';
-      apps[code].disbursement = 'Pending municipal committee approval';
-      saveApplications(apps);
+      const updates = {
+        status: 'SUBMITTED',
+        stage: 'Submitted',
+        notes: 'Verification in progress. Awaiting LGU officer review.',
+        disbursement: 'Pending municipal committee approval'
+      };
+
+      if (apps[code]) {
+        apps[code] = { ...apps[code], ...updates };
+        saveApplications(apps);
+      }
+
+      // Sync to live Firebase Cloud Firestore
+      if (firestoreDb) {
+        firestoreDb.collection('applications').doc(code).set(updates, { merge: true })
+          .then(() => console.log(`[Firestore] Document ${code} reset to SUBMITTED in Cloud Firestore`))
+          .catch(err => console.warn(`[Firestore] Update error:`, err));
+      }
+
       showToast(`Applicant ${code} reset to pending review.`);
       renderTable();
     }
@@ -1233,6 +1340,7 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       renderTable();
+      setupFirestoreListener();
     });
   </script>
 </body>
