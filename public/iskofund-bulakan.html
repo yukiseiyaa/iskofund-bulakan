@@ -3745,6 +3745,14 @@ footer button:hover {
       <!-- Skip link -->
       <button class="skip-link" onclick="window.scrollToSection('main')">Skip to content</button>
 
+      <!-- Emergency & Official Live Advisory Broadcast Bar -->
+      <div id="broadcast-bar" style="display:none; background:#8a0303; color:#fff; padding:10px 16px; font-size:12.5px; font-weight:600; text-align:center; transition:all 0.2s ease;">
+        <div class="wrap" style="display:flex; align-items:center; justify-content:center; gap:8px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span id="broadcast-bar-text"></span>
+        </div>
+      </div>
+
       <!-- Utility bar -->
       <div class="utility" style="display:block;">
         <div class="wrap utility-inner">
@@ -3812,7 +3820,7 @@ footer button:hover {
         <section class="hero" id="home">
           <div class="wrap hero-stage">
             <div class="hero-center">
-              <div class="open-label">Applications open for AY 2026–2027</div>
+              <div class="open-label" id="hero-open-label">Applications open for AY 2026–2027</div>
               <span class="hero-symbol">
                 <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-5 9 5-9 5z"></path><path d="M7 12v5c3 2 7 2 10 0v-5M21 10v6"></path></svg>
               </span>
@@ -3833,8 +3841,8 @@ footer button:hover {
             <!-- Floating Hero Badges -->
             <div class="hero-float deadline-float">
               <span>APPLICATION WINDOW</span>
-              <strong>Open until<br>September 30</strong>
-              <small>AY 2026–2027</small>
+              <strong id="hero-deadline-text">Open until<br>September 30</strong>
+              <small id="hero-ay-text">AY 2026–2027</small>
             </div>
 
             <div class="hero-float status-float">
@@ -3855,8 +3863,8 @@ footer button:hover {
 
             <div class="hero-float impact-float">
               <span>MUNICIPAL EDUCATION FUND</span>
-              <strong>₱******</strong>
-              <div><b>****+ scholars</b><b>14 barangays</b></div>
+              <strong id="hero-budget-text">₱12,500,000</strong>
+              <div><b id="hero-slots-text">450+ scholars</b><b>14 barangays</b></div>
             </div>
           </div>
         </section>
@@ -4622,7 +4630,7 @@ footer button:hover {
     { name: "Immaculate Conception Major Seminary & College", location: "Guiguinto, Bulacan", type: "Private" }
   ];
 
-  const announcementsData = [
+  let announcementsData = [
     { id: 1, type: "Deadline", date: "05 SEP 2026", title: "AY 2026–2027 application window is now open", text: "Online and physical submissions will be accepted until September 30, 2026. Applicants are encouraged to submit early." },
     { id: 2, type: "Payout", date: "28 AUG 2026", title: "Second-semester payout schedule released", text: "Approved scholars may view barangay-specific Landbank release dates through the application tracker." },
     { id: 3, type: "Memorandum", date: "18 AUG 2026", title: "Updated proof-of-income guidelines", text: "Applicants from informal-income households may now use the municipal Household Income Declaration form." },
@@ -5123,7 +5131,7 @@ footer button:hover {
       const isOpen = expandedAnnouncement === a.id;
       return `
         <article class="${isOpen ? 'expanded' : ''}">
-          <button onclick="window.toggleAnnouncement(${a.id})">
+          <button onclick="window.toggleAnnouncement('${a.id}')">
             <span>
               <small>${a.type}</small>
               <b>${a.date}</b>
@@ -5336,6 +5344,89 @@ footer button:hover {
         }
       }, (err) => {
         console.warn("[Firestore] Portal sync listener warning:", err);
+      });
+
+      // Synchronize Public Announcements in Real Time
+      firestoreDb.collection('announcements').onSnapshot((snapshot) => {
+        const list = [];
+        snapshot.forEach((docSnap) => {
+          const a = docSnap.data();
+          list.push({
+            id: docSnap.id,
+            type: a.type || 'Advisory',
+            date: a.date || 'Today',
+            title: a.title || 'Untitled Update',
+            text: a.text || ''
+          });
+        });
+        if (list.length > 0) {
+          announcementsData = list;
+          window.renderAnnouncements();
+          console.log("[Firestore] Public portal received " + list.length + " live announcements");
+        }
+      }, (err) => {
+        console.warn("[Firestore] Announcements public sync warning:", err);
+      });
+
+      // Synchronize Site Content & Broadcast Banner in Real Time
+      firestoreDb.collection('site_settings').doc('main').onSnapshot((docSnap) => {
+        if (!docSnap.exists) return;
+        const d = docSnap.data();
+
+        // 1. Top Emergency / Live Broadcast Banner
+        const bBar = document.getElementById('broadcast-bar');
+        const bText = document.getElementById('broadcast-bar-text');
+        if (bBar && bText) {
+          if (d.alertBannerActive && d.alertBannerText) {
+            bText.textContent = d.alertBannerText;
+            let bg = '#8a0303';
+            if (d.alertBannerTone === 'navy') bg = '#0f172a';
+            else if (d.alertBannerTone === 'green') bg = '#15803d';
+            bBar.style.backgroundColor = bg;
+            bBar.style.display = 'block';
+          } else {
+            bBar.style.display = 'none';
+          }
+        }
+
+        // 2. Hero Headline & Subtitle
+        if (d.heroTitle) {
+          const ht = document.getElementById('hero-title');
+          if (ht) ht.innerHTML = escapeHtml(d.heroTitle).replace(/\n/g, '<br>');
+        }
+        if (d.heroSubtitle) {
+          const hs = document.getElementById('hero-subtitle');
+          if (hs) hs.textContent = d.heroSubtitle;
+        }
+
+        // 3. Application Period & Academic Year Badge
+        if (d.academicYear) {
+          const ol = document.getElementById('hero-open-label');
+          if (ol) {
+            const statusWord = d.applicationStatus === 'OPEN' ? 'open' : (d.applicationStatus === 'CLOSED' ? 'closed' : 'in review');
+            ol.textContent = `Applications ${statusWord} for ${d.academicYear}`;
+          }
+          const ayEl = document.getElementById('hero-ay-text');
+          if (ayEl) ayEl.textContent = d.academicYear;
+        }
+
+        // 4. Submission Deadline Date
+        if (d.deadlineDate) {
+          const dlEl = document.getElementById('hero-deadline-text');
+          if (dlEl) dlEl.innerHTML = `Open until<br>${escapeHtml(d.deadlineDate)}`;
+        }
+
+        // 5. Total Budget & Scholar Quota
+        if (d.totalBudget) {
+          const bgEl = document.getElementById('hero-budget-text');
+          if (bgEl) bgEl.textContent = d.totalBudget;
+        }
+        if (d.slotsRemaining) {
+          const slEl = document.getElementById('hero-slots-text');
+          if (slEl) slEl.textContent = `${escapeHtml(d.slotsRemaining)} scholars`;
+        }
+      }, (err) => {
+        console.warn("[Firestore] Site settings sync warning:", err);
       });
     } catch(err) {
       console.warn("[Firestore] Sync setup exception:", err);

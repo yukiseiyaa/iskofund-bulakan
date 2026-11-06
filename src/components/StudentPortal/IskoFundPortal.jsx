@@ -19,7 +19,7 @@ import {
   X
 } from 'lucide-react';
 import '../../styles/figma-portal.css';
-import { saveApplication, getApplicationByTrackingCode, subscribeToApplications, updateApplicationStatus } from '../../services/databaseService';
+import { saveApplication, getApplicationByTrackingCode, subscribeToApplications, updateApplicationStatus, subscribeToAnnouncements, subscribeToSiteSettings } from '../../services/databaseService';
 import { registerWithFirebase, loginWithFirebase, logoutUser, subscribeToAuth } from '../../services/authService';
 
 const ICON_MAP = {
@@ -370,6 +370,19 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
     }
   });
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [liveAnnouncements, setLiveAnnouncements] = useState(announcements);
+  const [siteSettings, setSiteSettings] = useState({
+    academicYear: 'AY 2026–2027',
+    applicationStatus: 'OPEN',
+    deadlineDate: 'September 30, 2026',
+    alertBannerActive: true,
+    alertBannerText: 'Official Announcement: AY 2026–2027 Application window is now open. Submit requirements on or before September 30, 2026.',
+    alertBannerTone: 'maroon',
+    heroTitle: 'Scholarships made simple and transparent.',
+    heroSubtitle: 'Apply, submit your documents, and follow every update in one trusted place.',
+    totalBudget: '₱12,500,000',
+    slotsRemaining: '450 slots'
+  });
 
   useEffect(() => {
     // Real-time synchronization of applications with Firebase Firestore
@@ -389,9 +402,25 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
       }
     });
 
+    // Real-time CMS Announcements Listener
+    const unsubscribeAnn = subscribeToAnnouncements((list) => {
+      if (list && list.length > 0) {
+        setLiveAnnouncements(list);
+      }
+    });
+
+    // Real-time CMS Site Settings Listener
+    const unsubscribeSettings = subscribeToSiteSettings((s) => {
+      if (s) {
+        setSiteSettings(prev => ({ ...prev, ...s }));
+      }
+    });
+
     return () => {
       unsubscribeApps();
       unsubscribeAuth();
+      unsubscribeAnn();
+      unsubscribeSettings();
     };
   }, []);
 
@@ -858,7 +887,7 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
     (c.name + ' ' + c.location).toLowerCase().includes(collegeQuery.toLowerCase())
   );
 
-  const filteredAnnouncements = announcements.filter(a => 
+  const filteredAnnouncements = liveAnnouncements.filter(a => 
     announcementType === "All" || a.type === announcementType
   );
 
@@ -881,6 +910,25 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
   return (
     <div className="site">
       <button className="skip-link" onClick={() => scrollTo("main")}>Skip to content</button>
+
+      {/* Emergency & Official Live Advisory Broadcast Bar */}
+      {siteSettings.alertBannerActive && siteSettings.alertBannerText && (
+        <div style={{
+          background: siteSettings.alertBannerTone === 'navy' ? '#0f172a' : (siteSettings.alertBannerTone === 'green' ? '#15803d' : '#8a0303'),
+          color: '#fff',
+          padding: '10px 16px',
+          textAlign: 'center',
+          fontSize: '12.5px',
+          fontWeight: 600,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '8px'
+        }}>
+          <Icon name="award" size={15} />
+          <span>{siteSettings.alertBannerText}</span>
+        </div>
+      )}
 
       {/* Utility Top Bar */}
       <div className="utility" style={{ display: 'block' }}>
@@ -1018,7 +1066,7 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
           <div className="wrap hero-stage">
             <div className="hero-center">
               <div className="open-label">
-                {isFilipino ? "Bukas ang aplikasyon para sa TA 2026–2027" : "Applications open for AY 2026–2027"}
+                {isFilipino ? `Bukas ang aplikasyon para sa ${siteSettings.academicYear}` : `Applications open for ${siteSettings.academicYear}`}
               </div>
               <span className="hero-symbol">
                 <Icon name="graduation" size={25} />
@@ -1033,7 +1081,7 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
               <p>
                 {isFilipino 
                   ? "Mag-apply, magpasa ng mga dokumento, at subaybayan ang bawat update sa isang maaasahang plataporma."
-                  : "Apply, submit your documents, and follow every update in one trusted place."}
+                  : (siteSettings.heroSubtitle || "Apply, submit your documents, and follow every update in one trusted place.")}
               </p>
               <div className="hero-actions">
                 <button className="primary-button large" onClick={() => openAppModal()}>
@@ -1048,8 +1096,8 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
             {/* Floating Hero Badges */}
             <div className="hero-float deadline-float">
               <span>APPLICATION WINDOW</span>
-              <strong>Open until<br />September 30</strong>
-              <small>AY 2026–2027</small>
+              <strong>Open until<br />{siteSettings.deadlineDate}</strong>
+              <small>{siteSettings.academicYear}</small>
             </div>
 
             <div className="hero-float status-float">
@@ -1070,8 +1118,8 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
 
             <div className="hero-float impact-float">
               <span>MUNICIPAL EDUCATION FUND</span>
-              <strong>₱******</strong>
-              <div><b>****+ scholars</b><b>14 barangays</b></div>
+              <strong>{siteSettings.totalBudget}</strong>
+              <div><b>{siteSettings.slotsRemaining} scholars</b><b>14 barangays</b></div>
             </div>
           </div>
         </section>

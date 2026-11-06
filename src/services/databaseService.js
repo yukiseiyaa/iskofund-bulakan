@@ -191,3 +191,80 @@ export async function seedInitialCohortIfEmpty(initialStudents) {
   return false;
 }
 
+/**
+ * Announcements & Site Settings CMS Management
+ */
+const ANNOUNCEMENTS_COLLECTION = 'announcements';
+const SITE_SETTINGS_COLLECTION = 'site_settings';
+const DEFAULT_SITE_DOC = 'main';
+
+export function subscribeToAnnouncements(callback) {
+  if (isFirebaseConfigured && db) {
+    try {
+      const q = query(collection(db, ANNOUNCEMENTS_COLLECTION));
+      return onSnapshot(q, (snapshot) => {
+        const list = [];
+        snapshot.forEach((docSnap) => {
+          list.push({ id: docSnap.id, ...docSnap.data() });
+        });
+        callback(list);
+      }, (err) => {
+        console.warn('[Firestore] Announcements subscription error:', err);
+      });
+    } catch (e) {
+      console.warn('[Firestore] Announcements listener error:', e);
+    }
+  }
+  return () => {};
+}
+
+export async function saveAnnouncement(data) {
+  const id = data.id || ('ann-' + Date.now());
+  const record = {
+    ...data,
+    id,
+    updatedAt: new Date().toISOString()
+  };
+  if (isFirebaseConfigured && db) {
+    const docRef = doc(db, ANNOUNCEMENTS_COLLECTION, id);
+    await setDoc(docRef, { ...record, firestoreTimestamp: serverTimestamp() }, { merge: true });
+  }
+  return record;
+}
+
+export async function deleteAnnouncement(id) {
+  if (isFirebaseConfigured && db) {
+    const { deleteDoc } = await import('firebase/firestore');
+    await deleteDoc(doc(db, ANNOUNCEMENTS_COLLECTION, id));
+  }
+}
+
+export function subscribeToSiteSettings(callback) {
+  if (isFirebaseConfigured && db) {
+    try {
+      const docRef = doc(db, SITE_SETTINGS_COLLECTION, DEFAULT_SITE_DOC);
+      return onSnapshot(docRef, (docSnap) => {
+        if (docSnap.exists()) {
+          callback(docSnap.data());
+        }
+      }, (err) => {
+        console.warn('[Firestore] Site settings listener error:', err);
+      });
+    } catch (e) {
+      console.warn('[Firestore] Site settings listener exception:', e);
+    }
+  }
+  return () => {};
+}
+
+export async function updateSiteSettings(settings) {
+  if (isFirebaseConfigured && db) {
+    const docRef = doc(db, SITE_SETTINGS_COLLECTION, DEFAULT_SITE_DOC);
+    await setDoc(docRef, {
+      ...settings,
+      updatedAt: new Date().toISOString(),
+      firestoreTimestamp: serverTimestamp()
+    }, { merge: true });
+  }
+}
+

@@ -620,6 +620,172 @@
       to { transform: translateY(0); opacity: 1; }
     }
 
+    /* Console Tab Navigation */
+    .console-nav-wrap {
+      margin: 18px 0 22px 0;
+    }
+    .console-nav {
+      display: flex;
+      gap: 6px;
+      border-bottom: 2px solid var(--line);
+      padding-bottom: 0;
+      overflow-x: auto;
+    }
+    .console-tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 18px;
+      font-family: inherit;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--muted);
+      background: transparent;
+      border: none;
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+      margin-bottom: -2px;
+    }
+    .console-tab-btn:hover {
+      color: var(--ink);
+    }
+    .console-tab-btn.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+      background: rgba(138, 3, 3, 0.04);
+      border-radius: 6px 6px 0 0;
+    }
+    .console-tab-btn .badge-pill {
+      background: #f1f5f9;
+      color: var(--muted);
+      font-size: 11px;
+      padding: 1px 7px;
+      border-radius: 99px;
+    }
+    .console-tab-btn.active .badge-pill {
+      background: var(--accent-light);
+      color: var(--accent);
+    }
+
+    /* CMS Forms & Cards */
+    .cms-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 20px;
+    }
+    .cms-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 22px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .cms-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .cms-card-head h3 {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--ink);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-label {
+      display: block;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .form-label small {
+      color: var(--muted);
+      font-weight: normal;
+      text-transform: none;
+      font-size: 11px;
+    }
+    .form-input {
+      width: 100%;
+      padding: 9px 12px;
+      font-family: inherit;
+      font-size: 13px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      background: #fff;
+      color: var(--ink);
+      outline: none;
+      box-sizing: border-box;
+      transition: border-color 0.15s;
+    }
+    .form-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(138, 3, 3, 0.1);
+    }
+    textarea.form-input {
+      resize: vertical;
+      min-height: 80px;
+      line-height: 1.5;
+    }
+
+    /* Announcement Card Items */
+    .ann-item {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 18px 22px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .ann-item:hover {
+      border-color: var(--line-strong);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .ann-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 10.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .ann-tag-Deadline {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+    .ann-tag-Payout {
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+    .ann-tag-Memorandum {
+      background: #e0f2fe;
+      color: #075985;
+      border: 1px solid #bae6fd;
+    }
+    .ann-tag-Advisory {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fde68a;
+    }
+
     @media (max-width: 900px) {
       .metrics-grid {
         grid-template-columns: 1fr 1fr;
@@ -689,93 +855,284 @@
   <!-- Main Content -->
   <main class="wrap">
     
-    <!-- Desk Banner -->
-    <section class="desk-hero">
-      <div class="desk-hero-card">
-        <div class="desk-eyebrow">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-          Municipal Social Welfare &amp; Development Office · Bulakan
-        </div>
-        <h1>
-          Applicant Review &amp;<br>
-          <em>Grant Allocation Desk.</em>
-        </h1>
-        <p>
-          Evaluate student scholarship applications, verify submitted income documentation, and confirm or decline aid grants for Academic Year 2026–2027. Decisions instantly sync with student tracking codes.
-        </p>
-
-        <!-- Metric Summary Cards -->
-        <div class="metrics-grid">
-          <div class="metric-card">
-            <small>Total Applicants</small>
-            <strong id="metric-total">0</strong>
-            <span class="desc">Active student records</span>
-          </div>
-          <div class="metric-card" style="border-left: 3px solid var(--warning);">
-            <small style="color:var(--warning);">Pending Review</small>
-            <strong id="metric-pending" style="color:var(--warning);">0</strong>
-            <span class="desc">Awaiting decision</span>
-          </div>
-          <div class="metric-card" style="border-left: 3px solid var(--success);">
-            <small style="color:var(--success);">Approved Grants</small>
-            <strong id="metric-approved" style="color:var(--success);">0</strong>
-            <span class="desc">Accepted for payout</span>
-          </div>
-          <div class="metric-card" style="border-left: 3px solid var(--accent);">
-            <small style="color:var(--accent);">Declined</small>
-            <strong id="metric-declined" style="color:var(--accent);">0</strong>
-            <span class="desc">Ineligible or over quota</span>
-          </div>
-        </div>
+    <!-- Console Primary Tab Navigation -->
+    <div class="console-nav-wrap">
+      <div class="console-nav">
+        <button class="console-tab-btn active" data-tab="applicants" onclick="switchAdminTab('applicants', this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Applicant Review Desk
+        </button>
+        <button class="console-tab-btn" data-tab="announcements" onclick="switchAdminTab('announcements', this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          Announcements &amp; Newsflash <span class="badge-pill" id="tab-ann-count">4</span>
+        </button>
+        <button class="console-tab-btn" data-tab="content" onclick="switchAdminTab('content', this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Site Content &amp; Live Broadcast
+        </button>
       </div>
-    </section>
+    </div>
 
-    <!-- Table Section -->
-    <section class="desk-section">
-      <div class="desk-panel">
-        
-        <!-- Controls Bar -->
-        <div class="desk-controls">
-          <div class="filter-tabs" id="filter-tabs">
-            <button class="filter-tab active" data-filter="ALL" onclick="setFilter('ALL', this)">All Applicants <span class="badge" id="count-all">0</span></button>
-            <button class="filter-tab" data-filter="PENDING" onclick="setFilter('PENDING', this)">Pending <span class="badge" id="count-pending">0</span></button>
-            <button class="filter-tab" data-filter="APPROVED" onclick="setFilter('APPROVED', this)">Accepted <span class="badge" id="count-approved">0</span></button>
-            <button class="filter-tab" data-filter="DECLINED" onclick="setFilter('DECLINED', this)">Declined <span class="badge" id="count-declined">0</span></button>
+    <!-- VIEW 1: Applicant Review Desk -->
+    <div id="view-applicants">
+      <!-- Desk Banner -->
+      <section class="desk-hero">
+        <div class="desk-hero-card">
+          <div class="desk-eyebrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            Municipal Social Welfare &amp; Development Office · Bulakan
           </div>
+          <h1>
+            Applicant Review &amp;<br>
+            <em>Grant Allocation Desk.</em>
+          </h1>
+          <p>
+            Evaluate student scholarship applications, verify submitted income documentation, and confirm or decline aid grants for Academic Year 2026–2027. Decisions instantly sync with student tracking codes.
+          </p>
 
-          <div class="controls-right">
-            <div class="search-box">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-              <input type="text" id="search-input" placeholder="Search applicant, code, barangay..." oninput="renderTable()">
+          <!-- Metric Summary Cards -->
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <small>Total Applicants</small>
+              <strong id="metric-total">0</strong>
+              <span class="desc">Active student records</span>
             </div>
-            <button class="btn btn-light" onclick="exportData()" title="Download summary report">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              Export
-            </button>
+            <div class="metric-card" style="border-left: 3px solid var(--warning);">
+              <small style="color:var(--warning);">Pending Review</small>
+              <strong id="metric-pending" style="color:var(--warning);">0</strong>
+              <span class="desc">Awaiting decision</span>
+            </div>
+            <div class="metric-card" style="border-left: 3px solid var(--success);">
+              <small style="color:var(--success);">Approved Grants</small>
+              <strong id="metric-approved" style="color:var(--success);">0</strong>
+              <span class="desc">Accepted for payout</span>
+            </div>
+            <div class="metric-card" style="border-left: 3px solid var(--accent);">
+              <small style="color:var(--accent);">Declined</small>
+              <strong id="metric-declined" style="color:var(--accent);">0</strong>
+              <span class="desc">Ineligible or over quota</span>
+            </div>
           </div>
         </div>
+      </section>
 
-        <!-- Table -->
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th style="width: 24%;">Applicant / Reference</th>
-                <th style="width: 17%;">Barangay &amp; Contact</th>
-                <th style="width: 25%;">College &amp; Course</th>
-                <th style="width: 15%;">Income / Need</th>
-                <th style="width: 11%;">Status</th>
-                <th style="width: 8%; text-align: right;">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="applicant-tbody">
-              <!-- Rendered dynamically -->
-            </tbody>
-          </table>
+      <!-- Table Section -->
+      <section class="desk-section">
+        <div class="desk-panel">
+          
+          <!-- Controls Bar -->
+          <div class="desk-controls">
+            <div class="filter-tabs" id="filter-tabs">
+              <button class="filter-tab active" data-filter="ALL" onclick="setFilter('ALL', this)">All Applicants <span class="badge" id="count-all">0</span></button>
+              <button class="filter-tab" data-filter="PENDING" onclick="setFilter('PENDING', this)">Pending <span class="badge" id="count-pending">0</span></button>
+              <button class="filter-tab" data-filter="APPROVED" onclick="setFilter('APPROVED', this)">Accepted <span class="badge" id="count-approved">0</span></button>
+              <button class="filter-tab" data-filter="DECLINED" onclick="setFilter('DECLINED', this)">Declined <span class="badge" id="count-declined">0</span></button>
+            </div>
+
+            <div class="controls-right">
+              <div class="search-box">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                <input type="text" id="search-input" placeholder="Search applicant, code, barangay..." oninput="renderTable()">
+              </div>
+              <button class="btn btn-light" onclick="exportData()" title="Download summary report">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Export
+              </button>
+            </div>
+          </div>
+
+          <!-- Table -->
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 24%;">Applicant / Reference</th>
+                  <th style="width: 17%;">Barangay &amp; Contact</th>
+                  <th style="width: 25%;">College &amp; Course</th>
+                  <th style="width: 15%;">Income / Need</th>
+                  <th style="width: 11%;">Status</th>
+                  <th style="width: 8%; text-align: right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="applicant-tbody">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+
         </div>
+      </section>
+    </div>
 
-      </div>
-    </section>
+    <!-- VIEW 2: Announcements & Public Updates Manager -->
+    <div id="view-announcements" style="display:none;">
+      <section class="desk-hero">
+        <div class="desk-hero-card">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px;">
+            <div>
+              <div class="desk-eyebrow">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                Public Communications &amp; Memoranda
+              </div>
+              <h1>
+                Announcements &amp;<br>
+                <em>Public Updates Manager.</em>
+              </h1>
+              <p>
+                Publish, edit, or withdraw official scholarship announcements, payout schedules, and verification guidelines. Updates immediately broadcast to all students on the live portal.
+              </p>
+            </div>
+            <div>
+              <button class="btn btn-primary" onclick="openNewAnnouncementModal()" style="padding:10px 18px; font-size:13px; display:inline-flex; align-items:center; gap:8px;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                Publish New Update
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="desk-section">
+        <div class="desk-panel" style="padding:24px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; flex-wrap:wrap; gap:12px;">
+            <div class="filter-tabs" id="ann-filter-tabs">
+              <button class="filter-tab active" onclick="setAnnFilter('ALL', this)">All Updates</button>
+              <button class="filter-tab" onclick="setAnnFilter('Deadline', this)">Deadlines</button>
+              <button class="filter-tab" onclick="setAnnFilter('Payout', this)">Payouts</button>
+              <button class="filter-tab" onclick="setAnnFilter('Memorandum', this)">Memoranda</button>
+              <button class="filter-tab" onclick="setAnnFilter('Advisory', this)">Advisories</button>
+            </div>
+            <span style="font-size:12px; color:var(--muted); font-weight:600;" id="ann-active-count">Showing 4 updates</span>
+          </div>
+
+          <div id="admin-announcements-list" style="display:flex; flex-direction:column; gap:12px;">
+            <!-- Dynamically populated from Firestore -->
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- VIEW 3: Site Content & Live Broadcast Desk -->
+    <div id="view-content" style="display:none;">
+      <section class="desk-hero">
+        <div class="desk-hero-card">
+          <div class="desk-eyebrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            Site Management &amp; Content Management System
+          </div>
+          <h1>
+            Site Content &amp;<br>
+            <em>Live Broadcast Control.</em>
+          </h1>
+          <p>
+            Configure global site messaging, toggle the emergency headline banner, adjust the application window status, and publish real-time quota changes across the public IskoFund platform.
+          </p>
+        </div>
+      </section>
+
+      <section class="desk-section">
+        <div class="cms-grid">
+          
+          <!-- Card 1: Emergency & Advisory Broadcast Banner -->
+          <div class="cms-card">
+            <div class="cms-card-head">
+              <h3>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                Top Broadcast Banner
+              </h3>
+              <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:12px; font-weight:700; color:var(--accent);">
+                <input type="checkbox" id="toggle-broadcast-active" style="width:16px; height:16px; accent-color:var(--accent);">
+                <span>Active on Site</span>
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Banner Notice Text <small>(Appears atop all pages)</small></label>
+              <textarea id="input-broadcast-text" class="form-input" rows="3" placeholder="Enter urgent announcement or deadline reminder..."></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Banner Color Tone</label>
+              <select id="select-broadcast-tone" class="form-input">
+                <option value="maroon">Bulacan Maroon (Urgent / Official)</option>
+                <option value="navy">Deep Navy (General Notice)</option>
+                <option value="green">Emerald Green (Disbursement / Release)</option>
+              </select>
+            </div>
+            <p style="font-size:11.5px; color:var(--muted); margin:0;">Toggle off to instantly hide the banner from public view.</p>
+          </div>
+
+          <!-- Card 2: Application Cycle & Quota Control -->
+          <div class="cms-card">
+            <div class="cms-card-head">
+              <h3>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                Application Cycle &amp; Quota
+              </h3>
+              <span class="status-badge status-approved" id="cms-cycle-pill">OPEN</span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Academic Year / Cycle</label>
+              <input type="text" id="input-academic-year" class="form-input" placeholder="e.g. AY 2026–2027">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Application Status</label>
+              <select id="select-app-status" class="form-input" onchange="updateCmsStatusPill(this.value)">
+                <option value="OPEN">OPEN (Accepting Applications)</option>
+                <option value="REVIEWING">UNDER REVIEW (Assessment in Progress)</option>
+                <option value="CLOSED">CLOSED (Cycle Completed)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Submission Deadline Date</label>
+              <input type="text" id="input-deadline-date" class="form-input" placeholder="e.g. September 30, 2026">
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+              <div class="form-group">
+                <label class="form-label">Education Fund Budget</label>
+                <input type="text" id="input-total-budget" class="form-input" placeholder="e.g. ₱12,500,000">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Total Scholar Slots</label>
+                <input type="text" id="input-quota-slots" class="form-input" placeholder="e.g. 450 slots">
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Hero Headline & Welcome Intro -->
+          <div class="cms-card" style="grid-column: 1 / -1;">
+            <div class="cms-card-head">
+              <h3>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>
+                Portal Headline &amp; Introduction
+              </h3>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Hero Title <small>(Use enter for line break)</small></label>
+              <input type="text" id="input-hero-title" class="form-input" placeholder="Scholarships made simple and transparent.">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Hero Subtitle</label>
+              <textarea id="input-hero-subtitle" class="form-input" rows="2" placeholder="Apply, submit your documents, and follow every update in one trusted place."></textarea>
+            </div>
+
+            <div style="display:flex; justify-content:flex-end; margin-top:16px;">
+              <button class="btn btn-primary" onclick="saveSiteSettingsFromAdmin()" style="padding:11px 22px; font-size:13.5px; display:inline-flex; align-items:center; gap:8px;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                Save &amp; Publish Content Live
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </div>
 
   </main>
 
@@ -859,6 +1216,56 @@
             Close
           </button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Announcement Modal -->
+  <div class="modal-backdrop" id="announcement-modal" onclick="if(event.target===this)closeAnnouncementModal()">
+    <div class="dossier-box" style="max-width:580px;">
+      <div class="modal-head" style="background:#8a0303;">
+        <div>
+          <h3 id="ann-modal-title" style="color:#fff;">Publish Announcement</h3>
+          <p id="ann-modal-sub" style="color:rgba(255,255,255,0.85);">Broadcast public update to student portal</p>
+        </div>
+        <button onclick="closeAnnouncementModal()" aria-label="Close" style="color:#fff;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 6-12 12M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <input type="hidden" id="ann-input-id">
+        <div class="form-group">
+          <label class="form-label">Category / Update Type</label>
+          <select id="ann-input-type" class="form-input">
+            <option value="Deadline">Deadline Notice</option>
+            <option value="Payout">Disbursement / Payout</option>
+            <option value="Memorandum">Official Memorandum</option>
+            <option value="Advisory">Municipal Advisory</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Date Displayed <small>(e.g. 06 NOV 2026)</small></label>
+          <input type="text" id="ann-input-date" class="form-input" placeholder="06 NOV 2026">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Announcement Title / Headline</label>
+          <input type="text" id="ann-input-title" class="form-input" placeholder="e.g. Second-semester payout schedule released">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Announcement Text / Instructions</label>
+          <textarea id="ann-input-text" class="form-input" rows="4" placeholder="Enter details, requirements, venue, or steps for scholars..."></textarea>
+        </div>
+      </div>
+
+      <div class="modal-foot">
+        <button class="btn btn-light" onclick="closeAnnouncementModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="submitAnnouncementForm()" id="ann-submit-btn">
+          Publish Update Live
+        </button>
       </div>
     </div>
   </div>
@@ -1338,9 +1745,324 @@
         .replace(/'/g, '&#39;');
     }
 
+    // ==========================================
+    // CMS: CONSOLE NAVIGATION & TAB SWITCHER
+    // ==========================================
+    let currentAdminTab = 'applicants';
+
+    function switchAdminTab(tab, btn) {
+      currentAdminTab = tab;
+      document.querySelectorAll('.console-tab-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+
+      document.getElementById('view-applicants').style.display = tab === 'applicants' ? 'block' : 'none';
+      document.getElementById('view-announcements').style.display = tab === 'announcements' ? 'block' : 'none';
+      document.getElementById('view-content').style.display = tab === 'content' ? 'block' : 'none';
+
+      if (tab === 'announcements') {
+        renderAnnouncementsTable();
+      }
+    }
+
+    // ==========================================
+    // CMS: ANNOUNCEMENTS & UPDATES MANAGER
+    // ==========================================
+    let liveAnnouncements = [];
+    let currentAnnFilter = 'ALL';
+
+    function setupAnnouncementsListener() {
+      if (!firestoreDb) return;
+      try {
+        firestoreDb.collection('announcements').onSnapshot((snapshot) => {
+          const list = [];
+          snapshot.forEach((docSnap) => {
+            list.push({ id: docSnap.id, ...docSnap.data() });
+          });
+          liveAnnouncements = list;
+          document.getElementById('tab-ann-count').textContent = list.length;
+          renderAnnouncementsTable();
+          console.log("[Firestore] Announcements snapshot: " + list.length + " updates loaded");
+        }, (err) => {
+          console.warn("[Firestore] Announcements listener error:", err);
+        });
+      } catch (err) {
+        console.warn("[Firestore] Announcements setup exception:", err);
+      }
+    }
+
+    function setAnnFilter(filter, btn) {
+      currentAnnFilter = filter;
+      document.querySelectorAll('#ann-filter-tabs .filter-tab').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderAnnouncementsTable();
+    }
+
+    function renderAnnouncementsTable() {
+      const container = document.getElementById('admin-announcements-list');
+      if (!container) return;
+
+      let filtered = liveAnnouncements;
+      if (currentAnnFilter !== 'ALL') {
+        filtered = liveAnnouncements.filter(a => a.type === currentAnnFilter);
+      }
+
+      document.getElementById('ann-active-count').textContent = `Showing ${filtered.length} of ${liveAnnouncements.length} updates`;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div style="padding:40px; text-align:center; color:var(--muted); background:#faf8f5; border:1px dashed var(--line); border-radius:6px;">
+            <strong>No announcements found for this filter.</strong>
+            <p style="font-size:12px; margin-top:4px;">Click "+ Publish New Update" above to broadcast an advisory to students.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(a => {
+        const tagClass = 'ann-tag-' + (a.type || 'Advisory');
+        return `
+          <div class="ann-item">
+            <div style="flex:1;">
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                <span class="ann-tag ${tagClass}">${escapeHtml(a.type || 'Advisory')}</span>
+                <span style="font-size:11.5px; color:var(--muted); font-weight:700;">${escapeHtml(a.date || 'Today')}</span>
+              </div>
+              <h4 style="margin:0 0 4px 0; font-size:15px; color:var(--ink); font-weight:700;">${escapeHtml(a.title || 'Untitled Update')}</h4>
+              <p style="margin:0; font-size:13px; color:var(--muted); line-height:1.5;">${escapeHtml(a.text || '')}</p>
+            </div>
+            <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
+              <button class="btn-act btn-act-view" onclick="openEditAnnouncementModal('${escapeHtml(a.id)}')" title="Edit announcement">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                Edit
+              </button>
+              <button class="btn-act btn-act-decline" onclick="deleteAnnouncement('${escapeHtml(a.id)}')" title="Delete announcement">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                Delete
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openNewAnnouncementModal() {
+      document.getElementById('ann-input-id').value = '';
+      document.getElementById('ann-modal-title').textContent = 'Publish New Update';
+      document.getElementById('ann-modal-sub').textContent = 'Broadcast live update to student portal';
+      document.getElementById('ann-input-type').value = 'Deadline';
+      
+      const now = new Date();
+      const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+      const formattedToday = `${String(now.getDate()).padStart(2, '0')} ${monthNames[now.getMonth()]} ${now.getFullYear()}`;
+      document.getElementById('ann-input-date').value = formattedToday;
+
+      document.getElementById('ann-input-title').value = '';
+      document.getElementById('ann-input-text').value = '';
+      document.getElementById('ann-submit-btn').textContent = 'Publish Update Live';
+
+      document.getElementById('announcement-modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function openEditAnnouncementModal(id) {
+      const a = liveAnnouncements.find(item => item.id === id);
+      if (!a) return;
+
+      document.getElementById('ann-input-id').value = id;
+      document.getElementById('ann-modal-title').textContent = 'Edit Announcement';
+      document.getElementById('ann-modal-sub').textContent = `Editing update ID: ${id}`;
+      document.getElementById('ann-input-type').value = a.type || 'Advisory';
+      document.getElementById('ann-input-date').value = a.date || '';
+      document.getElementById('ann-input-title').value = a.title || '';
+      document.getElementById('ann-input-text').value = a.text || '';
+      document.getElementById('ann-submit-btn').textContent = 'Save & Update Live';
+
+      document.getElementById('announcement-modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeAnnouncementModal() {
+      document.getElementById('announcement-modal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function submitAnnouncementForm() {
+      const existingId = document.getElementById('ann-input-id').value;
+      const type = document.getElementById('ann-input-type').value;
+      const date = document.getElementById('ann-input-date').value.trim() || 'Today';
+      const title = document.getElementById('ann-input-title').value.trim();
+      const text = document.getElementById('ann-input-text').value.trim();
+
+      if (!title) {
+        alert('Please provide an announcement title.');
+        return;
+      }
+
+      const id = existingId || ('ann-' + Date.now());
+      const payload = {
+        id,
+        type,
+        date,
+        title,
+        text,
+        updatedAt: new Date().toISOString()
+      };
+
+      if (firestoreDb) {
+        firestoreDb.collection('announcements').doc(id).set(payload, { merge: true })
+          .then(() => {
+            showToast(existingId ? 'Announcement updated and published!' : 'New announcement published live!');
+            closeAnnouncementModal();
+          })
+          .catch(err => {
+            console.error('[Firestore] Announcement save error:', err);
+            showToast('Error saving announcement: ' + err.message);
+          });
+      } else {
+        // Fallback local
+        const idx = liveAnnouncements.findIndex(item => item.id === id);
+        if (idx >= 0) liveAnnouncements[idx] = payload;
+        else liveAnnouncements.unshift(payload);
+        renderAnnouncementsTable();
+        closeAnnouncementModal();
+        showToast('Announcement saved locally.');
+      }
+    }
+
+    function deleteAnnouncement(id) {
+      if (!confirm('Are you sure you want to permanently delete this announcement?')) return;
+
+      if (firestoreDb) {
+        firestoreDb.collection('announcements').doc(id).delete()
+          .then(() => {
+            showToast('Announcement removed from site.');
+          })
+          .catch(err => {
+            console.error('[Firestore] Delete error:', err);
+            showToast('Failed to delete: ' + err.message);
+          });
+      } else {
+        liveAnnouncements = liveAnnouncements.filter(item => item.id !== id);
+        renderAnnouncementsTable();
+        showToast('Announcement deleted.');
+      }
+    }
+
+    // ==========================================
+    // CMS: SITE CONTENT & BROADCAST CONTROL
+    // ==========================================
+    let liveSiteSettings = {};
+
+    function setupSiteSettingsListener() {
+      if (!firestoreDb) return;
+      try {
+        firestoreDb.collection('site_settings').doc('main').onSnapshot((docSnap) => {
+          if (!docSnap.exists) return;
+          const s = docSnap.data();
+          liveSiteSettings = s;
+
+          // Populate forms
+          if (document.getElementById('toggle-broadcast-active')) {
+            document.getElementById('toggle-broadcast-active').checked = !!s.alertBannerActive;
+          }
+          if (document.getElementById('input-broadcast-text')) {
+            document.getElementById('input-broadcast-text').value = s.alertBannerText || '';
+          }
+          if (document.getElementById('select-broadcast-tone')) {
+            document.getElementById('select-broadcast-tone').value = s.alertBannerTone || 'maroon';
+          }
+          if (document.getElementById('input-academic-year')) {
+            document.getElementById('input-academic-year').value = s.academicYear || 'AY 2026–2027';
+          }
+          if (document.getElementById('select-app-status')) {
+            document.getElementById('select-app-status').value = s.applicationStatus || 'OPEN';
+            updateCmsStatusPill(s.applicationStatus || 'OPEN');
+          }
+          if (document.getElementById('input-deadline-date')) {
+            document.getElementById('input-deadline-date').value = s.deadlineDate || 'September 30, 2026';
+          }
+          if (document.getElementById('input-total-budget')) {
+            document.getElementById('input-total-budget').value = s.totalBudget || '₱12,500,000';
+          }
+          if (document.getElementById('input-quota-slots')) {
+            document.getElementById('input-quota-slots').value = s.slotsRemaining || '450 slots';
+          }
+          if (document.getElementById('input-hero-title')) {
+            document.getElementById('input-hero-title').value = s.heroTitle || 'Scholarships made simple and transparent.';
+          }
+          if (document.getElementById('input-hero-subtitle')) {
+            document.getElementById('input-hero-subtitle').value = s.heroSubtitle || 'Apply, submit your documents, and follow every update in one trusted place.';
+          }
+
+          console.log("[Firestore] Site settings loaded:", s);
+        }, (err) => {
+          console.warn("[Firestore] Site settings listener error:", err);
+        });
+      } catch (err) {
+        console.warn("[Firestore] Site settings exception:", err);
+      }
+    }
+
+    function updateCmsStatusPill(val) {
+      const pill = document.getElementById('cms-cycle-pill');
+      if (!pill) return;
+      if (val === 'OPEN') {
+        pill.className = 'status-badge status-approved';
+        pill.textContent = 'OPEN';
+      } else if (val === 'REVIEWING') {
+        pill.className = 'status-badge status-pending';
+        pill.textContent = 'IN REVIEW';
+      } else {
+        pill.className = 'status-badge status-declined';
+        pill.textContent = 'CLOSED';
+      }
+    }
+
+    function saveSiteSettingsFromAdmin() {
+      const alertBannerActive = document.getElementById('toggle-broadcast-active').checked;
+      const alertBannerText = document.getElementById('input-broadcast-text').value.trim();
+      const alertBannerTone = document.getElementById('select-broadcast-tone').value;
+      const academicYear = document.getElementById('input-academic-year').value.trim();
+      const applicationStatus = document.getElementById('select-app-status').value;
+      const deadlineDate = document.getElementById('input-deadline-date').value.trim();
+      const totalBudget = document.getElementById('input-total-budget').value.trim();
+      const slotsRemaining = document.getElementById('input-quota-slots').value.trim();
+      const heroTitle = document.getElementById('input-hero-title').value.trim();
+      const heroSubtitle = document.getElementById('input-hero-subtitle').value.trim();
+
+      const payload = {
+        alertBannerActive,
+        alertBannerText,
+        alertBannerTone,
+        academicYear,
+        applicationStatus,
+        deadlineDate,
+        totalBudget,
+        slotsRemaining,
+        heroTitle,
+        heroSubtitle,
+        updatedAt: new Date().toISOString()
+      };
+
+      if (firestoreDb) {
+        firestoreDb.collection('site_settings').doc('main').set(payload, { merge: true })
+          .then(() => {
+            showToast('Site content & broadcast settings updated and published live!');
+          })
+          .catch(err => {
+            console.error('[Firestore] Settings save error:', err);
+            showToast('Save failed: ' + err.message);
+          });
+      } else {
+        showToast('Site content saved locally.');
+      }
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       renderTable();
       setupFirestoreListener();
+      setupAnnouncementsListener();
+      setupSiteSettingsListener();
     });
   </script>
 </body>
