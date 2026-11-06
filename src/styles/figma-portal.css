@@ -342,11 +342,7 @@ label:has(input:focus-visible) {
 }
 
 .open-label span {
-  background: #256b4b;
-  border-radius: 50%;
-  width: 9px;
-  height: 9px;
-  box-shadow: 0 0 0 4px rgba(37, 107, 75, 0.18);
+  display: none;
 }
 
 .hero h1 {

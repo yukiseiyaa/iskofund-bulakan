@@ -929,7 +929,7 @@ export default function IskoFundPortal({ onSwitchToAdmin }) {
           <div className="wrap hero-stage">
             <div className="hero-center">
               <div className="open-label">
-                <span /> {isFilipino ? "Bukas ang aplikasyon para sa TA 2026–2027" : "Applications open for AY 2026–2027"}
+                {isFilipino ? "Bukas ang aplikasyon para sa TA 2026–2027" : "Applications open for AY 2026–2027"}
               </div>
               <span className="hero-symbol">
                 <Icon name="graduation" size={25} />
