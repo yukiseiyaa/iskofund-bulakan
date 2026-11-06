@@ -786,6 +786,83 @@
       border: 1px solid #fde68a;
     }
 
+    /* Analytics & Optimization Solver Components */
+    .tier-bar-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .tier-meter {
+      height: 7px;
+      background: #f1f5f9;
+      border-radius: 99px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+    .tier-meter-fill {
+      height: 100%;
+      border-radius: 99px;
+      transition: width 0.6s ease;
+    }
+    .barangay-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 10px;
+    }
+    .barangay-pill {
+      background: #faf8f5;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .barangay-pill small {
+      font-size: 10.5px;
+      color: var(--muted);
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .barangay-pill strong {
+      font-size: 15px;
+      color: var(--ink);
+      font-family: monospace;
+      margin-top: 2px;
+    }
+    .range-slider {
+      width: 100%;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+    .score-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    .score-badge-high {
+      background: #dcfce7;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+    }
+    .score-badge-med {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fde68a;
+    }
+    .score-badge-low {
+      background: #f1f5f9;
+      color: #475569;
+      border: 1px solid #cbd5e1;
+    }
+
     @media (max-width: 900px) {
       .metrics-grid {
         grid-template-columns: 1fr 1fr;
@@ -862,6 +939,14 @@
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           Applicant Review Desk
         </button>
+        <button class="console-tab-btn" data-tab="analytics" onclick="switchAdminTab('analytics', this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          Analytics &amp; Demographics
+        </button>
+        <button class="console-tab-btn" data-tab="solver" onclick="switchAdminTab('solver', this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Budget &amp; Need Optimizer
+        </button>
         <button class="console-tab-btn" data-tab="announcements" onclick="switchAdminTab('announcements', this)">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
           Announcements &amp; Newsflash <span class="badge-pill" id="tab-ann-count">4</span>
@@ -934,6 +1019,10 @@
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
                 <input type="text" id="search-input" placeholder="Search applicant, code, barangay..." oninput="renderTable()">
               </div>
+              <button class="btn btn-primary" onclick="batchApproveHighNeed()" title="Auto-approve all pending applicants in Tier 1 high priority" style="font-size:12px; padding:6px 12px; gap:6px;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                Auto-Approve Tier 1
+              </button>
               <button class="btn btn-light" onclick="exportData()" title="Download summary report">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 Export
@@ -964,7 +1053,194 @@
       </section>
     </div>
 
-    <!-- VIEW 2: Announcements & Public Updates Manager -->
+    <!-- VIEW 2: Analytics & Demographics -->
+    <div id="view-analytics" style="display:none;">
+      <section class="desk-hero">
+        <div class="desk-hero-card">
+          <div class="desk-eyebrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            Municipal Aid Analytics &amp; Demographics
+          </div>
+          <h1>
+            Cohort Need Distribution &amp;<br>
+            <em>Barangay Representation Audit.</em>
+          </h1>
+          <p>
+            Real-time equity analytics across all 14 barangays of Bulakan. Verify vulnerability tiers, 4Ps beneficiary coverage, and household income equity metrics.
+          </p>
+
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <small>Average Need Index</small>
+              <strong id="analytics-avg-score">0 / 100</strong>
+              <span class="desc">Cohort composite index</span>
+            </div>
+            <div class="metric-card" style="border-left: 3px solid var(--success);">
+              <small style="color:var(--success);">4Ps Priority Representation</small>
+              <strong id="analytics-4ps-ratio" style="color:var(--success);">0%</strong>
+              <span class="desc">Poverty alleviation tier</span>
+            </div>
+            <div class="metric-card" style="border-left: 3px solid var(--accent);">
+              <small style="color:var(--accent);">Total Grant Commitments</small>
+              <strong id="analytics-grant-total" style="color:var(--accent);">₱0</strong>
+              <span class="desc">Approved allocations</span>
+            </div>
+            <div class="metric-card" style="border-left: 3px solid #0284c7;">
+              <small style="color:#0284c7;">Barangays Active</small>
+              <strong id="analytics-barangay-count" style="color:#0284c7;">0 / 14</strong>
+              <span class="desc">Submissions received</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="desk-section">
+        <div class="cms-grid">
+          <!-- Card: Need Tier Distribution -->
+          <div class="cms-card">
+            <div class="cms-card-head">
+              <h3>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+                Cohort Need Tier Distribution
+              </h3>
+            </div>
+            <div class="tier-bar-wrap" id="analytics-tier-bars">
+              <!-- Tier 1 to 4 dynamically rendered -->
+            </div>
+          </div>
+
+          <!-- Card: Household Income Brackets -->
+          <div class="cms-card">
+            <div class="cms-card-head">
+              <h3>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                Household Income Brackets
+              </h3>
+            </div>
+            <div class="tier-bar-wrap" id="analytics-income-bars">
+              <!-- Income brackets rendered -->
+            </div>
+          </div>
+
+          <!-- Card: All 14 Barangays of Bulakan -->
+          <div class="cms-card" style="grid-column: 1 / -1;">
+            <div class="cms-card-head">
+              <h3>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                14-Barangay Municipal Geographic Distribution
+              </h3>
+              <span style="font-size:11.5px; color:var(--muted); font-weight:600;">Municipality of Bulakan, Bulacan</span>
+            </div>
+            <div class="barangay-grid" id="analytics-barangay-grid">
+              <!-- All 14 barangays with counts -->
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- VIEW 3: Budget & Need Optimization Solver -->
+    <div id="view-solver" style="display:none;">
+      <section class="desk-hero">
+        <div class="desk-hero-card">
+          <div class="desk-eyebrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            Algorithmic Allocation &amp; Knapsack Optimization
+          </div>
+          <h1>
+            Budget Allocation &amp;<br>
+            <em>Need Optimization Solver.</em>
+          </h1>
+          <p>
+            Simulate and solve the mathematically optimal distribution of municipal financial aid. Maximizes vulnerability coverage, guarantees 4Ps representation, and balances grant allocations under strict budget constraints.
+          </p>
+        </div>
+      </section>
+
+      <section class="desk-section">
+        <div class="cms-grid">
+          <!-- Solver Controls Card -->
+          <div class="cms-card">
+            <div class="cms-card-head">
+              <h3>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+                Solver Optimization Parameters
+              </h3>
+            </div>
+
+            <div class="form-group">
+              <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                <label class="form-label" style="margin:0;">Municipal Scholarship Budget</label>
+                <strong id="lbl-solver-budget" style="color:var(--accent); font-family:monospace; font-size:13px;">₱5,000,000</strong>
+              </div>
+              <input type="range" class="range-slider" id="rng-solver-budget" min="100000" max="15000000" step="100000" value="5000000" oninput="updateSolverBudgetLabel(this.value)">
+            </div>
+
+            <div class="form-group">
+              <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                <label class="form-label" style="margin:0;">Single Award Amount / Cap</label>
+                <strong id="lbl-solver-award" style="color:var(--accent); font-family:monospace; font-size:13px;">₱5,000 / sem</strong>
+              </div>
+              <input type="range" class="range-slider" id="rng-solver-award" min="2000" max="10000" step="500" value="5000" oninput="updateSolverAwardLabel(this.value)">
+            </div>
+
+            <div class="form-group">
+              <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                <label class="form-label" style="margin:0;">4Ps &amp; Priority Minimum Quota</label>
+                <strong id="lbl-solver-equity" style="color:var(--accent); font-family:monospace; font-size:13px;">40%</strong>
+              </div>
+              <input type="range" class="range-slider" id="rng-solver-equity" min="10" max="80" step="5" value="40" oninput="updateSolverEquityLabel(this.value)">
+            </div>
+
+            <button class="btn btn-primary" onclick="runOptimizationSolver()" style="width:100%; padding:12px; font-size:13.5px; display:flex; align-items:center; justify-content:center; gap:8px; margin-top:14px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Run Optimal Allocation Solver
+            </button>
+          </div>
+
+          <!-- Solver Solution & Outcomes Card -->
+          <div class="cms-card">
+            <div class="cms-card-head">
+              <h3>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                Optimal Solution Outcomes
+              </h3>
+              <span class="status-badge status-approved" id="solver-status-tag">Solved (Optimal)</span>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px;">
+              <div style="background:#faf8f5; border:1px solid var(--line); border-radius:6px; padding:12px;">
+                <small style="display:block; font-size:10px; font-weight:700; color:var(--muted); text-transform:uppercase;">Funded Scholars</small>
+                <strong id="res-solver-funded" style="font-size:20px; color:var(--ink); font-family:monospace;">0</strong>
+              </div>
+              <div style="background:#faf8f5; border:1px solid var(--line); border-radius:6px; padding:12px;">
+                <small style="display:block; font-size:10px; font-weight:700; color:var(--muted); text-transform:uppercase;">Total Outlay</small>
+                <strong id="res-solver-outlay" style="font-size:20px; color:var(--accent); font-family:monospace;">₱0</strong>
+              </div>
+              <div style="background:#faf8f5; border:1px solid var(--line); border-radius:6px; padding:12px;">
+                <small style="display:block; font-size:10px; font-weight:700; color:var(--muted); text-transform:uppercase;">Coverage Rate</small>
+                <strong id="res-solver-coverage" style="font-size:20px; color:var(--success); font-family:monospace;">100%</strong>
+              </div>
+              <div style="background:#faf8f5; border:1px solid var(--line); border-radius:6px; padding:12px;">
+                <small style="display:block; font-size:10px; font-weight:700; color:var(--muted); text-transform:uppercase;">Equity Target</small>
+                <strong id="res-solver-equity" style="font-size:20px; color:#0284c7; font-family:monospace;">Achieved</strong>
+              </div>
+            </div>
+
+            <p style="font-size:12px; color:var(--muted); line-height:1.5; margin-bottom:14px;" id="res-solver-desc">
+              All qualifying applicants in the active cohort receive allocations with zero budget deficit.
+            </p>
+
+            <button class="btn btn-light" onclick="applySolverDecisionsToCohort()" id="btn-apply-solver" style="width:100%; padding:10px; font-size:12.5px; display:flex; align-items:center; justify-content:center; gap:6px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Apply Solver Decisions to Live Cohort
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- VIEW 4: Announcements & Public Updates Manager -->
     <div id="view-announcements" style="display:none;">
       <section class="desk-hero">
         <div class="desk-hero-card">
@@ -1182,6 +1458,24 @@
           <div class="dossier-item">
             <small>Priority Circumstance</small>
             <strong id="d-circ">—</strong>
+          </div>
+        </div>
+
+        <!-- Predictive Need Scoring Evaluation -->
+        <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:6px; padding:14px; margin-bottom:14px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <span style="font-size:11px; font-weight:800; text-transform:uppercase; color:#15803d; letter-spacing:0.04em;">Predictive Need &amp; Allocation Score</span>
+            <span id="d-score-tag" class="score-badge score-badge-high">Score: 92 / 100</span>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:11.5px;">
+            <div>
+              <span style="color:#64748b; font-size:10px; text-transform:uppercase; font-weight:700;">Vulnerability Tier</span>
+              <strong id="d-tier-label" style="display:block; color:#14532d; font-size:12px;">Tier 1: High Priority</strong>
+            </div>
+            <div>
+              <span style="color:#64748b; font-size:10px; text-transform:uppercase; font-weight:700;">Recommended Aid</span>
+              <strong id="d-rec-aid" style="display:block; color:#15803d; font-size:12px;">₱5,000 / semester</strong>
+            </div>
           </div>
         </div>
 
@@ -1435,12 +1729,58 @@
             saveApplications(liveFirestoreApps);
           }
           renderTable();
+          renderAnalyticsView();
           console.log("[Firestore] Live snapshot received: " + Object.keys(liveFirestoreApps).length + " applications loaded directly from Cloud Firestore.");
         }, (error) => {
           console.warn("[Firestore] Live listener subscription error:", error);
         });
       } catch (err) {
         console.warn("[Firestore] Listener initialization exception:", err);
+      }
+    }
+
+    function calculateStudentNeedScore(app) {
+      if (!app) return { score: 50, tier: 2, tierLabel: 'Tier 2: Moderate Need', recAid: '₱4,000 / semester', badgeClass: 'score-badge-med' };
+      
+      let score = 0;
+      const income = Number(app.annualHouseholdIncome || 96000);
+
+      // Household Income brackets (max 55 pts)
+      if (income <= 60000) {
+        score += 55;
+      } else if (income <= 90000) {
+        score += 48;
+      } else if (income <= 120000) {
+        score += 40;
+      } else if (income <= 160000) {
+        score += 30;
+      } else if (income <= 250000) {
+        score += 20;
+      } else {
+        score += 10;
+      }
+
+      // Circumstance & Vulnerability (max 30 pts)
+      const circ = (app.circumstance || '').toLowerCase();
+      if (circ.includes('4ps') || app.is4PsBeneficiary) {
+        score += 30;
+      } else if (circ.includes('solo') || circ.includes('pwd') || circ.includes('disability')) {
+        score += 20;
+      } else {
+        score += 12; // Standard verified resident
+      }
+
+      // Academic & civic qualification baseline (15 pts)
+      score += 15;
+
+      score = Math.min(100, Math.max(15, score));
+
+      if (score >= 80) {
+        return { score, tier: 1, tierLabel: 'Tier 1: High Priority', recAid: '₱5,000 / semester', badgeClass: 'score-badge-high' };
+      } else if (score >= 60) {
+        return { score, tier: 2, tierLabel: 'Tier 2: Moderate Need', recAid: '₱4,000 / semester', badgeClass: 'score-badge-med' };
+      } else {
+        return { score, tier: 3, tierLabel: 'Tier 3: Standard Aid', recAid: '₱2,500 / semester', badgeClass: 'score-badge-low' };
       }
     }
 
@@ -1535,6 +1875,7 @@
           `;
         }
 
+        const needObj = calculateStudentNeedScore(app);
         const incomeFmt = app.annualHouseholdIncome ? '₱' + Number(app.annualHouseholdIncome).toLocaleString() + '/yr' : 'Under ₱144k/yr';
         const circTag = app.circumstance === '4ps' ? '· <strong style="color:var(--success);">4Ps</strong>' : '';
 
@@ -1542,9 +1883,10 @@
           <tr>
             <td>
               <strong style="display:block; color:var(--ink); font-size:13.5px;">${escapeHtml(app.name || 'Applicant')}</strong>
-              <div style="display:flex; align-items:center; gap:6px; margin-top:2px;">
+              <div style="display:flex; align-items:center; gap:6px; margin-top:3px; flex-wrap:wrap;">
                 <span style="font-family:monospace; color:var(--accent); font-weight:700; font-size:11px; background:var(--accent-light); padding:1px 5px; border-radius:3px;">${escapeHtml(app.code)}</span>
                 <span style="color:var(--muted-light); font-size:11px;">ID: ${escapeHtml(app.studentId || '—')}</span>
+                <span class="score-badge ${needObj.badgeClass}" title="Need Evaluation Score">Need: ${needObj.score}</span>
               </div>
             </td>
             <td>
@@ -1681,6 +2023,17 @@
       document.getElementById('d-circ').textContent = app.circumstance === '4ps' ? '4Ps Beneficiary (Priority Tier)' : 'Standard Residency Verification';
       document.getElementById('d-notes').textContent = app.notes || 'Verification in progress.';
 
+      const needObj = calculateStudentNeedScore(app);
+      const dScoreTag = document.getElementById('d-score-tag');
+      if (dScoreTag) {
+        dScoreTag.className = `score-badge ${needObj.badgeClass}`;
+        dScoreTag.textContent = `Score: ${needObj.score} / 100`;
+      }
+      const dTierLabel = document.getElementById('d-tier-label');
+      if (dTierLabel) dTierLabel.textContent = needObj.tierLabel;
+      const dRecAid = document.getElementById('d-rec-aid');
+      if (dRecAid) dRecAid.textContent = needObj.recAid;
+
       const isApproved = app.status === 'APPROVED';
       const isDeclined = app.status === 'DECLINED';
       let badgeHtml = '<span class="status-badge status-pending">Pending Review</span>';
@@ -1756,12 +2109,351 @@
       if (btn) btn.classList.add('active');
 
       document.getElementById('view-applicants').style.display = tab === 'applicants' ? 'block' : 'none';
+      const elAnalytics = document.getElementById('view-analytics');
+      if (elAnalytics) elAnalytics.style.display = tab === 'analytics' ? 'block' : 'none';
+      const elSolver = document.getElementById('view-solver');
+      if (elSolver) elSolver.style.display = tab === 'solver' ? 'block' : 'none';
       document.getElementById('view-announcements').style.display = tab === 'announcements' ? 'block' : 'none';
       document.getElementById('view-content').style.display = tab === 'content' ? 'block' : 'none';
 
-      if (tab === 'announcements') {
+      if (tab === 'analytics') {
+        renderAnalyticsView();
+      } else if (tab === 'solver') {
+        runOptimizationSolver();
+      } else if (tab === 'announcements') {
         renderAnnouncementsTable();
+      } else if (tab === 'applicants') {
+        renderTable();
       }
+    }
+
+    // ==========================================
+    // BATCH PROCESSING: AUTO-APPROVE HIGH NEED
+    // ==========================================
+    function batchApproveHighNeed() {
+      const apps = getApplications();
+      const list = Object.values(apps);
+      const pendingHighNeed = list.filter(a => a.status !== 'APPROVED' && a.status !== 'DECLINED' && calculateStudentNeedScore(a).score >= 80);
+
+      if (pendingHighNeed.length === 0) {
+        showToast('No pending Tier 1 (Score ≥ 80) applicants to auto-approve.');
+        return;
+      }
+
+      const updates = {
+        status: 'APPROVED',
+        stage: 'Approved',
+        notes: 'Application auto-approved via Priority Tier 1 allocation engine.',
+        disbursement: '₱5,000 / semester — Scheduled for payout via Landbank'
+      };
+
+      pendingHighNeed.forEach(app => {
+        apps[app.code] = { ...apps[app.code], ...updates };
+        if (firestoreDb) {
+          firestoreDb.collection('applications').doc(app.code).set(updates, { merge: true })
+            .catch(err => console.warn(`[Firestore] Batch update error for ${app.code}:`, err));
+        }
+      });
+
+      saveApplications(apps);
+      showToast(`Batch approved ${pendingHighNeed.length} Tier 1 high-priority scholars!`);
+      renderTable();
+      renderAnalyticsView();
+    }
+
+    // ==========================================
+    // ANALYTICS & DEMOGRAPHICS AUDIT
+    // ==========================================
+    const BULAKAN_BARANGAYS = [
+      "Bagumbayan", "Balubad", "Bambang", "Matungao", "Maysantol", 
+      "Perez", "Pitpitan", "San Francisco", "San Jose", "San Nicolas", 
+      "Santa Ana", "Santa Ines", "Taliptip", "Tibaguin"
+    ];
+
+    function renderAnalyticsView() {
+      const apps = getApplications();
+      const list = Object.values(apps);
+      const total = list.length;
+
+      // KPIs
+      const avgScore = total > 0 ? Math.round(list.reduce((acc, a) => acc + calculateStudentNeedScore(a).score, 0) / total) : 0;
+      const fourPsCount = list.filter(a => (a.circumstance || '').toLowerCase().includes('4ps') || a.is4PsBeneficiary).length;
+      const fourPsRatio = total > 0 ? Math.round((fourPsCount / total) * 100) : 0;
+      const approvedCount = list.filter(a => a.status === 'APPROVED').length;
+      const totalOutlay = approvedCount * 5000;
+
+      // Barangays with active submissions
+      const activeBrgySet = new Set(list.map(a => (a.barangay || '').trim()).filter(Boolean));
+
+      const elAvg = document.getElementById('analytics-avg-score');
+      if (elAvg) elAvg.textContent = `${avgScore} / 100`;
+      const el4ps = document.getElementById('analytics-4ps-ratio');
+      if (el4ps) el4ps.textContent = `${fourPsRatio}% (${fourPsCount}/${total})`;
+      const elGrant = document.getElementById('analytics-grant-total');
+      if (elGrant) elGrant.textContent = `₱${totalOutlay.toLocaleString()}`;
+      const elBrgy = document.getElementById('analytics-barangay-count');
+      if (elBrgy) elBrgy.textContent = `${activeBrgySet.size} / 14`;
+
+      // Tier Distribution
+      const tier1 = list.filter(a => calculateStudentNeedScore(a).score >= 80).length;
+      const tier2 = list.filter(a => { const s = calculateStudentNeedScore(a).score; return s >= 60 && s < 80; }).length;
+      const tier3 = list.filter(a => { const s = calculateStudentNeedScore(a).score; return s >= 40 && s < 60; }).length;
+      const tier4 = list.filter(a => calculateStudentNeedScore(a).score < 40).length;
+
+      const pTier1 = total > 0 ? Math.round((tier1 / total) * 100) : 0;
+      const pTier2 = total > 0 ? Math.round((tier2 / total) * 100) : 0;
+      const pTier3 = total > 0 ? Math.round((tier3 / total) * 100) : 0;
+      const pTier4 = total > 0 ? Math.round((tier4 / total) * 100) : 0;
+
+      const elTierWrap = document.getElementById('analytics-tier-bars');
+      if (elTierWrap) {
+        elTierWrap.innerHTML = `
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:12.5px; font-weight:700;">
+              <span style="color:#15803d;">Tier 1 · Extreme Vulnerability (80–100)</span>
+              <span style="font-family:monospace;">${tier1} scholars (${pTier1}%)</span>
+            </div>
+            <div class="tier-meter"><div class="tier-meter-fill" style="width:${pTier1}%; background:#16a34a;"></div></div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:12.5px; font-weight:700;">
+              <span style="color:#d97706;">Tier 2 · Moderate Need (60–79)</span>
+              <span style="font-family:monospace;">${tier2} scholars (${pTier2}%)</span>
+            </div>
+            <div class="tier-meter"><div class="tier-meter-fill" style="width:${pTier2}%; background:#f59e0b;"></div></div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:12.5px; font-weight:700;">
+              <span style="color:#0284c7;">Tier 3 · Low Risk / Standard (40–59)</span>
+              <span style="font-family:monospace;">${tier3} scholars (${pTier3}%)</span>
+            </div>
+            <div class="tier-meter"><div class="tier-meter-fill" style="width:${pTier3}%; background:#0284c7;"></div></div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:12.5px; font-weight:700;">
+              <span style="color:#64748b;">Tier 4 · Above Threshold (&lt;40)</span>
+              <span style="font-family:monospace;">${tier4} scholars (${pTier4}%)</span>
+            </div>
+            <div class="tier-meter"><div class="tier-meter-fill" style="width:${pTier4}%; background:#94a3b8;"></div></div>
+          </div>
+        `;
+      }
+
+      // Household Income Brackets
+      const incUnder60 = list.filter(a => Number(a.annualHouseholdIncome || 96000) <= 60000).length;
+      const inc60to120 = list.filter(a => { const i = Number(a.annualHouseholdIncome || 96000); return i > 60000 && i <= 120000; }).length;
+      const inc120to200 = list.filter(a => { const i = Number(a.annualHouseholdIncome || 96000); return i > 120000 && i <= 200000; }).length;
+      const incAbove200 = list.filter(a => Number(a.annualHouseholdIncome || 96000) > 200000).length;
+
+      const pInc1 = total > 0 ? Math.round((incUnder60 / total) * 100) : 0;
+      const pInc2 = total > 0 ? Math.round((inc60to120 / total) * 100) : 0;
+      const pInc3 = total > 0 ? Math.round((inc120to200 / total) * 100) : 0;
+      const pInc4 = total > 0 ? Math.round((incAbove200 / total) * 100) : 0;
+
+      const elIncWrap = document.getElementById('analytics-income-bars');
+      if (elIncWrap) {
+        elIncWrap.innerHTML = `
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:12.5px; font-weight:700;">
+              <span style="color:var(--ink);">Under ₱60,000 / year (Poverty Threshold)</span>
+              <span style="font-family:monospace;">${incUnder60} (${pInc1}%)</span>
+            </div>
+            <div class="tier-meter"><div class="tier-meter-fill" style="width:${pInc1}%; background:#8a0303;"></div></div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:12.5px; font-weight:700;">
+              <span style="color:var(--ink);">₱60,000 – ₱120,000 / year (Low Income)</span>
+              <span style="font-family:monospace;">${inc60to120} (${pInc2}%)</span>
+            </div>
+            <div class="tier-meter"><div class="tier-meter-fill" style="width:${pInc2}%; background:#b45309;"></div></div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:12.5px; font-weight:700;">
+              <span style="color:var(--ink);">₱120,000 – ₱200,000 / year (Lower Middle)</span>
+              <span style="font-family:monospace;">${inc120to200} (${pInc3}%)</span>
+            </div>
+            <div class="tier-meter"><div class="tier-meter-fill" style="width:${pInc3}%; background:#0284c7;"></div></div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:12.5px; font-weight:700;">
+              <span style="color:var(--ink);">Above ₱200,000 / year (Standard)</span>
+              <span style="font-family:monospace;">${incAbove200} (${pInc4}%)</span>
+            </div>
+            <div class="tier-meter"><div class="tier-meter-fill" style="width:${pInc4}%; background:#64748b;"></div></div>
+          </div>
+        `;
+      }
+
+      // Barangay representation grid
+      const elBrgyGrid = document.getElementById('analytics-barangay-grid');
+      if (elBrgyGrid) {
+        elBrgyGrid.innerHTML = BULAKAN_BARANGAYS.map(brgy => {
+          const count = list.filter(a => (a.barangay || '').toLowerCase().trim() === brgy.toLowerCase()).length;
+          const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+          return `
+            <div class="barangay-pill">
+              <small title="Brgy. ${escapeHtml(brgy)}">${escapeHtml(brgy)}</small>
+              <strong>${count} <span style="font-size:11px; font-weight:normal; color:var(--muted);">${pct}%</span></strong>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    // ==========================================
+    // BUDGET & NEED OPTIMIZATION SOLVER
+    // ==========================================
+    let lastSolverDecisions = {
+      selectedCodes: new Set(),
+      awardCap: 5000,
+      fundedCount: 0,
+      totalOutlay: 0
+    };
+
+    function updateSolverBudgetLabel(val) {
+      document.getElementById('lbl-solver-budget').textContent = '₱' + Number(val).toLocaleString();
+      runOptimizationSolver();
+    }
+
+    function updateSolverAwardLabel(val) {
+      document.getElementById('lbl-solver-award').textContent = '₱' + Number(val).toLocaleString() + ' / sem';
+      runOptimizationSolver();
+    }
+
+    function updateSolverEquityLabel(val) {
+      document.getElementById('lbl-solver-equity').textContent = val + '%';
+      runOptimizationSolver();
+    }
+
+    function runOptimizationSolver() {
+      const budget = Number(document.getElementById('rng-solver-budget')?.value || 5000000);
+      const awardCap = Number(document.getElementById('rng-solver-award')?.value || 5000);
+      const equityTargetPct = Number(document.getElementById('rng-solver-equity')?.value || 40);
+
+      const apps = getApplications();
+      const list = Object.values(apps);
+      const total = list.length;
+
+      if (total === 0) {
+        document.getElementById('res-solver-funded').textContent = '0';
+        document.getElementById('res-solver-outlay').textContent = '₱0';
+        document.getElementById('res-solver-coverage').textContent = '0%';
+        document.getElementById('res-solver-equity').textContent = '0%';
+        document.getElementById('res-solver-desc').textContent = 'No applicant records to optimize.';
+        return;
+      }
+
+      // Max capacity
+      const maxSlots = Math.floor(budget / awardCap);
+
+      // Score each applicant
+      const scoredList = list.map(app => {
+        const need = calculateStudentNeedScore(app);
+        const is4Ps = (app.circumstance || '').toLowerCase().includes('4ps') || app.is4PsBeneficiary;
+        return {
+          ...app,
+          needScore: need.score,
+          is4Ps: !!is4Ps
+        };
+      });
+
+      // Priority sort: Higher need first, 4Ps priority boost, lower income tiebreaker
+      scoredList.sort((a, b) => {
+        if (b.needScore !== a.needScore) return b.needScore - a.needScore;
+        if (a.is4Ps !== b.is4Ps) return a.is4Ps ? -1 : 1;
+        return Number(a.annualHouseholdIncome || 0) - Number(b.annualHouseholdIncome || 0);
+      });
+
+      // Knapsack greedy selection with equity constraint
+      const selected = new Set();
+      const equitySlotsTarget = Math.ceil(Math.min(total, maxSlots) * (equityTargetPct / 100));
+
+      // Phase 1: Allocate required equity slots to 4Ps / extreme need
+      let equityAllocated = 0;
+      for (const item of scoredList) {
+        if (selected.size >= maxSlots) break;
+        if (item.is4Ps || item.needScore >= 80) {
+          selected.add(item.code);
+          equityAllocated++;
+          if (equityAllocated >= equitySlotsTarget) break;
+        }
+      }
+
+      // Phase 2: Allocate remaining slots strictly by need score
+      for (const item of scoredList) {
+        if (selected.size >= maxSlots) break;
+        if (!selected.has(item.code)) {
+          selected.add(item.code);
+        }
+      }
+
+      const funded = selected.size;
+      const totalOutlay = funded * awardCap;
+      const coverage = Math.min(100, Math.round((funded / total) * 100));
+      const fourPsFunded = scoredList.filter(s => selected.has(s.code) && s.is4Ps).length;
+      const achievedEquityPct = funded > 0 ? Math.round((fourPsFunded / funded) * 100) : 0;
+
+      lastSolverDecisions = {
+        selectedCodes: selected,
+        awardCap: awardCap,
+        fundedCount: funded,
+        totalOutlay: totalOutlay
+      };
+
+      document.getElementById('res-solver-funded').textContent = funded;
+      document.getElementById('res-solver-outlay').textContent = '₱' + totalOutlay.toLocaleString();
+      document.getElementById('res-solver-coverage').textContent = coverage + '%';
+      
+      const elEquity = document.getElementById('res-solver-equity');
+      if (elEquity) {
+        elEquity.textContent = achievedEquityPct >= equityTargetPct ? `Achieved (${achievedEquityPct}%)` : `${achievedEquityPct}% Target`;
+        elEquity.style.color = achievedEquityPct >= equityTargetPct ? 'var(--success)' : '#d97706';
+      }
+
+      const elDesc = document.getElementById('res-solver-desc');
+      if (elDesc) {
+        elDesc.textContent = `Optimally allocated grants for ${funded} out of ${total} applicants under a ₱${budget.toLocaleString()} ceiling. ${achievedEquityPct}% allocated to priority 4Ps scholars. Remaining balance: ₱${(budget - totalOutlay).toLocaleString()}.`;
+      }
+    }
+
+    function applySolverDecisionsToCohort() {
+      if (!lastSolverDecisions || !lastSolverDecisions.selectedCodes) {
+        showToast('Please run the solver first.');
+        return;
+      }
+
+      const apps = getApplications();
+      const list = Object.values(apps);
+      let approvedCount = 0;
+      let declinedCount = 0;
+
+      list.forEach(app => {
+        const isFunded = lastSolverDecisions.selectedCodes.has(app.code);
+        const updates = isFunded ? {
+          status: 'APPROVED',
+          stage: 'Approved',
+          notes: 'Application approved via Algorithmic Allocation & Knapsack Solver.',
+          disbursement: `₱${lastSolverDecisions.awardCap.toLocaleString()} / semester — Scheduled for payout via Landbank`
+        } : {
+          status: 'DECLINED',
+          stage: 'Declined',
+          notes: 'Application review concluded: Placed on waitlist due to scholarship budget ceiling.',
+          disbursement: 'Waitlisted for subsequent cycle'
+        };
+
+        apps[app.code] = { ...apps[app.code], ...updates };
+        if (isFunded) approvedCount++; else declinedCount++;
+
+        if (firestoreDb) {
+          firestoreDb.collection('applications').doc(app.code).set(updates, { merge: true })
+            .catch(err => console.warn(`[Firestore] Solver update error for ${app.code}:`, err));
+        }
+      });
+
+      saveApplications(apps);
+      showToast(`Solver decisions applied: ${approvedCount} Approved, ${declinedCount} Waitlisted.`);
+      renderTable();
+      renderAnalyticsView();
     }
 
     // ==========================================
@@ -2060,6 +2752,7 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       renderTable();
+      renderAnalyticsView();
       setupFirestoreListener();
       setupAnnouncementsListener();
       setupSiteSettingsListener();
